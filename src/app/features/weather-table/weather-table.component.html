@@ -4,7 +4,7 @@
     <div class="date-range-wrapper">
       <label>Date Range</label>
       <p-datepicker
-        [(ngModel)]="dateRange"
+        [ngModel]="dateRange()"
         (ngModelChange)="dateRange.set($event)"
         selectionMode="range"
         [readonlyInput]="true"
@@ -15,14 +15,7 @@
       >
       </p-datepicker>
     </div>
-    <!-- <button
-      pButton
-      label="Load Data"
-      icon="pi pi-refresh"
-      class="load-btn"
-      (click)="loadData()"
-      [disabled]="loading()">
-    </button> -->
+    
     <p-button
       label="Load Data"
       icon="pi pi-refresh"
