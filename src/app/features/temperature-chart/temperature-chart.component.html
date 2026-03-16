@@ -1,0 +1,57 @@
+<div class="chart-container">
+
+  <div class="controls-bar">
+    <div class="date-range-wrapper">
+      <label>Date Range</label>
+      <p-datepicker
+        [(ngModel)]="dateRange"
+        (ngModelChange)="dateRange.set($event)"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="yy-mm-dd"
+        placeholder="Select date range"
+        [showIcon]="true"
+        [numberOfMonths]="2">
+      </p-datepicker>
+    </div>
+
+    <div class="view-mode-wrapper">
+      <label>View</label>
+      <p-selectButton
+        [options]="viewOptions"
+        [(ngModel)]="viewMode"
+        (ngModelChange)="onViewModeChange()"
+        optionLabel="label"
+        optionValue="value">
+      </p-selectButton>
+    </div>
+
+    <button
+      pButton
+      label="Load Data"
+      icon="pi pi-refresh"
+      class="load-btn"
+      (click)="loadData()"
+      [disabled]="loading()">
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-wrapper">
+      <p-progressSpinner strokeWidth="3" />
+      <p>Loading chart data...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <div class="canvas-wrapper" [class.hidden]="loading()">
+    <canvas #chartCanvas></canvas>
+  </div>
+
+</div>

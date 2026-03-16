@@ -1,0 +1,119 @@
+<div class="weather-table-container">
+
+  <!-- Date Range Picker -->
+  <div class="controls-bar">
+    <div class="date-range-wrapper">
+      <label>Date Range</label>
+      <p-datepicker
+        [(ngModel)]="dateRange"
+        (ngModelChange)="dateRange.set($event)"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="yy-mm-dd"
+        placeholder="Select date range"
+        [showIcon]="true"
+        [numberOfMonths]="2">
+      </p-datepicker>
+    </div>
+    <button
+      pButton
+      label="Load Data"
+      icon="pi pi-refresh"
+      class="load-btn"
+      (click)="loadData()"
+      [disabled]="loading()">
+    </button>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-wrapper">
+      <p-progressSpinner strokeWidth="3" />
+      <p>Fetching weather data for London...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!loading() && rows().length > 0) {
+    <p-table
+      #dt
+      [value]="rows()"
+      [paginator]="true"
+      [rows]="24"
+      [rowsPerPageOptions]="[24, 48, 96, 240]"
+      [sortMode]="'single'"
+      [globalFilterFields]="['weatherState']"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} records"
+      styleClass="p-datatable-sm">
+
+      <ng-template pTemplate="caption">
+        <div class="table-caption">
+          <span class="record-count">
+            <i class="pi pi-database"></i>
+            {{ rows().length }} records total
+          </span>
+          <div class="search-wrapper">
+            <i class="pi pi-search search-icon"></i>
+            <input
+              pInputText
+              type="text"
+              placeholder="Search weather state..."
+              (input)="onGlobalFilter($event, dt)"
+              class="search-input" />
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          @for (col of columns; track col.field) {
+            <th [pSortableColumn]="col.sortable ? col.field : ''">
+              {{ col.header }}
+              @if (col.sortable) {
+                <p-sortIcon [field]="col.field" />
+              }
+            </th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row.datetime | date:'dd MMM yyyy, HH:mm' }}</td>
+          <td>
+            <span class="weather-state">
+              <i class="pi {{ row.weatherIcon }}"></i>
+              {{ row.weatherState }}
+            </span>
+          </td>
+          <td>
+            <span [class]="'temp-badge ' + getTempClass(row.temperature)">
+              {{ row.temperature | number:'1.1-1' }}°C
+            </span>
+          </td>
+          <td>{{ row.humidity }}%</td>
+          <td>{{ row.pressure | number:'1.1-1' }}</td>
+          <td>{{ row.windSpeed | number:'1.1-1' }}</td>
+          <td>{{ row.precipitation | number:'1.1-1' }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="empty-message">No records found</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  }
+
+</div>
