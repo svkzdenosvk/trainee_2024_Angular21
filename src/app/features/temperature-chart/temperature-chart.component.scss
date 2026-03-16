@@ -5,6 +5,7 @@
 }
 
 .controls-bar {
+
   display: flex;
   align-items: flex-end;
   gap: 1rem;
@@ -28,10 +29,12 @@
     background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
     border: none !important;
     height: 42px;
+    width: 120px !important;
   }
 }
 
 .canvas-wrapper {
+
   background: #1e293b;
   border: 1px solid #334155;
   border-radius: 12px;
