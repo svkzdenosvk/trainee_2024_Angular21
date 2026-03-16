@@ -1,5 +1,4 @@
 <div class="weather-table-container">
-
   <!-- Date Range Picker -->
   <div class="controls-bar">
     <div class="date-range-wrapper">
@@ -12,17 +11,25 @@
         dateFormat="yy-mm-dd"
         placeholder="Select date range"
         [showIcon]="true"
-        [numberOfMonths]="2">
+        [numberOfMonths]="2"
+      >
       </p-datepicker>
     </div>
-    <button
+    <!-- <button
       pButton
       label="Load Data"
       icon="pi pi-refresh"
       class="load-btn"
       (click)="loadData()"
       [disabled]="loading()">
-    </button>
+    </button> -->
+    <p-button
+      label="Load Data"
+      icon="pi pi-refresh"
+      severity="secondary"
+      (onClick)="loadData()"
+      [disabled]="loading()"
+    />
   </div>
 
   <!-- Loading -->
@@ -53,8 +60,8 @@
       [globalFilterFields]="['weatherState']"
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} records"
-      styleClass="p-datatable-sm">
-
+      styleClass="p-datatable-sm"
+    >
       <ng-template pTemplate="caption">
         <div class="table-caption">
           <span class="record-count">
@@ -68,7 +75,8 @@
               type="text"
               placeholder="Search weather state..."
               (input)="onGlobalFilter($event, dt)"
-              class="search-input" />
+              class="search-input"
+            />
           </div>
         </div>
       </ng-template>
@@ -88,7 +96,7 @@
 
       <ng-template pTemplate="body" let-row>
         <tr>
-          <td>{{ row.datetime | date:'dd MMM yyyy, HH:mm' }}</td>
+          <td>{{ row.datetime | date: 'dd MMM yyyy, HH:mm' }}</td>
           <td>
             <span class="weather-state">
               <i class="pi {{ row.weatherIcon }}"></i>
@@ -97,13 +105,13 @@
           </td>
           <td>
             <span [class]="'temp-badge ' + getTempClass(row.temperature)">
-              {{ row.temperature | number:'1.1-1' }}°C
+              {{ row.temperature | number: '1.1-1' }}°C
             </span>
           </td>
           <td>{{ row.humidity }}%</td>
-          <td>{{ row.pressure | number:'1.1-1' }}</td>
-          <td>{{ row.windSpeed | number:'1.1-1' }}</td>
-          <td>{{ row.precipitation | number:'1.1-1' }}</td>
+          <td>{{ row.pressure | number: '1.1-1' }}</td>
+          <td>{{ row.windSpeed | number: '1.1-1' }}</td>
+          <td>{{ row.precipitation | number: '1.1-1' }}</td>
         </tr>
       </ng-template>
 
@@ -112,8 +120,6 @@
           <td colspan="7" class="empty-message">No records found</td>
         </tr>
       </ng-template>
-
     </p-table>
   }
-
 </div>
