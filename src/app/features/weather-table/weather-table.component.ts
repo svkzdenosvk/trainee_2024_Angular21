@@ -49,21 +49,12 @@ export class WeatherTableComponent implements OnInit {
     this.loadData();
   }
 
-  // loadData(): void {
-    // const range = this.dateRange();
-  //   // if (!range || range.length < 2 || !range[1]) return;
-  //    console.log('Loading range:', range); // debug
-  // if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) return;
+
 loadData(): void {
   const range = this.dateRange();
-  if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) return;
-
-  const diffDays = Math.round(
-    (range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  if (diffDays > 90) {
-    this.error.set('Maximum date range is 90 days. Please select a shorter range.');
+  const error = this.weatherService.validateDateRange(range);
+  if (error) {
+    this.error.set(error);
     return;
   }
 

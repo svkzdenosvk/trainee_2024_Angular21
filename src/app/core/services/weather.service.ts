@@ -79,4 +79,17 @@ export class WeatherService {
     end.setDate(end.getDate() + 7);
     return { start, end };
   }
+
+  validateDateRange(range: Date[]): string | null {
+  if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
+    return 'Please select a valid date range.';
+  }
+  const diffDays = Math.round(
+    (range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24)
+  );
+  if (diffDays > 90) {
+    return 'Maximum date range is 90 days. Please select a shorter range.';
+  }
+  return null;
+}
 }

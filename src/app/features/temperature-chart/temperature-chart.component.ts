@@ -54,9 +54,14 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
     this.chart?.destroy();
   }
 
-  loadData(): void {
-    const range = this.dateRange();
-    if (!range || range.length < 2 || !range[1]) return;
+ 
+    loadData(): void {
+  const range = this.dateRange();
+  const error = this.weatherService.validateDateRange(range);
+  if (error) {
+    this.error.set(error);
+    return;
+  }
 
     this.loading.set(true);
     this.error.set(null);
