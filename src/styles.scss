@@ -53,7 +53,7 @@ body {
   }
 }
 
-//overide heat index page 
+//overide heat index page
 // Heat index cards dark background
 .calculator-layout {
   .p-card {
@@ -62,4 +62,12 @@ body {
   }
 }
 
+// app-heat-index-calculator {
+//   ::ng-deep .p-card-body {
+//     padding-top: 0 !important;
+//   }
+// }
 
+.p-card-body {
+  padding-top: 0 !important;
+}
