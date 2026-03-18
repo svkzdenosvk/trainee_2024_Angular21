@@ -1,22 +1,24 @@
 <div class="app-container">
-
   <header class="app-header">
-    <div class="header-icon">🌦️</div>
+    <!-- <div class="header-icon">🌦️</div> -->
     <h1>London Weather</h1>
     <p>Hourly forecast & historical data · Open-Meteo API</p>
   </header>
 
-  <p-tabs>
-    <p-tablist>
-      <p-tab value="0"><i class="pi pi-table"></i> Weather Data</p-tab>
-      <p-tab value="1"><i class="pi pi-chart-line"></i> Temperature Chart</p-tab>
-      <p-tab value="2"><i class="pi pi-sun"></i> Heat Index</p-tab>
-    </p-tablist>
-    <p-tabpanels>
-      <p-tabpanel value="0"><app-weather-table /></p-tabpanel>
-      <p-tabpanel value="1"><app-temperature-chart /></p-tabpanel>
-      <p-tabpanel value="2"><app-heat-index-calculator /></p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
 
+  <nav class="app-nav">
+    <a routerLink="/weather" routerLinkActive="active">
+      <i class="pi pi-table"></i> Weather Data
+    </a>
+    <a routerLink="/chart" routerLinkActive="active">
+      <i class="pi pi-chart-line"></i> Temperature Chart
+    </a>
+    <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
+  </nav>
+
+  <main>
+    <router-outlet />
+  </main>
+
+  <footer class="app-footer">© 2026 London Weather App. All rights reserved.</footer>
 </div>

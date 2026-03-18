@@ -2,7 +2,10 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
+
+// Nora theme
+import Nora from '@primeng/themes/nora';
+
 
 import { routes } from './app.routes';
 
@@ -12,7 +15,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     providePrimeNG({
-      theme: { preset: Aura },
+      theme: { preset: Nora,options: {
+      darkModeSelector: 'system', // dark mode by the system
+      
+    } }
     }),
   ],
 };

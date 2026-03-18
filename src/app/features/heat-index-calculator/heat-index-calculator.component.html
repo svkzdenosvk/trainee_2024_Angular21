@@ -1,7 +1,6 @@
 <div class="calculator-layout">
-
   <!-- Calculator Card -->
-  <p-card styleClass="calc-card">
+  <p-card class="calc-card">
     <ng-template pTemplate="header">
       <div class="card-header">
         <i class="pi pi-sun"></i>
@@ -10,7 +9,6 @@
     </ng-template>
 
     <div class="form-body">
-
       <!-- Unit toggle -->
       <div class="form-group">
         <label>Temperature Units</label>
@@ -19,7 +17,8 @@
           [ngModel]="unit()"
           (ngModelChange)="onUnitChange($event)"
           optionLabel="label"
-          optionValue="value">
+          optionValue="value"
+        >
         </p-selectButton>
       </div>
 
@@ -32,11 +31,10 @@
           [suffix]="' ' + unit()"
           [minFractionDigits]="1"
           [maxFractionDigits]="1"
-          styleClass="full-width">
+          class="full-width"
+        >
         </p-inputNumber>
-        <span class="hint">
-          Minimum: {{ minTemp() }}{{ unit() }} to calculate Heat Index
-        </span>
+        <span class="hint"> Minimum: {{ minTemp() }}{{ unit() }} to calculate Heat Index </span>
       </div>
 
       <!-- Humidity input -->
@@ -48,7 +46,8 @@
           suffix=" %"
           [min]="0"
           [max]="100"
-          styleClass="full-width">
+          styleClass="full-width"
+        >
         </p-inputNumber>
       </div>
 
@@ -58,8 +57,8 @@
         label="Calculate Heat Index"
         icon="pi pi-calculator"
         class="calc-btn"
-        (click)="calculate()">
-      </button>
+        (click)="calculate()"
+      ></button>
 
       <p-divider />
 
@@ -67,24 +66,21 @@
       @if (heatIndex() !== null) {
         <div class="result-box" [style.border-color]="heatIndexLabel()?.color">
           <div class="result-value" [style.color]="heatIndexLabel()?.color">
-            {{ heatIndex() | number:'1.1-1' }}{{ unit() }}
+            {{ heatIndex() | number: '1.1-1' }}{{ unit() }}
           </div>
           <div class="result-label" [style.color]="heatIndexLabel()?.color">
             {{ heatIndexLabel()?.text }}
           </div>
           <div class="result-description">
-            Feels like {{ heatIndex() | number:'1.0-0' }}{{ unit() }} due to heat and humidity
+            Feels like {{ heatIndex() | number: '1.0-0' }}{{ unit() }} due to heat and humidity
           </div>
         </div>
       } @else {
         <div class="no-result">
           <i class="pi pi-info-circle"></i>
-          <p>
-            Enter temperature ≥ {{ minTemp() }}{{ unit() }} and humidity, then click Calculate.
-          </p>
+          <p>Enter temperature ≥ {{ minTemp() }}{{ unit() }} and humidity, then click Calculate.</p>
         </div>
       }
-
     </div>
   </p-card>
 
@@ -100,8 +96,8 @@
             icon="pi pi-trash"
             class="p-button-text p-button-sm clear-btn"
             pTooltip="Clear history"
-            (click)="clearHistory()">
-          </button>
+            (click)="clearHistory()"
+          ></button>
         }
       </div>
     </ng-template>
@@ -123,10 +119,10 @@
         </ng-template>
         <ng-template pTemplate="body" let-entry>
           <tr>
-            <td>{{ entry.temperature | number:'1.1-1' }}{{ entry.unit }}</td>
+            <td>{{ entry.temperature | number: '1.1-1' }}{{ entry.unit }}</td>
             <td>{{ entry.humidity }}%</td>
-            <td class="hi-value">{{ entry.heatIndex | number:'1.1-1' }}{{ entry.unit }}</td>
-            <td class="timestamp">{{ entry.timestamp | date:'HH:mm:ss' }}</td>
+            <td class="hi-value">{{ entry.heatIndex | number: '1.1-1' }}{{ entry.unit }}</td>
+            <td class="timestamp">{{ entry.timestamp | date: 'HH:mm:ss' }}</td>
           </tr>
         </ng-template>
       </p-table>
@@ -137,5 +133,4 @@
       Stored in localStorage
     </div>
   </p-card>
-
 </div>
