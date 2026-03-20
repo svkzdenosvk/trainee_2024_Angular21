@@ -18,8 +18,8 @@ import { HeatIndexEntry, TemperatureUnit } from '../../core/models/weather.model
     CommonModule, FormsModule, CardModule, InputNumberModule,
     SelectButtonModule, ButtonModule, DividerModule, TableModule, TooltipModule
   ],
-  templateUrl: './heat-index-calculator.component.html',
-  styleUrls: ['./heat-index-calculator.component.scss']
+  templateUrl: './heat-index-calculator.html',
+  styleUrls: ['./heat-index-calculator.scss']
 })
 export class HeatIndexCalculatorComponent implements OnInit {
   private readonly heatIndexService = inject(HeatIndexService);

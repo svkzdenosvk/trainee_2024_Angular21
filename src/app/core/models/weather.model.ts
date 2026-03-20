@@ -38,3 +38,10 @@ export interface HeatIndexEntry {
 }
 
 export type TemperatureUnit = '°C' | '°F';
+
+export interface City {
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}

@@ -17,8 +17,8 @@ type ViewMode = 'all' | 'daily';
   selector: 'app-temperature-chart',
   standalone: true,
   imports: [CommonModule, FormsModule, Button, DatePicker, SelectButton, ProgressSpinner],
-  templateUrl: './temperature-chart.component.html',
-  styleUrls: ['./temperature-chart.component.scss']
+  templateUrl: './temperature-chart.html',
+  styleUrls: ['./temperature-chart.scss']
 })
 export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly weatherService = inject(WeatherService);

@@ -1,7 +1,9 @@
 <div class="app-container">
   <header class="app-header">
     <!-- <div class="header-icon">🌦️</div> -->
-    <h1>London Weather</h1>
+     <h1>
+    {{ cityService.selectedCity() ? cityService.selectedCity()!.name + ' Weather' : 'Weather App' }}
+  </h1>
     <p>Hourly forecast & historical data · Open-Meteo API</p>
   </header>
 

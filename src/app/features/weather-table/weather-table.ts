@@ -19,8 +19,8 @@ import { WeatherRow } from '../../core/models/weather.model';
     TableModule, DatePicker, Button, InputText,
     ProgressSpinner, Card, Tooltip
   ],
-  templateUrl: './weather-table.component.html',
-  styleUrls: ['./weather-table.component.scss']
+  templateUrl: './weather-table.html',
+  styleUrls: ['./weather-table.scss']
 })
 export class WeatherTableComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);

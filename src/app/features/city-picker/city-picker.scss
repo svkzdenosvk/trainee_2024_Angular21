@@ -1,0 +1,115 @@
+.city-picker-container {
+  max-width: 600px;
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero {
+  text-align: center;
+
+  .hero-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    color: #475569;
+    margin-top: 0.5rem;
+  }
+}
+
+.search-wrapper {
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    z-index: 1;
+  }
+
+  .search-input {
+    width: 100%;
+    padding-left: 2.5rem !important;
+    height: 52px;
+    font-size: 1rem;
+    border-radius: 12px !important;
+  }
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #334155;
+    border-color: #60a5fa;
+    transform: translateX(4px);
+  }
+
+  .city-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    .city-name {
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .city-country {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  }
+
+  .city-coords {
+    font-size: 0.8rem;
+    color: #475569;
+  }
+
+  i {
+    color: #60a5fa;
+  }
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #475569;
+  padding: 2rem;
+}
