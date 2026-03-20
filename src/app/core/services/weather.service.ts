@@ -2,26 +2,33 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { WeatherApiResponse, WeatherRow } from '../models/weather.model';
+import { CityService } from './city.service';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
   private readonly http = inject(HttpClient);
+  private readonly cityService = inject(CityService);
   private readonly API_URL = 'https://api.open-meteo.com/v1/forecast';
-  private readonly LAT = 51.5074;
-  private readonly LON = -0.1278;
+  // private readonly LAT = 51.5074;
+  // private readonly LON = -0.1278;
 
   getWeatherData(startDate: string, endDate: string): Observable<WeatherRow[]> {
+    const city = this.cityService.selectedCity();
+
     const params = new HttpParams()
-      .set('latitude', this.LAT)
-      .set('longitude', this.LON)
-      .set('hourly', 'temperature_2m,relativehumidity_2m,surface_pressure,weathercode,windspeed_10m,precipitation')
+      .set('latitude', city?.lat ?? 51.5074)
+      .set('longitude', city?.lon ?? -0.1278)
+      .set(
+        'hourly',
+        'temperature_2m,relativehumidity_2m,surface_pressure,weathercode,windspeed_10m,precipitation',
+      )
       .set('start_date', startDate)
       .set('end_date', endDate)
-      .set('timezone', 'Europe/London');
+      .set('timezone', 'auto');
 
     return this.http
       .get<WeatherApiResponse>(this.API_URL, { params })
-      .pipe(map(response => this.transformResponse(response)));
+      .pipe(map((response) => this.transformResponse(response)));
   }
 
   private transformResponse(response: WeatherApiResponse): WeatherRow[] {
@@ -33,7 +40,7 @@ export class WeatherService {
       humidity: response.hourly.relativehumidity_2m[i],
       pressure: response.hourly.surface_pressure[i],
       windSpeed: response.hourly.windspeed_10m[i],
-      precipitation: response.hourly.precipitation[i]
+      precipitation: response.hourly.precipitation[i],
     }));
   }
 
@@ -81,15 +88,13 @@ export class WeatherService {
   }
 
   validateDateRange(range: Date[]): string | null {
-  if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
-    return 'Please select a valid date range.';
+    if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
+      return 'Please select a valid date range.';
+    }
+    const diffDays = Math.round((range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24));
+    if (diffDays > 90) {
+      return 'Maximum date range is 90 days. Please select a shorter range.';
+    }
+    return null;
   }
-  const diffDays = Math.round(
-    (range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24)
-  );
-  if (diffDays > 90) {
-    return 'Maximum date range is 90 days. Please select a shorter range.';
-  }
-  return null;
-}
 }
