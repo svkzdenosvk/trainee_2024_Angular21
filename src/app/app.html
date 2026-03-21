@@ -12,14 +12,22 @@
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="pi pi-map-marker"></i>
-      {{ cityService.selectedCity() ? cityService.selectedCity()!.name : 'Choose City' }}
+      {{ cityService.selectedCity() ? 'Change City' : 'Choose City' }}
     </a>
-    <a routerLink="/weather" routerLinkActive="active">
+    <!-- <a routerLink="/weather" routerLinkActive="active">
       <i class="pi pi-table"></i> Weather Data
     </a>
     <a routerLink="/chart" routerLinkActive="active">
       <i class="pi pi-chart-line"></i> Temperature Chart
-    </a>
+    </a> -->
+    @if (cityService.selectedCity()) {
+      <a routerLink="/weather" routerLinkActive="active">
+        <i class="pi pi-table"></i> Weather Data
+      </a>
+      <a routerLink="/chart" routerLinkActive="active">
+        <i class="pi pi-chart-line"></i> Temperature Chart
+      </a>
+    }
     <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
   </nav>
 

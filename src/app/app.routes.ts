@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { cityGuard } from './core/guards/city-guard';
 
 export const routes: Routes = [
   { path: '',
@@ -8,6 +9,7 @@ export const routes: Routes = [
       ), },
   {
     path: 'weather',
+    canActivate: [cityGuard],
     loadComponent: () =>
       import('./features/weather-table/weather-table').then(
         (m) => m.WeatherTableComponent,
@@ -15,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'chart',
+    canActivate: [cityGuard],
     loadComponent: () =>
       import('./features/temperature-chart/temperature-chart').then(
         (m) => m.TemperatureChartComponent,
