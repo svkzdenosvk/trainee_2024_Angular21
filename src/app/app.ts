@@ -18,6 +18,6 @@ import { CityService } from './core/services/city.service';
   styleUrls: ['./app.scss']
 })
 export class App {
-    cityService = inject(CityService);
+  protected cityService = inject(CityService);
 
 }

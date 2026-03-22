@@ -6,10 +6,12 @@ import { DatePicker } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { Card } from 'primeng/card';
-import { Tooltip } from 'primeng/tooltip';
+// import { Card } from 'primeng/card';
+// import { Tooltip } from 'primeng/tooltip';
 import { WeatherService } from '../../core/services/weather.service';
 import { WeatherRow } from '../../core/models/weather.model';
+ import { CityService } from '../../core/services/city.service';
+//import { CityService } from './core/services/city.service';
 
 @Component({
   selector: 'app-weather-table',
@@ -17,13 +19,14 @@ import { WeatherRow } from '../../core/models/weather.model';
   imports: [
     CommonModule, FormsModule, DatePipe,
     TableModule, DatePicker, Button, InputText,
-    ProgressSpinner, Card, Tooltip
+    ProgressSpinner, //Card, Tooltip
   ],
   templateUrl: './weather-table.html',
   styleUrls: ['./weather-table.scss']
 })
 export class WeatherTableComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);
+protected readonly cityService = inject(CityService);
 
   rows = signal<WeatherRow[]>([]);
   loading = signal(false);

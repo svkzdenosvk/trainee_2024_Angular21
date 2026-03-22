@@ -21,7 +21,7 @@ type ViewMode = 'all' | 'daily';
   styleUrls: ['./temperature-chart.scss']
 })
 export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestroy {
-  private readonly weatherService = inject(WeatherService);
+  protected readonly weatherService = inject(WeatherService);
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 

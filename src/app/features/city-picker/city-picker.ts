@@ -10,11 +10,13 @@ import { Button } from 'primeng/button';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../core/models/weather.model';
+import { CityMapComponent } from '../city-map/city-map';
+import { SelectButton } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-city-picker',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputText, Button, ProgressSpinner],
+  imports: [CommonModule, FormsModule, InputText, Button, ProgressSpinner, SelectButton, CityMapComponent],
   templateUrl: './city-picker.html',
   styleUrls: ['./city-picker.scss']
 })
@@ -26,7 +28,12 @@ export class CityPickerComponent {
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
-  
+    viewMode = signal<'search' | 'map'>('search');
+
+     modeOptions = [
+    { label: '🔍 Search', value: 'search' },
+    { label: '🗺️ Map', value: 'map' }
+  ];
   private searchSubject = new Subject<string>();
 
   constructor() {

@@ -29,7 +29,7 @@
   @if (loading()) {
     <div class="loading-wrapper">
       <p-progressSpinner strokeWidth="3" />
-      <p>Fetching weather data for London...</p>
+      <p>Fetching weather data for {{ cityService.selectedCity()?.name }}...</p>
     </div>
   }
 

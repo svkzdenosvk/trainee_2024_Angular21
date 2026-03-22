@@ -6,45 +6,60 @@
     <p>Search for any city in the world to see weather data</p>
   </div>
 
-  <div class="search-wrapper">
-    <i class="pi pi-search search-icon"></i>
-    <input
-      pInputText
-      type="text"
-      placeholder="Search city... e.g. London, Bratislava"
-      [ngModel]="searchQuery()"
-      (ngModelChange)="onSearch($event)"
-      class="search-input" />
+  <div class="mode-switcher">
+    <p-selectbutton
+      [options]="modeOptions"
+      [ngModel]="viewMode()"
+      (ngModelChange)="viewMode.set($event)"
+      optionLabel="label"
+      optionValue="value" />
   </div>
 
-  @if (loading()) {
-    <div class="loading-wrapper">
-      <p-progressspinner strokeWidth="3" />
+  @if (viewMode() === 'search') {
+    <div class="search-wrapper">
+      <i class="pi pi-search search-icon"></i>
+      <input
+        pInputText
+        type="text"
+        placeholder="Search city... e.g. London, Bratislava"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearch($event)"
+        class="search-input" />
     </div>
+
+    @if (loading()) {
+      <div class="loading-wrapper">
+        <p-progressspinner strokeWidth="3" />
+      </div>
+    }
+
+    @if (results().length > 0) {
+      <div class="results-list">
+        @for (city of results(); track city.name) {
+          <div class="result-item" (click)="selectCity(city)">
+            <div class="city-info">
+              <span class="city-name">{{ city.name }}</span>
+              <span class="city-country">{{ city.country }}</span>
+            </div>
+            <div class="city-coords">
+              {{ city.lat | number:'1.2-2' }}°N, {{ city.lon | number:'1.2-2' }}°E
+            </div>
+            <i class="pi pi-arrow-right"></i>
+          </div>
+        }
+      </div>
+    }
+
+    @if (searchQuery().length > 1 && results().length === 0 && !loading()) {
+      <div class="no-results">
+        <i class="pi pi-info-circle"></i>
+        <p>No cities found for "{{ searchQuery() }}"</p>
+      </div>
+    }
   }
 
-  @if (results().length > 0) {
-    <div class="results-list">
-      @for (city of results(); track city.name) {
-        <div class="result-item" (click)="selectCity(city)">
-          <div class="city-info">
-            <span class="city-name">{{ city.name }}</span>
-            <span class="city-country">{{ city.country }}</span>
-          </div>
-          <div class="city-coords">
-            {{ city.lat | number:'1.2-2' }}°N, {{ city.lon | number:'1.2-2' }}°E
-          </div>
-          <i class="pi pi-arrow-right"></i>
-        </div>
-      }
-    </div>
-  }
-
-  @if (searchQuery().length > 1 && results().length === 0 && !loading()) {
-    <div class="no-results">
-      <i class="pi pi-info-circle"></i>
-      <p>No cities found for "{{ searchQuery() }}"</p>
-    </div>
+  @if (viewMode() === 'map') {
+    <app-city-map />
   }
 
 </div>
