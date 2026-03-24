@@ -4,22 +4,19 @@
     <h1>Weather</h1>
     <p>Hourly forecast & historical data · Open-Meteo API</p>
   </header>
-  <!-- <nav class="app-nav">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <i class="pi pi-map-marker"></i>
-      {{ cityService.selectedCity() ? 'Change City' : 'Choose City' }}
-    </a>
 
-    <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
-  </nav> -->
   <nav class="app-nav">
-  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-    <i class="pi pi-map-marker"></i> Choose City
-  </a>
-  <a routerLink="/heat-index" routerLinkActive="active">
-    <i class="pi pi-sun"></i> Heat Index
-  </a>
-</nav>
-  <router-outlet />
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="pi pi-map-marker"></i> Choose City
+    </a>
+    <a routerLink="/heat-index" routerLinkActive="active">
+      <i class="pi pi-sun"></i> Heat Index
+    </a>
+  </nav>
+
+  <main>
+    <router-outlet />
+  </main>
+
   <footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
 </div>

@@ -8,9 +8,7 @@
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="pi pi-map-marker"></i>
-      <!-- {{ cityService.selectedCity()?.name ?? 'Choose City' }} -->
-            {{  'Choose City' }}
-
+      {{ 'Choose City' }}
     </a>
     <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
       <i class="pi pi-table"></i> Weather Data
@@ -18,12 +16,14 @@
     <a [routerLink]="['/chart']" [queryParams]="cityParams()" routerLinkActive="active">
       <i class="pi pi-chart-line"></i> Temperature Chart
     </a>
-    <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
+    <a routerLink="/heat-index" routerLinkActive="active">
+      <i class="pi pi-sun"></i> Heat Index
+    </a>
   </nav>
 
   <main>
     <router-outlet />
-</main>
-<footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
+  </main>
 
+  <footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
 </div>
