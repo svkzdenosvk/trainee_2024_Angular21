@@ -16,9 +16,17 @@ import { SelectButton } from 'primeng/selectbutton';
 @Component({
   selector: 'app-city-picker',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputText, Button, ProgressSpinner, SelectButton, CityMapComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputText,
+    Button,
+    ProgressSpinner,
+    SelectButton,
+    CityMapComponent,
+  ],
   templateUrl: './city-picker.html',
-  styleUrls: ['./city-picker.scss']
+  styleUrls: ['./city-picker.scss'],
 })
 export class CityPickerComponent {
   private readonly http = inject(HttpClient);
@@ -28,44 +36,48 @@ export class CityPickerComponent {
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
-    viewMode = signal<'search' | 'map'>('search');
+  viewMode = signal<'search' | 'map'>('search');
 
-     modeOptions = [
+  modeOptions = [
     { label: '🔍 Search', value: 'search' },
-    { label: '🗺️ Map', value: 'map' }
+    { label: '🗺️ Map', value: 'map' },
   ];
   private searchSubject = new Subject<string>();
 
   constructor() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(query => {
-        if (!query || query.length < 2) {
-          this.results.set([]);
-          return [];
-        }
-        this.loading.set(true);
-        return this.http.get<any>(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=en&format=json`
-        );
-      })
-    ).subscribe({
-      next: (data: any) => {
-        this.loading.set(false);
-        if (data?.results) {
-          this.results.set(data.results.map((r: any) => ({
-            name: r.name,
-            country: r.country,
-            lat: r.latitude,
-            lon: r.longitude
-          })));
-        } else {
-          this.results.set([]);
-        }
-      },
-      error: () => this.loading.set(false)
-    });
+    this.searchSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((query) => {
+          if (!query || query.length < 2) {
+            this.results.set([]);
+            return [];
+          }
+          this.loading.set(true);
+          return this.http.get<any>(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=en&format=json`,
+          );
+        }),
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.loading.set(false);
+          if (data?.results) {
+            this.results.set(
+              data.results.map((r: any) => ({
+                name: r.name,
+                country: r.country,
+                lat: r.latitude,
+                lon: r.longitude,
+              })),
+            );
+          } else {
+            this.results.set([]);
+          }
+        },
+        error: () => this.loading.set(false),
+      });
   }
 
   onSearch(query: string): void {
@@ -73,8 +85,20 @@ export class CityPickerComponent {
     this.searchSubject.next(query);
   }
 
+  // selectCity(city: City): void {
+  //   this.cityService.selectCity(city);
+  //   this.router.navigate(['/weather']);
+  // }
+
   selectCity(city: City): void {
     this.cityService.selectCity(city);
-    this.router.navigate(['/weather']);
+    this.router.navigate(['/weather'], {
+      queryParams: {
+        city: city.name,
+        country: city.country,
+        lat: city.lat,
+        lon: city.lon,
+      },
+    });
   }
 }

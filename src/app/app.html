@@ -14,19 +14,29 @@
       <i class="pi pi-map-marker"></i>
       {{ cityService.selectedCity() ? 'Change City' : 'Choose City' }}
     </a>
-    <!-- <a routerLink="/weather" routerLinkActive="active">
-      <i class="pi pi-table"></i> Weather Data
-    </a>
-    <a routerLink="/chart" routerLinkActive="active">
-      <i class="pi pi-chart-line"></i> Temperature Chart
-    </a> -->
+ 
     @if (cityService.selectedCity()) {
-      <a routerLink="/weather" routerLinkActive="active">
-        <i class="pi pi-table"></i> Weather Data
-      </a>
-      <a routerLink="/chart" routerLinkActive="active">
-        <i class="pi pi-chart-line"></i> Temperature Chart
-      </a>
+      <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
+  <i class="pi pi-table"></i> Weather Data
+</a>
+
+<a [routerLink]="['/chart']" [queryParams]="cityParams()" routerLinkActive="active">
+  <i class="pi pi-chart-line"></i> Temperature Chart
+</a>
+      <!-- <a 
+  [routerLink]="['/weather']" 
+  [queryParams]="{ city: cityService.selectedCity()?.name, country: cityService.selectedCity()?.country, lat: cityService.selectedCity()?.lat, lon: cityService.selectedCity()?.lon }"
+  routerLinkActive="active">
+  <i class="pi pi-table"></i> Weather Data
+</a>
+
+<a 
+  [routerLink]="['/chart']"
+  [queryParams]="{ city: cityService.selectedCity()?.name, country: cityService.selectedCity()?.country, lat: cityService.selectedCity()?.lat, lon: cityService.selectedCity()?.lon }"
+  routerLinkActive="active">
+  <i class="pi pi-chart-line"></i> Temperature Chart
+</a> -->
+    
     }
     <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
   </nav>

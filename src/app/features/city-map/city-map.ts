@@ -100,7 +100,14 @@ export class CityMapComponent implements AfterViewInit {
         setTimeout(() => {
           document.getElementById('select-city-btn')?.addEventListener('click', () => {
             this.cityService.selectCity(city);
-            this.router.navigate(['/weather']);
+            this.router.navigate(['/weather'], {
+              queryParams: {
+                city: city.name,
+                country: city.country,
+                lat: city.lat,
+                lon: city.lon,
+              },
+            });
           });
         }, 100);
       });

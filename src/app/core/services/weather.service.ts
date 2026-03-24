@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, EMPTY } from 'rxjs';
 import { WeatherApiResponse, WeatherRow } from '../models/weather.model';
 import { CityService } from './city.service';
 
@@ -16,8 +16,8 @@ export class WeatherService {
     const city = this.cityService.selectedCity();
 
     const params = new HttpParams()
-      .set('latitude', city?.lat ?? 51.5074)
-      .set('longitude', city?.lon ?? -0.1278)
+      .set('latitude', city!.lat)
+      .set('longitude', city!.lon)
       .set(
         'hourly',
         'temperature_2m,relativehumidity_2m,surface_pressure,weathercode,windspeed_10m,precipitation',
