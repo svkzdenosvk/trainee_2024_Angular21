@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.shell-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+main {
+  flex: 1;
+}
+
+.app-header {
+  text-align: center;
+  padding: 1rem 0rem;
+}
+//app navigation
+.app-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 1.5rem;
+
+  a {
+    padding: 0.75rem 1.5rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      color: #60a5fa;
+    }
+
+    &.active {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+  }
+}
+
+.app-footer {
+  text-align: center;
+  padding: 1rem;
+  color: #475569;
+  font-size: 0.8rem;
+  border-top: 1px solid #1e293b;
+  margin-top: 1.5rem;
+}

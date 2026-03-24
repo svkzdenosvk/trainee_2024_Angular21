@@ -1,0 +1,73 @@
+// :host {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+// }
+
+.public-container {
+  // max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .header-icon { font-size: 3rem; }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    color: #475569;
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+  }
+}
+
+//app navigation
+.app-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 1.5rem;
+
+  a {
+    padding: 0.75rem 1.5rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      color: #60a5fa;
+    }
+
+    &.active {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+  }
+}
+
+
+.app-footer {
+  text-align: center;
+  padding: 1rem;
+  color: #475569;
+  font-size: 0.8rem;
+  border-top: 1px solid #1e293b;
+  margin-top: 1.5rem;
+}

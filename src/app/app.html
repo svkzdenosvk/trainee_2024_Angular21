@@ -1,6 +1,6 @@
-<div class="app-container">
+<!--<div class="app-container">
   <header class="app-header">
-    <!-- <div class="header-icon">🌦️</div> -->
+    <!-- <div class="header-icon">🌦️</div> 
     <h1>
       {{
         cityService.selectedCity() ? cityService.selectedCity()!.name + ' Weather' : 'Weather App'
@@ -23,19 +23,8 @@
 <a [routerLink]="['/chart']" [queryParams]="cityParams()" routerLinkActive="active">
   <i class="pi pi-chart-line"></i> Temperature Chart
 </a>
-      <!-- <a 
-  [routerLink]="['/weather']" 
-  [queryParams]="{ city: cityService.selectedCity()?.name, country: cityService.selectedCity()?.country, lat: cityService.selectedCity()?.lat, lon: cityService.selectedCity()?.lon }"
-  routerLinkActive="active">
-  <i class="pi pi-table"></i> Weather Data
-</a>
-
-<a 
-  [routerLink]="['/chart']"
-  [queryParams]="{ city: cityService.selectedCity()?.name, country: cityService.selectedCity()?.country, lat: cityService.selectedCity()?.lat, lon: cityService.selectedCity()?.lon }"
-  routerLinkActive="active">
-  <i class="pi pi-chart-line"></i> Temperature Chart
-</a> -->
+    
+  
     
     }
     <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
@@ -47,3 +36,7 @@
 
   <footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
 </div>
+-->
+
+<router-outlet />
+  <footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
