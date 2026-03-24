@@ -16,8 +16,8 @@ main {
   padding: 2rem 2rem 0;
   margin-bottom: 1.5rem;
 
-  .header-icon { 
-    font-size: 3rem; 
+  .header-icon {
+    font-size: 3rem;
   }
 
   h1 {
@@ -65,6 +65,10 @@ main {
       border-bottom-color: #60a5fa;
     }
   }
+}
+.app-nav:last-of-type {
+    border-bottom: none;
+
 }
 
 .app-footer {

@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-// import { RouterOutlet } from '@angular/router';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CityService } from '../../../core/services/city.service';
+// import { CityService } from '../../../core/services/city.service';
 
 @Component({
   selector: 'app-public-shell',
@@ -10,6 +9,6 @@ import { CityService } from '../../../core/services/city.service';
   styleUrl: './public-shell.scss',
 })
 export class PublicShell {
-   protected cityService = inject(CityService);
+  //  protected cityService = inject(CityService);
 
 }

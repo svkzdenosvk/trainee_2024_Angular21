@@ -10,14 +10,14 @@
       <i class="pi pi-map-marker"></i>
       {{ 'Choose City' }}
     </a>
+    <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
+  </nav>
+  <nav class="app-nav">
     <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
       <i class="pi pi-table"></i> Weather Data
     </a>
     <a [routerLink]="['/chart']" [queryParams]="cityParams()" routerLinkActive="active">
       <i class="pi pi-chart-line"></i> Temperature Chart
-    </a>
-    <a routerLink="/heat-index" routerLinkActive="active">
-      <i class="pi pi-sun"></i> Heat Index
     </a>
   </nav>
 
