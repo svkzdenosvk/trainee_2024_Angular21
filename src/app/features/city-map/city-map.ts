@@ -99,6 +99,14 @@ export class CityMapComponent implements AfterViewInit {
         // Listen for button click inside popup
         setTimeout(() => {
           document.getElementById('select-city-btn')?.addEventListener('click', () => {
+            //small validation
+            if (!city.name?.trim()) {
+              alert(
+                'Unable to determine city name at this location. Try clicking directly on a city.',
+              );
+              return;
+            }
+
             this.cityService.selectCity(city);
             this.router.navigate(['/weather'], {
               queryParams: {

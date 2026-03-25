@@ -16,15 +16,7 @@ import { SelectButton } from 'primeng/selectbutton';
 @Component({
   selector: 'app-city-picker',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    InputText,
-    Button,
-    ProgressSpinner,
-    SelectButton,
-    CityMapComponent,
-  ],
+  imports: [CommonModule, FormsModule, InputText, ProgressSpinner, SelectButton, CityMapComponent],
   templateUrl: './city-picker.html',
   styleUrls: ['./city-picker.scss'],
 })
@@ -85,12 +77,13 @@ export class CityPickerComponent {
     this.searchSubject.next(query);
   }
 
-  // selectCity(city: City): void {
-  //   this.cityService.selectCity(city);
-  //   this.router.navigate(['/weather']);
-  // }
-
   selectCity(city: City): void {
+    //small validation
+    if (!city.name || !city.name.trim()) {
+      alert('Please select a city with a valid name');
+      return;
+    }
+
     this.cityService.selectCity(city);
     this.router.navigate(['/weather'], {
       queryParams: {
