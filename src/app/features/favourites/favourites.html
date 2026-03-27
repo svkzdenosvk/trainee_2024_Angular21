@@ -1,0 +1,69 @@
+<div class="favourites-container">
+  @if (favouritesService.favourites().length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-star"></i>
+      <p>No favourite cities yet.</p>
+      <small>Search for a city and add it to favourites.</small>
+    </div>
+  }
+
+  @if (favouritesService.isFull()) {
+    <div class="full-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      Favourites are full (10/10). Remove one to add more.
+    </div>
+  }
+
+  <div class="favourites-list">
+    @for (city of favouritesService.favourites(); track city.lat) {
+      <div class="favourite-item">
+        @if (editingCity()?.lat === city.lat) {
+          <div class="edit-mode">
+            <input
+              pInputText
+              [ngModel]="editName()"
+              (ngModelChange)="editName.set($event)"
+              class="edit-input"
+            />
+            <p-button
+              icon="pi pi-check"
+              severity="success"
+              [text]="true"
+              (onClick)="confirmEdit(city)"
+            />
+            <p-button
+              icon="pi pi-times"
+              severity="secondary"
+              [text]="true"
+              (onClick)="cancelEdit()"
+            />
+          </div>
+        } @else {
+          <div class="city-info" (click)="selectCity(city)">
+            <i class="pi pi-star-fill star-icon"></i>
+            <div>
+              <span class="city-name">{{ city.name }}</span>
+              <span class="city-country">{{ city.country }}</span>
+            </div>
+          </div>
+          <div class="actions">
+            <p-button
+              icon="pi pi-pencil"
+              [text]="true"
+              severity="secondary"
+              [style]="{ color: '#64748b' }"
+              (onClick)="startEdit(city)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              [text]="true"
+              [style]="{ color: '#ef4444' }"
+              severity="danger"
+              (onClick)="favouritesService.remove(city)"
+            />
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

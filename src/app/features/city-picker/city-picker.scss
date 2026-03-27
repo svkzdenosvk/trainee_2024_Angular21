@@ -122,3 +122,21 @@
   display: flex;
   justify-content: center;
 }
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #f97316;
+  }
+  &.active {
+    color: #f97316;
+  }
+}

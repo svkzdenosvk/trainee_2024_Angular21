@@ -2,21 +2,32 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Button } from 'primeng/button';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
-import { Button } from 'primeng/button';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { CityService } from '../../core/services/city.service';
+import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { SelectButton } from 'primeng/selectbutton';
+import { FavouritesComponent } from '../favourites/favourites';
 
 @Component({
   selector: 'app-city-picker',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputText, ProgressSpinner, SelectButton, CityMapComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputText,
+    Button,
+    ProgressSpinner,
+    SelectButton,
+    CityMapComponent,
+    FavouritesComponent,
+  ],
   templateUrl: './city-picker.html',
   styleUrls: ['./city-picker.scss'],
 })
@@ -24,15 +35,18 @@ export class CityPickerComponent {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
+  // public readonly favouritesService = inject(FavouritesService);
+  protected readonly favouritesService = inject(FavouritesService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
-  viewMode = signal<'search' | 'map'>('search');
+  viewMode = signal<'search' | 'map' | 'favourites'>('search');
 
   modeOptions = [
     { label: '🔍 Search', value: 'search' },
     { label: '🗺️ Map', value: 'map' },
+    { label: '⭐ Favorites', value: 'favourites' },
   ];
   private searchSubject = new Subject<string>();
 
@@ -93,5 +107,28 @@ export class CityPickerComponent {
         lon: city.lon,
       },
     });
+  }
+
+  isFavourite(city: City): boolean {
+    return this.favouritesService
+      .favourites()
+      .some((fav) => fav.name === city.name && fav.country === city.country);
+  }
+
+  // toggleFavourite(city: City, event: Event): void {
+  //   event.stopPropagation(); // Prevent triggering selectCity
+  //   if (this.isFavourite(city)) {
+  //     this.favouritesService.remove(city);
+  //   } else {
+  //     this.favouritesService.add(city);
+  //   }
+  // }
+
+  toggleFavourite(city: City): void {
+    if (this.favouritesService.isFavourite(city)) {
+      this.favouritesService.remove(city);
+    } else {
+      this.favouritesService.add(city);
+    }
   }
 }

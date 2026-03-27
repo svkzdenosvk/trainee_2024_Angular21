@@ -1,5 +1,4 @@
 <div class="city-picker-container">
-
   <div class="hero">
     <div class="hero-icon">🌍</div>
     <h2>Select a City</h2>
@@ -12,7 +11,8 @@
       [ngModel]="viewMode()"
       (ngModelChange)="viewMode.set($event)"
       optionLabel="label"
-      optionValue="value" />
+      optionValue="value"
+    />
   </div>
 
   @if (viewMode() === 'search') {
@@ -24,7 +24,8 @@
         placeholder="Search city... e.g. London, Bratislava"
         [ngModel]="searchQuery()"
         (ngModelChange)="onSearch($event)"
-        class="search-input" />
+        class="search-input"
+      />
     </div>
 
     @if (loading()) {
@@ -36,7 +37,39 @@
     @if (results().length > 0) {
       <div class="results-list">
         @for (city of results(); track city.name) {
-          <div class="result-item" (click)="selectCity(city)">
+          <div class="result-item">
+            <div class="city-info" (click)="selectCity(city)">
+              <span class="city-name">{{ city.name }}</span>
+              <span class="city-country">{{ city.country }}</span>
+            </div>
+            <div class="result-actions">
+              <!-- <p-button
+                [icon]="favouritesService.isFavourite(city) ? 'pi pi-star-fill' : 'pi pi-star'"
+                [severity]="favouritesService.isFavourite(city) ? 'contrast' : 'secondary'"
+                [text]="true"
+                [disabled]="favouritesService.isFull() && !favouritesService.isFavourite(city)"
+                [style]="
+                  favouritesService.isFavourite(city) ? { color: '#f97316' } : { color: '#64748b' }
+                "
+                (onClick)="toggleFavourite(city); $event.stopPropagation()"
+              /> -->
+
+              <!-- (onClick)="toggleFavourite(city)" -->
+              <button
+                class="icon-btn"
+                [class.active]="favouritesService.isFavourite(city)"
+                (click)="toggleFavourite(city); $event.stopPropagation()"
+              >
+                <i
+                  [class]="favouritesService.isFavourite(city) ? 'pi pi-star-fill' : 'pi pi-star'"
+                ></i>
+              </button>
+              
+              <i class="pi pi-arrow-right"></i>
+            </div>
+          </div>
+
+          <!-- <div class="result-item" (click)="selectCity(city)">
             <div class="city-info">
               <span class="city-name">{{ city.name }}</span>
               <span class="city-country">{{ city.country }}</span>
@@ -45,7 +78,7 @@
               {{ city.lat | number:'1.2-2' }}°N, {{ city.lon | number:'1.2-2' }}°E
             </div>
             <i class="pi pi-arrow-right"></i>
-          </div>
+          </div> -->
         }
       </div>
     }
@@ -62,4 +95,7 @@
     <app-city-map />
   }
 
+  @if (viewMode() === 'favourites') {
+    <app-favourites />
+  }
 </div>
