@@ -34,51 +34,42 @@
       </div>
     }
 
+    <!-- @if (favouritesService.isFull()) {
+  <div class="full-banner">
+    <i class="pi pi-exclamation-triangle"></i>
+    Favourites are full (10/10). Remove one to add more.
+  </div>
+} -->
+
+    @if (showFullWarning()) {
+      <div class="full-banner">
+        <i class="pi pi-exclamation-triangle"></i>
+        Favourites are full (10/10). Remove one to add more.
+      </div>
+    }
+
     @if (results().length > 0) {
       <div class="results-list">
         @for (city of results(); track city.name) {
           <div class="result-item">
-            <div class="city-info" (click)="selectCity(city)">
-              <span class="city-name">{{ city.name }}</span>
-              <span class="city-country">{{ city.country }}</span>
-            </div>
-            <div class="result-actions">
-              <!-- <p-button
-                [icon]="favouritesService.isFavourite(city) ? 'pi pi-star-fill' : 'pi pi-star'"
-                [severity]="favouritesService.isFavourite(city) ? 'contrast' : 'secondary'"
-                [text]="true"
-                [disabled]="favouritesService.isFull() && !favouritesService.isFavourite(city)"
-                [style]="
-                  favouritesService.isFavourite(city) ? { color: '#f97316' } : { color: '#64748b' }
-                "
-                (onClick)="toggleFavourite(city); $event.stopPropagation()"
-              /> -->
-
-              <!-- (onClick)="toggleFavourite(city)" -->
-              <button
-                class="icon-btn"
-                [class.active]="favouritesService.isFavourite(city)"
-                (click)="toggleFavourite(city); $event.stopPropagation()"
-              >
-                <i
-                  [class]="favouritesService.isFavourite(city) ? 'pi pi-star-fill' : 'pi pi-star'"
-                ></i>
-              </button>
-              
-              <i class="pi pi-arrow-right"></i>
-            </div>
-          </div>
-
-          <!-- <div class="result-item" (click)="selectCity(city)">
             <div class="city-info">
               <span class="city-name">{{ city.name }}</span>
               <span class="city-country">{{ city.country }}</span>
             </div>
             <div class="city-coords">
-              {{ city.lat | number:'1.2-2' }}°N, {{ city.lon | number:'1.2-2' }}°E
+              {{ city.lat | number: '1.2-2' }}°N, {{ city.lon | number: '1.2-2' }}°E
             </div>
-            <i class="pi pi-arrow-right"></i>
-          </div> -->
+            <div class="action-buttons">
+              <button
+                class="fav-btn"
+                (click)="toggleFavourite(city, $event)"
+                [class.favourited]="isFavourite(city)"
+              >
+                ⭐ {{ isFavourite(city) ? 'Remove' : 'Add' }}
+              </button>
+              <button class="select-btn" (click)="selectCity(city)">→ Select</button>
+            </div>
+          </div>
         }
       </div>
     }
@@ -96,6 +87,34 @@
   }
 
   @if (viewMode() === 'favourites') {
-    <app-favourites />
+    <div class="favourites-section">
+      <h3>Your Favourite Cities</h3>
+      @if (favouritesService.favourites().length > 0) {
+        <div class="results-list">
+          @for (city of favouritesService.favourites(); track city.name) {
+            <div class="result-item">
+              <div class="city-info">
+                <span class="city-name">{{ city.name }}</span>
+                <span class="city-country">{{ city.country }}</span>
+              </div>
+              <div class="city-coords">
+                {{ city.lat | number: '1.2-2' }}°N, {{ city.lon | number: '1.2-2' }}°E
+              </div>
+              <div class="action-buttons">
+                <button class="fav-btn favourited" (click)="toggleFavourite(city,$event)">
+                  ⭐ Remove
+                </button>
+                <button class="select-btn" (click)="selectCity(city)">→ Select</button>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="no-favourites">
+          <i class="pi pi-star"></i>
+          <p>No favourite cities yet. Search and add some!</p>
+        </div>
+      }
+    </div>
   }
 </div>

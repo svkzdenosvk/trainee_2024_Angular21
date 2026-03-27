@@ -35,13 +35,13 @@ export class CityPickerComponent {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
-  // public readonly favouritesService = inject(FavouritesService);
   protected readonly favouritesService = inject(FavouritesService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
   viewMode = signal<'search' | 'map' | 'favourites'>('search');
+showFullWarning = signal(false);
 
   modeOptions = [
     { label: '🔍 Search', value: 'search' },
@@ -109,26 +109,27 @@ export class CityPickerComponent {
     });
   }
 
+  
   isFavourite(city: City): boolean {
-    return this.favouritesService
-      .favourites()
-      .some((fav) => fav.name === city.name && fav.country === city.country);
-  }
+  return this.favouritesService.favourites().some(
+    fav => Math.round(fav.lat * 100) === Math.round(city.lat * 100) &&
+           Math.round(fav.lon * 100) === Math.round(city.lon * 100)
+  );
+}
 
-  // toggleFavourite(city: City, event: Event): void {
-  //   event.stopPropagation(); // Prevent triggering selectCity
-  //   if (this.isFavourite(city)) {
-  //     this.favouritesService.remove(city);
-  //   } else {
-  //     this.favouritesService.add(city);
-  //   }
-  // }
 
-  toggleFavourite(city: City): void {
-    if (this.favouritesService.isFavourite(city)) {
-      this.favouritesService.remove(city);
-    } else {
-      this.favouritesService.add(city);
+toggleFavourite(city: City, event: Event): void {
+  event.stopPropagation();
+  if (this.favouritesService.isFavourite(city)) {
+    this.favouritesService.remove(city);
+    this.showFullWarning.set(false);
+  } else {
+    if (this.favouritesService.isFull()) {
+      this.showFullWarning.set(true);
+      setTimeout(() => this.showFullWarning.set(false), 3500);
+      return;
     }
+    this.favouritesService.add(city);
   }
+}
 }

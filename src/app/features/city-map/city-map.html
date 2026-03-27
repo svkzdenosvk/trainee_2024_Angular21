@@ -1,1 +1,19 @@
-<div id="map" class="map-container"></div>
+<!-- <div id="map" class="map-container"></div> -->
+
+<div class="map-wrapper">
+  @if (showNoCity()) {
+    <div class="map-banner warning">
+      <i class="pi pi-map-marker"></i>
+      No city found here. Try clicking on a populated area.
+    </div>
+  }
+
+  @if (showFullWarning()) {
+    <div class="map-banner danger">
+      <i class="pi pi-exclamation-triangle"></i>
+      Favourites are full (10/10). Remove one to add more.
+    </div>
+  }
+
+  <div id="map" class="map-container"></div>
+</div>
