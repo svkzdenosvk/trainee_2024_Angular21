@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../core/models/weather.model';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-favourites',
   standalone: true,
-  imports: [CommonModule, FormsModule, Button, InputText],
+  imports: [CommonModule, FormsModule, Button, InputText,TranslocoModule],
   templateUrl: './favourites.html',
   styleUrls: ['./favourites.scss']
 })

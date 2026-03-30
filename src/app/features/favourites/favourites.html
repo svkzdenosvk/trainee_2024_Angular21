@@ -2,15 +2,15 @@
   @if (favouritesService.favourites().length === 0) {
     <div class="empty-state">
       <i class="pi pi-star"></i>
-      <p>No favourite cities yet.</p>
-      <small>Search for a city and add it to favourites.</small>
+      <p>{{ 'favourites.empty' | transloco }}</p>
+      <small>{{ 'favourites.emptyAdvice' | transloco }}</small>
     </div>
   }
 
   @if (favouritesService.isFull()) {
     <div class="full-banner">
       <i class="pi pi-exclamation-triangle"></i>
-      Favourites are full (10/10). Remove one to add more.
+      {{ 'favourites.fullWarning' | transloco }}
     </div>
   }
 

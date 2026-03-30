@@ -4,14 +4,14 @@
   @if (showNoCity()) {
     <div class="map-banner warning">
       <i class="pi pi-map-marker"></i>
-      No city found here. Try clicking on a populated area.
+            {{ 'cityMap.noCity' | transloco }}
     </div>
   }
 
   @if (showFullWarning()) {
     <div class="map-banner danger">
       <i class="pi pi-exclamation-triangle"></i>
-      Favourites are full (10/10). Remove one to add more.
+      {{ 'favourites.fullWarning' | transloco }}
     </div>
   }
 

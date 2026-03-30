@@ -1,18 +1,22 @@
 <div class="city-picker-container">
   <div class="hero">
     <div class="hero-icon">🌍</div>
-    <h2>Select a City</h2>
-    <p>Search for any city in the world to see weather data</p>
+    <h2>{{ 'cityPicker.title' | transloco }}</h2>
+    <p>{{ 'cityPicker.subtitle' | transloco }}</p>
   </div>
 
   <div class="mode-switcher">
-    <p-selectbutton
-      [options]="modeOptions"
-      [ngModel]="viewMode()"
-      (ngModelChange)="viewMode.set($event)"
-      optionLabel="label"
-      optionValue="value"
-    />
+    <div class="custom-select-btn">
+      <button [class.active]="viewMode() === 'search'" (click)="viewMode.set('search')">
+        🔍 {{ 'cityPicker.modeOption.search' | transloco }}
+      </button>
+      <button [class.active]="viewMode() === 'map'" (click)="viewMode.set('map')">
+        🗺️ {{ 'cityPicker.modeOption.map' | transloco }}
+      </button>
+      <button [class.active]="viewMode() === 'favourites'" (click)="viewMode.set('favourites')">
+        ⭐ {{ 'cityPicker.modeOption.favourites' | transloco }}
+      </button>
+    </div>
   </div>
 
   @if (viewMode() === 'search') {
@@ -21,7 +25,7 @@
       <input
         pInputText
         type="text"
-        placeholder="Search city... e.g. London, Bratislava"
+        [placeholder]="'cityPicker.placeholder' | transloco"
         [ngModel]="searchQuery()"
         (ngModelChange)="onSearch($event)"
         class="search-input"
@@ -34,17 +38,9 @@
       </div>
     }
 
-    <!-- @if (favouritesService.isFull()) {
-  <div class="full-banner">
-    <i class="pi pi-exclamation-triangle"></i>
-    Favourites are full (10/10). Remove one to add more.
-  </div>
-} -->
-
     @if (showFullWarning()) {
       <div class="full-banner">
-        <i class="pi pi-exclamation-triangle"></i>
-        Favourites are full (10/10). Remove one to add more.
+        <i class="pi pi-exclamation-triangle"></i>{{ 'favourires.fullWarning' | transloco }}
       </div>
     }
 
@@ -65,9 +61,16 @@
                 (click)="toggleFavourite(city, $event)"
                 [class.favourited]="isFavourite(city)"
               >
-                ⭐ {{ isFavourite(city) ? 'Remove' : 'Add' }}
+                ⭐
+                {{
+                  isFavourite(city)
+                    ? ('cityPicker.btnRemove' | transloco)
+                    : ('cityPicker.btnAdd' | transloco)
+                }}
               </button>
-              <button class="select-btn" (click)="selectCity(city)">→ Select</button>
+              <button class="select-btn" (click)="selectCity(city)">
+                → {{ 'cityPicker.btnSelect' | transloco }}
+              </button>
             </div>
           </div>
         }
@@ -77,7 +80,7 @@
     @if (searchQuery().length > 1 && results().length === 0 && !loading()) {
       <div class="no-results">
         <i class="pi pi-info-circle"></i>
-        <p>No cities found for "{{ searchQuery() }}"</p>
+        <p>{{ 'cityPicker.noResults' | transloco }} "{{ searchQuery() }}"</p>
       </div>
     }
   }
@@ -88,7 +91,7 @@
 
   @if (viewMode() === 'favourites') {
     <div class="favourites-section">
-      <h3>Your Favourite Cities</h3>
+      <h3>{{ 'cityPicker.favourites' | transloco }}</h3>
       @if (favouritesService.favourites().length > 0) {
         <div class="results-list">
           @for (city of favouritesService.favourites(); track city.name) {
@@ -101,10 +104,12 @@
                 {{ city.lat | number: '1.2-2' }}°N, {{ city.lon | number: '1.2-2' }}°E
               </div>
               <div class="action-buttons">
-                <button class="fav-btn favourited" (click)="toggleFavourite(city,$event)">
-                  ⭐ Remove
+                <button class="fav-btn favourited" (click)="toggleFavourite(city, $event)">
+                  ⭐ {{ 'cityPicker.btnRemove' | transloco }}
                 </button>
-                <button class="select-btn" (click)="selectCity(city)">→ Select</button>
+                <button class="select-btn" (click)="selectCity(city)">
+                  → {{ 'cityPicker.btnSelect' | transloco }}
+                </button>
               </div>
             </div>
           }
@@ -112,7 +117,7 @@
       } @else {
         <div class="no-favourites">
           <i class="pi pi-star"></i>
-          <p>No favourite cities yet. Search and add some!</p>
+          <p>{{ 'cityPicker.noFavourites' | transloco }}</p>
         </div>
       }
     </div>

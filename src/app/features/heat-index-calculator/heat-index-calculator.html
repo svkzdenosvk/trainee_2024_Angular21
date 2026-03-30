@@ -5,14 +5,14 @@
       <div class="card-header">
         <!-- <i class="pi pi-sun"></i> -->
         <i class="pi pi-history"></i>
-        <h2>Heat Index Calculator</h2>
+        <h2>{{ 'heatIndex.title' | transloco }}</h2>
       </div>
     </ng-template>
 
     <div class="form-body">
       <!-- Unit toggle -->
       <div class="form-group">
-        <label>Temperature Units</label>
+        <label>{{ 'heatIndex.units' | transloco }}</label>
         <p-selectButton
           [options]="unitOptions"
           [ngModel]="unit()"
@@ -25,7 +25,7 @@
 
       <!-- Temperature input -->
       <div class="form-group">
-        <label>Temperature ({{ unit() }})</label>
+        <label>{{ 'heatIndex.temperature' | transloco }} ({{ unit() }})</label>
         <p-inputNumber
           [ngModel]="temperature()"
           (ngModelChange)="temperature.set($event)"
@@ -35,12 +35,14 @@
           class="full-width"
         >
         </p-inputNumber>
-        <span class="hint"> Minimum: {{ minTemp() }}{{ unit() }} to calculate Heat Index </span>
+        <span class="hint">
+          Minimum: {{ minTemp() }}{{ unit() }} {{ 'heatIndex.minimumInfo' | transloco }}
+        </span>
       </div>
 
       <!-- Humidity input -->
       <div class="form-group">
-        <label>Relative Humidity (%)</label>
+        <label>{{ 'heatIndex.humidity' | transloco }} (%)</label>
         <p-inputNumber
           [ngModel]="humidity()"
           (ngModelChange)="humidity.set($event)"
@@ -55,7 +57,7 @@
       <!-- Calculate button -->
       <button
         pButton
-        label="Calculate Heat Index"
+        [label]="'heatIndex.calculateBtn' | transloco"
         icon="pi pi-calculator"
         class="calc-btn"
         (click)="calculate()"
@@ -69,17 +71,24 @@
           <div class="result-value" [style.color]="heatIndexLabel()?.color">
             {{ heatIndex() | number: '1.1-1' }}{{ unit() }}
           </div>
-          <div class="result-label" [style.color]="heatIndexLabel()?.color">
+          <!-- <div class="result-label" [style.color]="heatIndexLabel()?.color">
             {{ heatIndexLabel()?.text }}
+          </div> -->
+          <div class="result-label" [style.color]="heatIndexLabel()?.color">
+            {{ heatIndexLabel()?.key | transloco }}
           </div>
           <div class="result-description">
-            Feels like {{ heatIndex() | number: '1.0-0' }}{{ unit() }} due to heat and humidity
+            <span>{{ 'heatIndex.feelsLike1' | transloco }}</span> {{ heatIndex() | number: '1.0-0'
+            }}{{ unit() }} <span>{{ 'heatIndex.feelsLike2' | transloco }} </span>
           </div>
         </div>
       } @else {
         <div class="no-result">
           <i class="pi pi-info-circle"></i>
-          <p>Enter temperature ≥ {{ minTemp() }}{{ unit() }} and humidity, then click Calculate.</p>
+          <p>
+            {{ 'heatIndex.minTempInfo1' | transloco }} {{ minTemp() }}{{ unit() }}
+            {{ 'heatIndex.minTempInfo2' | transloco }}
+          </p>
         </div>
       }
     </div>
@@ -90,13 +99,13 @@
     <ng-template pTemplate="header">
       <div class="card-header">
         <i class="pi pi-history"></i>
-        <h2>Last 5 Results</h2>
+        <h2>{{ 'heatIndex.last5Results' | transloco }}</h2>
         @if (history().length > 0) {
           <button
             pButton
             icon="pi pi-trash"
             class="p-button-text p-button-sm clear-btn"
-            pTooltip="Clear history"
+            [pTooltip]="'heatIndex.clearHistory' | transloco"
             (click)="clearHistory()"
           ></button>
         }
@@ -106,16 +115,16 @@
     @if (history().length === 0) {
       <div class="empty-history">
         <i class="pi pi-clock"></i>
-        <p>No calculations yet</p>
+        <p>{{ 'heatIndex.noResults' | transloco }}</p>
       </div>
     } @else {
       <p-table [value]="history()" styleClass="p-datatable-sm history-table">
         <ng-template pTemplate="header">
           <tr>
-            <th>Temp</th>
-            <th>Humidity</th>
-            <th>Heat Index</th>
-            <th>Time</th>
+            <th>{{ 'heatIndex.history.temperature' | transloco }}</th>
+            <th>{{ 'heatIndex.history.humidity' | transloco }}</th>
+            <th>{{ 'heatIndex.history.heatIndex' | transloco }}</th>
+            <th>{{ 'heatIndex.history.date' | transloco }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-entry>
@@ -131,7 +140,7 @@
 
     <div class="storage-note">
       <i class="pi pi-database"></i>
-      Stored in localStorage
+      {{ 'heatIndex.historyStored' | transloco }}
     </div>
   </p-card>
 </div>

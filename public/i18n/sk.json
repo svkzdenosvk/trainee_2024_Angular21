@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "home": "Vybrať mesto",
+    "weather": "Počasie",
+    "temperatureChart": "Graf teploty",
+    "heatIndex": "Index tepla"
+  },
+  "header": {
+    "title": "Počasie",
+    "subtitle": "Hodinová predpoveď a historické dáta · Open-Meteo API"
+  },
+
+  "weather": {
+    "loading": "Načítavam údaje o počasí pre",
+    "recordCount": "záznamov celkom",
+    "noRecord": "Neboli nájdené žiadne záznamy",
+    "searchPlaceholder": "Vyhľadaj stav počasia......",
+    "columns": {
+      "datetime": "Datum a čas",
+      "temperature": "Teplota (°C)",
+      "weatherState": "Stav počasia",
+      "humidity": "Vlhkosť (%)",
+      "pressure": "Tlak (hPa)",
+      "windSpeed": "Rýchlosť vetra (km/h)",
+      "precipitation": "Zrážky (mm)"
+    },
+    "states": {
+      "clearSky": "Jasno",
+      "partlyCloudy": "Čiastočne oblačno",
+      "overcast": "Oblačno",
+      "foggy": "Hmlisto",
+      "drizzle": "Mrholenie",
+      "rain": "Dážď",
+      "snow": "Sneh",
+      "rainShowers": "Dážďové prehánky",
+      "snowShowers": "Snehové prehánky",
+      "thunderstorm": "Búrka",
+      "unknown": "Neznámé"
+    },
+    "errorRange": "Maximálny rozsah dátumu je 90 dní. Vyberte kratší rozsah.",
+    "errorValidRange": "Prosím, vyberte platný rozsah dní.",
+    "pagination": "Zobrazujem {{first}} až {{last}} z {{total}} záznamov"
+  },
+  "temperatureChart": {
+    "loading": "Načítavam údaje grafu",
+    "view": "Zobraziť",
+    "viewMode": {
+      "daily": "Denný priemer",
+      "hourly": "Hodinové dáta"
+    } ,
+    "tableTitle": "Teplota (°C)",
+    "loadingError": "Nepodarilo sa načítať údaje pre graf."
+  },
+
+  "heatIndex": {
+    "title": "Kalkulačka indexu tepla",
+    "units": "Jednotky teploty",
+    "temperature": "Teplota",
+    "minimumInfo": "na výpočet indexu tepla",
+    "humidity": "Relatívna vlhkosť",
+    "calculateBtn": "Vypočítať index tepla",
+    "feelsLike1": "Pocitová teplota",
+    "feelsLike2": "v dôsledku tepla a vlhkosti",
+    "minTempInfo1": "Zadajte teplotu ≥",
+    "minTempInfo2": "a vlhkosť, potom kliknite na Vypočítať.",
+    "last5Results": "Posledných 5 výsledkov",
+    "noResults": "Zatiaľ žiadne výpočty",
+    "history": {
+      "temperature": "Teplota",
+      "humidity": "Vlhkosť",
+      "heatIndex": "Index tepla",
+      "date": "Dátum"
+    },
+    "historyStored": "Uložené v localStorage",
+    "clearHistory": "Vymazat historii",
+    "levels": {
+      "extremeDanger": "Extrémne nebezpečenstvo",
+      "danger": "Nebezpečenstvo",
+      "extremeCaution": "Veľká opatrnosť",
+      "caution": "Opatrnosť",
+      "safe": "Bezpečné"
+    }
+  },
+  "favourites": {
+    "empty": "Zatiaľ žiadne obľúbené mestá.",
+    "emptyAdvice": "Vyhľadajte mesto a pridajte ho medzi obľúbené.",
+    "fullWarning": "Zoznam obľúbených je plný (10/10). Odstráňte niektoré mesto pre pridanie ďalších."
+  },
+  "cityPicker": {
+    "title": "Vyberte mesto",
+    "subtitle": "Vyhľadajte akékoľvek mesto na svete pre zobrazenie počasia",
+    "placeholder": "Hľadať mesto... napr. Londýn, Bratislava",
+    "btnSelect": "Vybrať",
+    "btnRemove": "Odstrániť",
+    "btnAdd": "Pridat",
+    "noResults": "Neboli nájdené žiadne mestá pre",
+    "favourites": "Vaše obľúbené mestá",
+    "noFavourites": "Zatiaľ žiadne obľúbené mestá. Vyhľadajte a pridajte niektoré!",
+    "modeOption": {
+      "search": "Vyhľadať",
+      "map": "Mapa",
+      "favourites": "Obľúbené"
+    },
+    "alert": "Prosím, vyberte mesto s platným názvom."
+  },
+  "cityMap": {
+    "noCity": "Na tomto mieste nebolo nájdené žiadne mesto. Skúste kliknúť na obývanú oblasť."
+  },
+  "btnLoadData": "Načítať údaje",
+  "dateRange": "Rozsah dátumov",
+  "dateRangePlaceholder": "Vyberte rozsah dátumov",
+
+  "footer": "© 2026 Aplikácia Počasie. Všetky práva vyhradené."
+}

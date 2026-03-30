@@ -1,22 +1,33 @@
 <div class="public-container">
   <header class="app-header">
-    <!-- <div class="header-icon">🌦️</div> -->
-    <h1>Weather</h1>
+    <h1>{{ 'header.title' | transloco }}</h1>
     <!-- <h1>{{ cityService.selectedCity()?.name }} Weather</h1> -->
 
-    <p>Hourly forecast & historical data · Open-Meteo API</p>
+    <p>{{ 'header.subtitle' | transloco }}</p>
   </header>
 
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <i class="pi pi-map-marker"></i> Choose City
+      <i class="pi pi-map-marker"></i> {{ 'nav.home' | transloco }}
     </a>
-    <a routerLink="/heat-index" routerLinkActive="active"> <i class="pi pi-sun"></i> Heat Index </a>
+    <a routerLink="/heat-index" routerLinkActive="active">
+      <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+    </a>
+    <div class="nav-actions">
+      <button class="lang-btn" (click)="switchLang('en')" [class.active]="currentLang() === 'en'">
+        EN
+      </button>
+      <button class="lang-btn" (click)="switchLang('sk')" [class.active]="currentLang() === 'sk'">
+        SK
+      </button>
+    </div>
   </nav>
 
   <main>
     <router-outlet />
   </main>
 
-  <footer class="app-footer">© 2026 Weather App. All rights reserved.</footer>
+  <footer class="app-footer">
+    {{ 'footer' | transloco }}
+  </footer>
 </div>

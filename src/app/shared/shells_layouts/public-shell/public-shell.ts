@@ -1,14 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-// import { CityService } from '../../../core/services/city.service';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-public-shell',
-  imports: [RouterOutlet, RouterLinkActive,RouterLink],
+  imports: [RouterOutlet, RouterLinkActive, RouterLink, TranslocoModule],
   templateUrl: './public-shell.html',
   styleUrl: './public-shell.scss',
 })
 export class PublicShell {
-  //  protected cityService = inject(CityService);
+  private readonly translocoService = inject(TranslocoService);
 
+  currentLang = signal(this.translocoService.getActiveLang());
+
+  switchLang(lang: string): void {
+    this.translocoService.setActiveLang(lang);
+    this.currentLang.set(lang);
+  }
 }

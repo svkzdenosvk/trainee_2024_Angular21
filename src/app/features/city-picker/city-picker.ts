@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Button } from 'primeng/button';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -12,8 +11,9 @@ import { CityService } from '../../core/services/city.service';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
-import { SelectButton } from 'primeng/selectbutton';
-import { FavouritesComponent } from '../favourites/favourites';
+// import { SelectButton } from 'primeng/selectbutton';
+// import { FavouritesComponent } from '../favourites/favourites';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-city-picker',
@@ -22,11 +22,9 @@ import { FavouritesComponent } from '../favourites/favourites';
     CommonModule,
     FormsModule,
     InputText,
-    Button,
     ProgressSpinner,
-    SelectButton,
     CityMapComponent,
-    FavouritesComponent,
+    TranslocoModule,
   ],
   templateUrl: './city-picker.html',
   styleUrls: ['./city-picker.scss'],
@@ -36,18 +34,14 @@ export class CityPickerComponent {
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
   protected readonly favouritesService = inject(FavouritesService);
+  // private readonly translocoService = inject(TranslocoService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
   viewMode = signal<'search' | 'map' | 'favourites'>('search');
-showFullWarning = signal(false);
+  showFullWarning = signal(false);
 
-  modeOptions = [
-    { label: '🔍 Search', value: 'search' },
-    { label: '🗺️ Map', value: 'map' },
-    { label: '⭐ Favorites', value: 'favourites' },
-  ];
   private searchSubject = new Subject<string>();
 
   constructor() {
@@ -94,7 +88,7 @@ showFullWarning = signal(false);
   selectCity(city: City): void {
     //small validation
     if (!city.name || !city.name.trim()) {
-      alert('Please select a city with a valid name');
+      alert('cityPicker.alert');
       return;
     }
 
@@ -109,27 +103,28 @@ showFullWarning = signal(false);
     });
   }
 
-  
   isFavourite(city: City): boolean {
-  return this.favouritesService.favourites().some(
-    fav => Math.round(fav.lat * 100) === Math.round(city.lat * 100) &&
-           Math.round(fav.lon * 100) === Math.round(city.lon * 100)
-  );
-}
-
-
-toggleFavourite(city: City, event: Event): void {
-  event.stopPropagation();
-  if (this.favouritesService.isFavourite(city)) {
-    this.favouritesService.remove(city);
-    this.showFullWarning.set(false);
-  } else {
-    if (this.favouritesService.isFull()) {
-      this.showFullWarning.set(true);
-      setTimeout(() => this.showFullWarning.set(false), 3500);
-      return;
-    }
-    this.favouritesService.add(city);
+    return this.favouritesService
+      .favourites()
+      .some(
+        (fav) =>
+          Math.round(fav.lat * 100) === Math.round(city.lat * 100) &&
+          Math.round(fav.lon * 100) === Math.round(city.lon * 100),
+      );
   }
-}
+
+  toggleFavourite(city: City, event: Event): void {
+    event.stopPropagation();
+    if (this.favouritesService.isFavourite(city)) {
+      this.favouritesService.remove(city);
+      this.showFullWarning.set(false);
+    } else {
+      if (this.favouritesService.isFull()) {
+        this.showFullWarning.set(true);
+        setTimeout(() => this.showFullWarning.set(false), 3500);
+        return;
+      }
+      this.favouritesService.add(city);
+    }
+  }
 }

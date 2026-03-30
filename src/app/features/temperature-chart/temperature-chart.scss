@@ -70,3 +70,28 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+.custom-select-btn {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #334155;
+
+  button {
+    background: transparent;
+    border: none;
+    border-right: 1px solid #334155;
+    color: #94a3b8;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+
+    &:last-child { border-right: none; }
+    &:hover { background: #1e293b; color: #e2e8f0; }
+    &.active { 
+      background: rgb(5 150 105); //linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+    }
+  }
+}

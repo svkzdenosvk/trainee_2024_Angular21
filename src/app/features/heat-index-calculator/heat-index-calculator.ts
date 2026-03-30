@@ -10,13 +10,15 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeatIndexService } from '../../core/services/heat-index.service';
 import { HeatIndexEntry, TemperatureUnit } from '../../core/models/weather.model';
+import { TranslocoModule,   } from '@jsverse/transloco';
+// import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-heat-index-calculator',
   standalone: true,
   imports: [
     CommonModule, FormsModule, CardModule, InputNumberModule,
-    SelectButtonModule, ButtonModule, DividerModule, TableModule, TooltipModule
+    SelectButtonModule, ButtonModule, DividerModule, TableModule, TooltipModule, TranslocoModule
   ],
   templateUrl: './heat-index-calculator.html',
   styleUrls: ['./heat-index-calculator.scss']
@@ -37,15 +39,15 @@ export class HeatIndexCalculatorComponent implements OnInit {
 
   readonly minTemp = computed(() => this.heatIndexService.getMinTemp(this.unit()));
 
-  readonly heatIndexLabel = computed(() => {
-    const hi = this.heatIndex();
-    if (hi === null) return null;
-    if (hi >= 54) return { text: 'Extreme Danger', color: '#7f1d1d' };
-    if (hi >= 41) return { text: 'Danger', color: '#ef4444' };
-    if (hi >= 32) return { text: 'Extreme Caution', color: '#f97316' };
-    if (hi >= 27) return { text: 'Caution', color: '#eab308' };
-    return { text: 'Safe', color: '#22c55e' };
-  });
+readonly heatIndexLabel = computed(() => {
+  const hi = this.heatIndex();
+  if (hi === null) return null;
+  if (hi >= 54) return { key: 'heatIndex.levels.extremeDanger', color: '#7f1d1d' };
+  if (hi >= 41) return { key: 'heatIndex.levels.danger',        color: '#ef4444' };
+  if (hi >= 32) return { key: 'heatIndex.levels.extremeCaution',color: '#f97316' };
+  if (hi >= 27) return { key: 'heatIndex.levels.caution',       color: '#eab308' };
+  return           { key: 'heatIndex.levels.safe',              color: '#22c55e' };
+});
 
   ngOnInit(): void {
     this.history.set(this.heatIndexService.loadHistory());

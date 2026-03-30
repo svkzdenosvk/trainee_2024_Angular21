@@ -9,9 +9,7 @@ export class WeatherService {
   private readonly http = inject(HttpClient);
   private readonly cityService = inject(CityService);
   private readonly API_URL = 'https://api.open-meteo.com/v1/forecast';
-  // private readonly LAT = 51.5074;
-  // private readonly LON = -0.1278;
-
+  
   getWeatherData(startDate: string, endDate: string): Observable<WeatherRow[]> {
     const city = this.cityService.selectedCity();
 
@@ -45,17 +43,17 @@ export class WeatherService {
   }
 
   private getWeatherState(code: number): string {
-    if (code === 0) return 'Clear Sky';
-    if (code <= 2) return 'Partly Cloudy';
-    if (code === 3) return 'Overcast';
-    if (code <= 49) return 'Foggy';
-    if (code <= 59) return 'Drizzle';
-    if (code <= 69) return 'Rain';
-    if (code <= 79) return 'Snow';
-    if (code <= 82) return 'Rain Showers';
-    if (code <= 86) return 'Snow Showers';
-    if (code <= 99) return 'Thunderstorm';
-    return 'Unknown';
+    if (code === 0) return 'weather.states.clearSky';
+    if (code <= 2) return 'weather.states.partlyCloudy';
+    if (code === 3) return 'weather.states.overcast';
+    if (code <= 49) return 'weather.states.foggy';
+    if (code <= 59) return 'weather.states.drizzle';
+    if (code <= 69) return 'weather.states.rain';
+    if (code <= 79) return 'weather.states.snow';
+    if (code <= 82) return 'weather.states.rainShowers';
+    if (code <= 86) return 'weather.states.snowShowers';
+    if (code <= 99) return 'weather.states.thunderstorm';
+    return 'weather.states.unknown';
   }
 
   private getWeatherIcon(code: number): string {
@@ -89,11 +87,13 @@ export class WeatherService {
 
   validateDateRange(range: Date[]): string | null {
     if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
-      return 'Please select a valid date range.';
+      // return 'Please select a valid date range.';
+            return 'weather.errorValidRange';
+
     }
     const diffDays = Math.round((range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays > 90) {
-      return 'Maximum date range is 90 days. Please select a shorter range.';
+      return 'weather.errorRange';
     }
     return null;
   }

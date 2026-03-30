@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "home": "Choose City",
+    "weather": "Weather Data",
+    "temperatureChart": "Temperature Chart",
+    "heatIndex": "Heat Index"
+  },
+  "header": {
+    "title": "Weather",
+    "subtitle": "Hourly forecast & historical data · Open-Meteo API"
+  },
+
+  "weather": {
+    "loading": "Fetching weather data for",
+    "recordCount": "records total",
+    "noRecord": "No records found",
+    "searchPlaceholder": "Search weather state...",
+    "columns": {
+      "datetime": "Date time",
+      "temperature": "Temperature (°C)",
+      "weatherState": "Weather State",
+      "humidity": "Humidity (%)",
+      "pressure": "Pressure (hPa)",
+      "windSpeed": "Wind Speed (km/h)",
+      "precipitation": "Precipitation (mm)"
+    },
+    "states": {
+      "clearSky": "Clear Sky",
+      "partlyCloudy": "Partly Cloudy",
+      "overcast": "Overcast",
+      "foggy": "Foggy",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "snow": "Snow",
+      "rainShowers": "Rain Showers",
+      "snowShowers": "Snow Showers",
+      "thunderstorm": "Thunderstorm",
+      "unknown": "Unknown"
+    },
+    "errorRange": "Maximum date range is 90 days. Please select a shorter range.",
+    "errorValidRange": "Please select a valid date range.",
+    "pagination": "Showing {first} to {last} of {totalRecords} records"
+  },
+  "temperatureChart": {
+    "loading": "Loading chart data ",
+    "view": "View",
+     "viewMode": {
+      "daily": "Daily Avg",
+      "hourly": "Hourly"
+    },
+    "tableTitle": "Temperature (°C)",
+    "loadingError": "Failed to load chart data."
+  },
+
+  "heatIndex": {
+    "title": "Heat Index Calculator",
+    "units": "Temperature Units",
+    "temperature": "Temperature",
+    "minimumInfo": "to calculate Heat Index",
+    "humidity": "Relative Humidity",
+    "calculateBtn": "Calculate Heat Index",
+    "feelsLike1": "Feels like",
+    "feelsLike2": "due to heat and humidity",
+    "minTempInfo1": "Enter temperature ≥",
+    "minTempInfo2": "and humidity, then click Calculate.",
+    "last5Results": "Last 5 Results",
+    "noResults": "No calculations yet",
+    "history": {
+      "temperature": "Temp",
+      "humidity": "Humidity",
+      "heatIndex": "Heat Index",
+      "date": "Date"
+    },
+    "historyStored": "Stored in localStorage",
+    "clearHistory": "Clear history",
+    "levels": {
+      "extremeDanger": "Extreme Danger",
+      "danger": "Danger",
+      "extremeCaution": "Extreme Caution",
+      "caution": "Caution",
+      "safe": "Safe"
+    }
+  },
+  "favourites": {
+    "empty": "No favourite cities yet.",
+    "emptyAdvice": "Search for a city and add it to favourites.",
+    "fullWarning": "Favourites are full (10/10). Remove one to add more."
+  },
+  "cityPicker": {
+    "title": "Select a City",
+    "subtitle": "Search for any city in the world to see weather data",
+    "placeholder": "Search city... e.g. London, Bratislava",
+    "btnSelect": "Select",
+    "btnRemove": "Remove",
+    "btnAdd": "Add",
+    "noResults": "No cities found for",
+    "favourites": "Your Favourite Cities",
+    "noFavourites": "No favourite cities yet. Search and add some!",
+    "modeOption": {
+      "search": "Search",
+      "map": "Map",
+      "favourites": "Favourites"
+    },
+    "alert":"Please select a city with a valid name."
+  },
+  "cityMap": {
+    "noCity": "No city found here. Try clicking on a populated area."
+  },
+  "btnLoadData": "Load Data",
+  "dateRange": "Date Range",
+  "dateRangePlaceholder": "Select date range",
+
+  "footer": "© 2026 Weather App. All rights reserved."
+}

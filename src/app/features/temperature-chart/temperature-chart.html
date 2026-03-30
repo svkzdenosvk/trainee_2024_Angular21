@@ -1,35 +1,44 @@
 <div class="chart-container">
-
   <div class="controls-bar">
     <div class="date-range-wrapper">
-      <label>Date Range</label>
+      <label>{{ 'dateRange' | transloco }}</label>
       <p-datepicker
         [(ngModel)]="dateRange"
         (ngModelChange)="dateRange.set($event)"
         selectionMode="range"
         [readonlyInput]="true"
         dateFormat="yy-mm-dd"
-        placeholder="Select date range"
+        [placeholder]="'dateRangePlaceholder' | transloco"
         [showIcon]="true"
-        [numberOfMonths]="2">
+        [numberOfMonths]="2"
+      >
       </p-datepicker>
     </div>
 
     <div class="view-mode-wrapper">
-      <label>View</label>
-      <p-selectButton
-        [options]="viewOptions"
-        [(ngModel)]="viewMode"
-        (ngModelChange)="onViewModeChange()"
-        optionLabel="label"
-        optionValue="value">
-      </p-selectButton>
+      <label>{{ 'temperatureChart.view' | transloco }}</label>
+  
+      <div class="custom-select-btn">
+        <button
+          [class.active]="viewMode() === 'all'"
+          (click)="viewMode.set('all'); onViewModeChange()"
+        >
+          {{ 'temperatureChart.viewMode.hourly' | transloco }}
+        </button>
+        <button
+          [class.active]="viewMode() === 'daily'"
+          (click)="viewMode.set('daily'); onViewModeChange()"
+        >
+          {{ 'temperatureChart.viewMode.daily' | transloco }}
+        </button>
+      </div>
+
+   
     </div>
 
-       <p-button
-      label="Load Data"
+    <p-button
+      [label]="'btnLoadData' | transloco"
       icon="pi pi-refresh"
-    
       severity="secondary"
       (onClick)="loadData()"
       [disabled]="loading()"
@@ -39,19 +48,18 @@
   @if (loading()) {
     <div class="loading-wrapper">
       <p-progressSpinner strokeWidth="3" />
-      <p>Loading chart data...</p>
+      <p>{{ 'temperatureChart.loading' | transloco }}</p>
     </div>
   }
 
   @if (error()) {
     <div class="error-banner">
       <i class="pi pi-exclamation-triangle"></i>
-      {{ error() }}
+      {{ error() | transloco }}
     </div>
   }
 
   <div class="canvas-wrapper" [class.hidden]="loading()">
     <canvas #chartCanvas></canvas>
   </div>
-
 </div>
