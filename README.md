@@ -1,59 +1,109 @@
-# WeatherApp
+# Weather App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+A modern Angular 21 weather application built as part of a frontend developer trainee program entry task.
 
-## Development server
+## Live Demo
 
-To start a local development server, run:
+[angular-trainee-2024.netlify.app](https://angular-trainee-2024.netlify.app)
 
+## Features
+
+### Core Features
+- 📊 **Weather Data Table** – Sortable, searchable, paginated hourly weather data with custom date range selection
+- 📈 **Temperature Chart** – Interactive line chart with hourly/daily average toggle (Chart.js)
+- 🌡️ **Heat Index Calculator** – Calculates heat index using the Rothfusz regression equation with last 5 results stored in localStorage
+- 🌍 **City Selection** – Search any city worldwide or select via interactive map
+- ⭐ **Favourites** – Save up to 10 favourite cities with full CRUD operations
+- 🗺️ **OpenStreetMap Integration** – Interactive Leaflet map for city selection
+- 🌐 **Multilingual** – English and Slovak language support (Transloco)
+
+### Technical Features
+- Lazy loading for all routes
+- Route guards protecting weather/chart routes
+- Linkable routes with city coordinates in URL params
+- Route shell architecture (public/app shell)
+- Reactive state management with Angular Signals
+- Input validation (90-day date range limit, coordinate validation)
+
+## Tech Stack
+
+| Category | Technology |
+|---|---|
+| Framework | Angular 21 |
+| UI Library | PrimeNG 21 |
+| Maps | Leaflet + OpenStreetMap |
+| Charts | Chart.js |
+| i18n | @jsverse/transloco |
+| Weather API | Open-Meteo |
+| Geocoding | Open-Meteo Geocoding API |
+| Reverse Geocoding | Nominatim |
+| Styling | SCSS |
+| State Management | Angular Signals |
+| Async | RxJS |
+| Deployment | Netlify |
+
+## APIs Used
+
+- **[Open-Meteo](https://open-meteo.com/)** – Free weather forecast & historical data (no API key required)
+- **[Open-Meteo Geocoding](https://open-meteo.com/en/docs/geocoding-api)** – City search by name
+- **[Nominatim](https://nominatim.org/)** – Reverse geocoding (coordinates → city name)
+
+## Getting Started
+
+### Prerequisites
+- Node.js 22+
+- Angular CLI 21
+
+### Installation
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+cd weather-app
+
+# Install dependencies
+npm install
+
+# Start development server
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open [http://localhost:4200](http://localhost:4200) in your browser.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
+### Build
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Output will be in `dist/weather-app/browser/`.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+## Project Structure
+```
+src/app/
+├── core/
+│   ├── models/          # TypeScript interfaces (City, WeatherRow, etc.)
+│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService)
+│   └── guards/          # Route guards (CityGuard)
+├── features/
+│   ├── city-picker/     # Home page with search, map and favourites
+│   ├── city-map/        # Leaflet map component
+│   ├── favourites/      # Favourites list
+│   ├── weather-table/   # Weather data table
+│   ├── temperature-chart/ # Chart.js temperature chart
+│   └── heat-index-calculator/ # Heat index calculator
+└── shared/
+    └── shells_layouts/
+        ├── app-shell/   # Authenticated layout with navigation
+        └── public-shell/ # Public layout for home page
 ```
 
-## Running end-to-end tests
+## Heat Index Formula
 
-For end-to-end (e2e) testing, run:
+Uses the **Rothfusz regression equation** sourced from [weather.gov](https://www.weather.gov/media/epz/wxcalc/heatIndex.pdf) with adjustments for low and high humidity conditions.
 
-```bash
-ng e2e
-```
+> ⚠️ Heat Index cannot be calculated for temperatures below 26.7°C / 80°F
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Deployment
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Deployed on Netlify with the following configuration:
+- **Build command:** `npm run build`
+- **Publish directory:** `dist/weather-app/browser`
