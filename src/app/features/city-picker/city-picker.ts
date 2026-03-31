@@ -11,9 +11,7 @@ import { CityService } from '../../core/services/city.service';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
-// import { SelectButton } from 'primeng/selectbutton';
-// import { FavouritesComponent } from '../favourites/favourites';
-import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-city-picker',
@@ -34,7 +32,6 @@ export class CityPickerComponent {
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
   protected readonly favouritesService = inject(FavouritesService);
-  // private readonly translocoService = inject(TranslocoService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
@@ -68,8 +65,8 @@ export class CityPickerComponent {
               data.results.map((r: any) => ({
                 name: r.name,
                 country: r.country,
-                lat: r.latitude,
-                lon: r.longitude,
+                lat: Math.round(r.latitude * 100) / 100,
+                lon: Math.round(r.longitude * 100) / 100,
               })),
             );
           } else {

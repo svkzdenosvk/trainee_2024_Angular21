@@ -24,12 +24,21 @@ export class CityMapComponent implements AfterViewInit {
 
   private map!: L.Map;
   private marker?: L.Marker;
+  private currentCity: City | null = null;
 
   showNoCity = signal(false);
   showFullWarning = signal(false);
 
   ngAfterViewInit(): void {
     this.initMap();
+
+    this.translocoService.langChanges$.subscribe((lang) => {
+      this.translocoService.load(lang).subscribe(() => {
+        if (this.marker && this.currentCity) {
+          this.updatePopup(this.currentCity);
+        }
+      });
+    });
   }
 
   private initMap(): void {
@@ -56,7 +65,9 @@ export class CityMapComponent implements AfterViewInit {
 
   private onMapClick(lat: number, lon: number): void {
     this.http
-      .get<any>(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+      .get<any>(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`,
+      )
       .subscribe((data) => {
         const name =
           data.address?.city || data.address?.town || data.address?.village || data.address?.county;
@@ -70,134 +81,63 @@ export class CityMapComponent implements AfterViewInit {
         const city: City = {
           name,
           country: data.address?.country ?? '',
-          lat,
-          lon,
+          lat: Math.round(lat * 100) / 100,
+          lon: Math.round(lon * 100) / 100,
         };
 
         if (this.marker) this.marker.remove();
-
-        const isFav = this.favouritesService.isFavourite(city);
-        // const favLabel = isFav ? '⭐ Remove' : '⭐ Add';
-
-        // this.marker = L.marker([lat, lon])
-        //   .addTo(this.map)
-        //   .bindPopup(
-        //     `
-        //   <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
-        //     <strong>${city.name}</strong><br/>
-        //     <small>${city.country}</small><br/><br/>
-        //     <div style="display:flex; gap:0.5rem; justify-content:center;">
-        //       <button id="select-city-btn" style="
-        //         background: linear-gradient(135deg, #f97316, #ef4444);
-        //         color: white; border: none; padding: 0.4rem 0.75rem;
-        //         border-radius: 6px; cursor: pointer; font-weight: 600;">
-        //         → Select
-        //       </button>
-        //       <button id="fav-city-btn" style="
-        //         background: #374151; color: #d1d5db;
-        //         border: none; padding: 0.4rem 0.75rem;
-        //         border-radius: 6px; cursor: pointer;">
-        //         ${favLabel}
-        //       </button>
-        //     </div>
-        //   </div>
-        // `,
-        //   )
-        //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        //       const selectLabel = this.translocoService.translate('cityPicker.btnSelect');
-        //       const favLabel = isFav
-        //         ? this.translocoService.translate('cityPicker.btnRemove')
-        //         : this.translocoService.translate('cityPicker.btnAdd');
-
-        //       this.marker = L.marker([lat, lon])
-        //         .addTo(this.map)
-        //         .bindPopup(
-        //           `
-        //   <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
-        //     <strong>${city.name}</strong><br/>
-        //     <small>${city.country}</small><br/><br/>
-        //     <div style="display:flex; gap:0.5rem; justify-content:center;">
-        //       <button id="select-city-btn" style="...">
-        //         → ${selectLabel}
-        //       </button>
-        //       <button id="fav-city-btn" style="...">
-        //         ⭐ ${favLabel}
-        //       </button>
-        //     </div>
-        //   </div>
-        // `,
-        //         )
-        const selectLabel = this.translocoService.translate('cityPicker.btnSelect');
-        const favLabel = isFav
-          ? this.translocoService.translate('cityPicker.btnRemove')
-          : this.translocoService.translate('cityPicker.btnAdd');
-
-        this.marker = L.marker([lat, lon])
-          .addTo(this.map)
-          .bindPopup(
-            `
-    <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
-      <strong>${city.name}</strong><br/>
-      <small>${city.country}</small><br/><br/>
-      <div style="display:flex; gap:0.5rem; justify-content:center;">
-        <button id="select-city-btn" style="
-          background: linear-gradient(135deg, #f97316, #ef4444);
-          color: white;
-          border: none;
-          padding: 0.4rem 0.75rem;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 600;
-          font-size: 0.85rem;">
-          → ${selectLabel}
-        </button>
-        <button id="fav-city-btn" style="
-          background: #1e293b;
-          color: #d1d5db;
-          border: 1px solid #334155;
-          padding: 0.4rem 0.75rem;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 0.85rem;">
-          ⭐ ${favLabel}
-        </button>
-      </div>
-    </div>
-  `,
-          )
-          .openPopup();
-        // .openPopup();
-
-        setTimeout(() => {
-          document.getElementById('select-city-btn')?.addEventListener('click', () => {
-            this.cityService.selectCity(city);
-            this.router.navigate(['/weather'], {
-              queryParams: {
-                city: city.name,
-                country: city.country,
-                lat: city.lat,
-                lon: city.lon,
-              },
-            });
-          });
-
-          document.getElementById('fav-city-btn')?.addEventListener('click', () => {
-            if (this.favouritesService.isFavourite(city)) {
-              this.favouritesService.remove(city);
-              const btn = document.getElementById('fav-city-btn');
-              if (btn) btn.innerText = '⭐ Add';
-            } else {
-              if (this.favouritesService.isFull()) {
-                this.showFullWarning.set(true);
-                setTimeout(() => this.showFullWarning.set(false), 5000);
-                return;
-              }
-              this.favouritesService.add(city);
-              const btn = document.getElementById('fav-city-btn');
-              if (btn) btn.innerText = '⭐ Remove';
-            }
-          });
-        }, 100);
+        this.currentCity = city;
+        this.marker = L.marker([lat, lon]).addTo(this.map).bindPopup('').openPopup();
+        this.updatePopup(city);
       });
+  }
+
+  private updatePopup(city: City): void {
+    if (!this.marker) return;
+
+    const isFav = this.favouritesService.isFavourite(city);
+    const selectLabel = this.translocoService.translate('cityPicker.btnSelect');
+    const favLabel = isFav
+      ? this.translocoService.translate('cityPicker.btnRemove')
+      : this.translocoService.translate('cityPicker.btnAdd');
+
+    this.marker.setPopupContent(`
+  <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
+    <strong>${city.name}</strong><br/>
+    <small>${city.country}</small>
+    <div class="popup-actions">
+      <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
+      <button id="fav-city-btn" class="popup-btn-fav">⭐ ${favLabel}</button>
+    </div>
+  </div>
+`);
+
+    setTimeout(() => {
+      document.getElementById('select-city-btn')?.addEventListener('click', () => {
+        this.cityService.selectCity(city);
+        this.router.navigate(['/weather'], {
+          queryParams: {
+            city: city.name,
+            country: city.country,
+            lat: city.lat,
+            lon: city.lon,
+          },
+        });
+      });
+
+      document.getElementById('fav-city-btn')?.addEventListener('click', () => {
+        if (this.favouritesService.isFavourite(city)) {
+          this.favouritesService.remove(city);
+        } else {
+          if (this.favouritesService.isFull()) {
+            this.showFullWarning.set(true);
+            setTimeout(() => this.showFullWarning.set(false), 5000);
+            return;
+          }
+          this.favouritesService.add(city);
+        }
+        this.updatePopup(city);
+      });
+    }, 100);
   }
 }

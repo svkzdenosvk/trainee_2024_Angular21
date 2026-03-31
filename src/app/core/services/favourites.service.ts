@@ -14,20 +14,12 @@ export class FavouritesService {
 
   private sameCity(a: City, b: City): boolean {
     return (
-      Math.round(a.lat * 100) === Math.round(b.lat * 100) &&
-      Math.round(a.lon * 100) === Math.round(b.lon * 100)
+      a.name.toLowerCase() === b.name.toLowerCase() &&
+      a.country.toLowerCase() === b.country.toLowerCase() &&
+      Math.round(a.lat * 10) === Math.round(b.lat * 10) &&
+      Math.round(a.lon * 10) === Math.round(b.lon * 10)
     );
   }
-
-  // isFavourite(city: City): boolean {
-  //   return this.favourites().some(
-  //     (f) =>
-  //       f.lat === city.lat &&
-  //       f.lon === city.lon &&
-  //       f.name === city.name &&
-  //       f.country === city.country,
-  //   );
-  // }
 
   isFavourite(city: City): boolean {
     return this.favourites().some((f) => this.sameCity(f, city));
@@ -40,26 +32,6 @@ export class FavouritesService {
     this.favourites.set(updated);
     this.save();
   }
-
-  // remove(city: City): void {
-  //   const updated = this.favourites().filter((f) => f.lat !== city.lat || f.lon !== city.lon);
-  //   this.favourites.set(updated);
-  //   this.save();
-  // }
-
-  // remove(city: City): void {
-  //   const updated = this.favourites().filter(
-  //     (f) =>
-  //       !(
-  //         f.lat === city.lat &&
-  //         f.lon === city.lon &&
-  //         f.name === city.name &&
-  //         f.country === city.country
-  //       ),
-  //   );
-  //   this.favourites.set(updated);
-  //   this.save();
-  // }
 
   remove(city: City): void {
     const updated = this.favourites().filter((f) => !this.sameCity(f, city));

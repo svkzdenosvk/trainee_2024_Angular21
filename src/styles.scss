@@ -64,12 +64,47 @@ body {
   }
 }
 
-// app-heat-index-calculator {
-//   ::ng-deep .p-card-body {
-//     padding-top: 0 !important;
-//   }
-// }
 
 .p-card-body {
   padding-top: 0 !important;
+}
+
+//leaflet popup styles 
+.leaflet-popup-content {
+  .popup-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+
+  .popup-btn-select {
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .popup-btn-fav {
+    background: #1e293b;
+    color: #d1d5db;
+    border: 1px solid #334155;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+
+    &:hover {
+      border-color: #f97316;
+      color: #f97316;
+    }
+  }
 }
