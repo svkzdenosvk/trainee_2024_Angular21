@@ -28,6 +28,8 @@ export class FavouritesService {
   add(city: City): void {
     if (this.isFull()) return;
     if (this.isFavourite(city)) return;
+    if (!city.name?.trim() || !city.country?.trim()) return;
+
     const updated = [...this.favourites(), city];
     this.favourites.set(updated);
     this.save();
