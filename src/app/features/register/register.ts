@@ -34,12 +34,12 @@ export class RegisterComponent {
     }
 
     if (this.password() !== this.confirmPassword()) {
-      this.error.set('auth.errors.passwordMismatch');
+      this.error.set('auth.register.errors.passwordMismatch');
       return;
     }
 
     if (this.password().length < 6) {
-      this.error.set('auth.errors.passwordTooShort');
+      this.error.set('auth.register.errors.passwordTooShort');
       return;
     }
 
