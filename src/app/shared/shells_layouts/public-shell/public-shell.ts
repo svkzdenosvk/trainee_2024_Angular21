@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive,Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-public-shell',
@@ -10,6 +11,8 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 })
 export class PublicShell {
   private readonly translocoService = inject(TranslocoService);
+  protected readonly authService = inject(AuthService);
+  protected readonly router = inject(Router);
 
   currentLang = signal(this.translocoService.getActiveLang());
 

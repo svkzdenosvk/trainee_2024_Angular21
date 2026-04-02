@@ -12,6 +12,18 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/city-picker/city-picker').then((m) => m.CityPickerComponent),
       },
+       {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/login/login')
+            .then(m => m.LoginComponent)
+      },
+        {
+        path: 'register',
+        loadComponent: () =>
+          import('./features/register/register')
+            .then(m => m.RegisterComponent)
+      },
         {
         path: 'heat-index',
         loadComponent: () =>
@@ -41,13 +53,7 @@ export const routes: Routes = [
             (m) => m.TemperatureChartComponent,
           ),
       },
-      // {
-      //   path: 'heat-index',
-      //   loadComponent: () =>
-      //     import('./features/heat-index-calculator/heat-index-calculator').then(
-      //       (m) => m.HeatIndexCalculatorComponent,
-      //     ),
-      // },
+   
     ],
   },
 ];

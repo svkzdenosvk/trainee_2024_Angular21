@@ -1,0 +1,51 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon">🔐</div>
+      <h2>{{ 'auth.title' | transloco }}</h2>
+      <!-- <p>{{ 'auth.subtitle' | transloco }}</p> -->
+    </div>
+
+    <div class="login-form">
+      <div class="form-group">
+        <label>{{ 'auth.username' | transloco }}</label>
+        <input
+          pInputText
+          type="text"
+          [ngModel]="username()"
+          (ngModelChange)="username.set($event)"
+          [placeholder]="'auth.usernamePlaceholder' | transloco" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'auth.password' | transloco }}</label>
+        <input
+          pInputText
+          type="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          [placeholder]="'auth.passwordPlaceholder' | transloco" />
+      </div>
+
+      @if (error()) {
+        <div class="error-banner">
+          <i class="pi pi-exclamation-triangle"></i>
+          {{ error() | transloco }}
+        </div>
+      }
+
+      <p-button
+        [label]="'auth.btnLogin' | transloco"
+        icon="pi pi-sign-in"
+        styleClass="login-btn"
+        [loading]="loading()"
+        (onClick)="login()" />
+    </div>
+
+    <div class="login-hint">
+      <p>Demo credentials:</p>
+      <code>admin / admin123</code>
+      <code>user / user123</code>
+    </div>
+  </div>
+</div>

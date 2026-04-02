@@ -44,7 +44,7 @@
   "temperatureChart": {
     "loading": "Loading chart data ",
     "view": "View",
-     "viewMode": {
+    "viewMode": {
       "daily": "Daily Avg",
       "hourly": "Hourly"
     },
@@ -101,10 +101,39 @@
       "map": "Map",
       "favourites": "Favourites"
     },
-    "alert":"Please select a city with a valid name."
+    "alert": "Please select a city with a valid name."
   },
   "cityMap": {
     "noCity": "No city found here. Try clicking on a populated area."
+  },
+  "auth": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to access weather data",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "btnLogin": "Sign In",
+    "logout": "Sign Out",
+    "errors": {
+      "required": "Please enter username and password.",
+      "invalid": "Invalid username or password."
+    },
+    "register": {
+      "registerTitle": "Create Account",
+      "registerSubtitle": "Join to save your favourite cities",
+      "registerBtn": "Register",
+      "registerSuccess": "Account created! Redirecting to login...",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "haveAccount": "Already have an account?",
+      "errors": {
+        "passwordMismatch": "Passwords do not match.",
+        "passwordTooShort": "Password must be at least 6 characters.",
+        "userExists": "Username already exists."
+      },
+      "btnRegister": "Register"
+    }
   },
   "btnLoadData": "Load Data",
   "dateRange": "Date Range",

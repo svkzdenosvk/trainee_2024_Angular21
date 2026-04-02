@@ -1,0 +1,69 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon">👤</div>
+      <h2>{{ 'auth.register.registerTitle' | transloco }}</h2>
+      <p>{{ 'auth.register.registerSubtitle' | transloco }}</p>
+    </div>
+
+    @if (success()) {
+      <div class="success-banner">
+        <i class="pi pi-check-circle"></i>
+        {{ 'auth.register.registerSuccess' | transloco }}
+      </div>
+    } @else {
+      <div class="login-form">
+        <div class="form-group">
+          <label>{{ 'auth.username' | transloco }}</label>
+          <input
+            pInputText
+            type="text"
+            [ngModel]="username()"
+            (ngModelChange)="username.set($event)"
+            [placeholder]="'auth.usernamePlaceholder' | transloco" />
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'auth.password' | transloco }}</label>
+          <input
+            pInputText
+            type="password"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            [placeholder]="'auth.passwordPlaceholder' | transloco" />
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'auth.register.confirmPassword' | transloco }}</label>
+          <input
+            pInputText
+            type="password"
+            [ngModel]="confirmPassword()"
+            (ngModelChange)="confirmPassword.set($event)"
+            [placeholder]="'auth.register.confirmPasswordPlaceholder' | transloco" />
+        </div>
+
+        @if (error()) {
+          <div class="error-banner">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ error() | transloco }}
+          </div>
+        }
+
+        <p-button
+          [label]="'auth.register.btnRegister' | transloco"
+          icon="pi pi-user-plus"
+          styleClass="login-btn"
+          [loading]="loading()"
+          (onClick)="register()" />
+
+        <div class="login-link">
+          {{ 'auth.register.haveAccount' | transloco }}
+          <a (click)="router.navigate(['/login'])">
+            {{ 'auth.btnLogin' | transloco }}
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

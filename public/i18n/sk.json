@@ -47,7 +47,7 @@
     "viewMode": {
       "daily": "Denný priemer",
       "hourly": "Hodinové dáta"
-    } ,
+    },
     "tableTitle": "Teplota (°C)",
     "loadingError": "Nepodarilo sa načítať údaje pre graf."
   },
@@ -105,6 +105,35 @@
   },
   "cityMap": {
     "noCity": "Na tomto mieste nebolo nájdené žiadne mesto. Skúste kliknúť na obývanú oblasť."
+  },
+  "auth": {
+    "title": "Vitajte späť",
+    "subtitle": "Prihláste sa pre prístup k údajom o počasí",
+    "username": "Používateľské meno",
+    "password": "Heslo",
+    "usernamePlaceholder": "Zadajte používateľské meno",
+    "passwordPlaceholder": "Zadajte heslo",
+    "btnLogin": "Prihlásiť sa",
+    "logout": "Odhlásiť sa",
+    "errors": {
+      "required": "Prosím zadajte meno a heslo.",
+      "invalid": "Nesprávne meno alebo heslo."
+    },
+    "register": {
+      "registerTitle": "Vytvoriť účet",
+      "registerSubtitle": "Zaregistrujte sa pre ukladanie obľúbených miest",
+      "registerBtn": "Registrovať",
+      "registerSuccess": "Účet vytvorený! Presmerovanie na prihlásenie...",
+      "confirmPassword": "Potvrďte heslo",
+      "confirmPasswordPlaceholder": "Potvrďte vaše heslo",
+      "haveAccount": "Už máte účet?",
+      "errors": {
+        "passwordMismatch": "Heslá sa nezhodujú.",
+        "passwordTooShort": "Heslo musí mať aspoň 6 znakov.",
+        "userExists": "Používateľské meno už existuje."
+      },
+      "btnRegister": "Registrovať"
+    }
   },
   "btnLoadData": "Načítať údaje",
   "dateRange": "Rozsah dátumov",

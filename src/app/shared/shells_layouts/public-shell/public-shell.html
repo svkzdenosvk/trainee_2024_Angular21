@@ -1,4 +1,21 @@
 <div class="public-container">
+  <div class="nav-actions-auth">
+    @if (authService.isLoggedIn()) {
+      <button class="lang-btn logout-btn" (click)="authService.logout()">
+        <i class="pi pi-sign-out"></i>
+        {{ 'auth.logout' | transloco }}
+      </button>
+    } @else {
+      <button class="lang-btn" (click)="router.navigate(['/login'])">
+        <i class="pi pi-sign-in"></i>
+        {{ 'auth.btnLogin' | transloco }}
+      </button>
+      <button class="lang-btn register-btn" (click)="router.navigate(['/register'])">
+        <i class="pi pi-user-plus"></i>
+        {{ 'auth.register.btnRegister' | transloco }}
+      </button>
+    }
+  </div>
   <header class="app-header">
     <h1>{{ 'header.title' | transloco }}</h1>
     <!-- <h1>{{ cityService.selectedCity()?.name }} Weather</h1> -->

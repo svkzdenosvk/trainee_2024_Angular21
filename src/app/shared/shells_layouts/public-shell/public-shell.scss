@@ -17,9 +17,20 @@ main {
   padding: 2rem;
 }
 
+//login-register buttons .. possible to extract to shared scss
+.nav-actions-auth {
+  // float: right;
+  //  margin-left: auto; // float vpravo
+  display: flex;
+  // align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin: 0.5rem 1rem 0 0;
+  padding-right: 0.5rem;
+}
 .app-header {
   text-align: center;
-  padding: 2rem 2rem 0;
+  padding: 0rem auto 0;
   margin-bottom: 1.5rem;
 
   .header-icon {
@@ -73,15 +84,14 @@ main {
   }
 }
 
-//lang buttons .. possible to extract to shared scss 
+//lang buttons .. possible to extract to shared scss
 .nav-actions {
-    margin-left: auto; // float vpravo
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding-right: 0.5rem;
-  }
-
+  margin-left: auto; // float vpravo
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+}
 
 .lang-btn {
   background: transparent;

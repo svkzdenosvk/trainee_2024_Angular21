@@ -1,7 +1,8 @@
 import { Component, inject, computed, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CityService } from '../../../core/services/city.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+// import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-app-shell',
@@ -13,6 +14,8 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 export class AppShell {
   protected readonly cityService = inject(CityService);
   private readonly translocoService = inject(TranslocoService);
+  // protected readonly authService = inject(AuthService);
+  // protected readonly router = inject(Router);
 
   currentLang = signal(this.translocoService.getActiveLang());
 
