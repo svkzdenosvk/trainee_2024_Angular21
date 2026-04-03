@@ -21,7 +21,9 @@
 .login-header {
   text-align: center;
 
-  .login-icon { font-size: 3rem; }
+  .login-icon {
+    font-size: 3rem;
+  }
 
   h2 {
     font-size: 1.6rem;
@@ -33,7 +35,11 @@
     margin-top: 0.5rem;
   }
 
-  p { color: #475569; font-size: 0.9rem; margin-top: 0.25rem; }
+  p {
+    color: #475569;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
 }
 
 .login-form {
@@ -53,7 +59,9 @@
     font-weight: 500;
   }
 
-  input { width: 100%; }
+  input {
+    width: 100%;
+  }
 }
 
 .error-banner {
@@ -85,7 +93,10 @@
   flex-direction: column;
   gap: 0.4rem;
 
-  p { color: #475569; font-size: 0.8rem; }
+  p {
+    color: #475569;
+    font-size: 0.8rem;
+  }
 
   code {
     background: #0f1117;

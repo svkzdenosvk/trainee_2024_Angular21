@@ -1,0 +1,40 @@
+//login-register buttons .. possible to extract to shared scss
+.nav-action-auth {
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin: 0.5rem 2rem 0 0;
+  padding-right: 0.5rem;
+
+  span{
+    color: #60a5fa;
+  }
+}
+
+//buttons link to the dark theme  .. possible to extract to shared scss
+
+.btn-theme-style {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #64748b;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #60a5fa;
+    color: #60a5fa;
+  }
+
+  &.active {
+    border-color: #60a5fa;
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+  }
+}

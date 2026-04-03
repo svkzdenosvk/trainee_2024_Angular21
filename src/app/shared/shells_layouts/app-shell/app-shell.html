@@ -1,27 +1,12 @@
 <div class="app-container">
+  <!-- //user, login reg. logout buttons -->
+  <app-nav-auth />
+
   <header class="app-header">
     <h1>{{ cityService.selectedCity()?.name }} {{ 'header.title' | transloco }}</h1>
     <p>{{ 'header.subtitle' | transloco }}</p>
   </header>
 
-  <!-- <div class="nav-actions">
-   
-    @if (authService.isLoggedIn()) {
-      <button class="lang-btn logout-btn" (click)="authService.logout()">
-        <i class="pi pi-sign-out"></i>
-        {{ 'auth.logout' | transloco }}
-      </button>
-    } @else {
-      <button class="lang-btn" (click)="router.navigate(['/login'])">
-        <i class="pi pi-sign-in"></i>
-        {{ 'auth.btnLogin' | transloco }}
-      </button>
-      <button class="lang-btn register-btn" (click)="router.navigate(['/register'])">
-        <i class="pi pi-user-plus"></i>
-        {{ 'auth.btnRegister' | transloco }}
-      </button>
-    }
-  </div> -->
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="pi pi-map-marker"></i>

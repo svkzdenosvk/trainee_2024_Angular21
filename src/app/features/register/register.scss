@@ -23,6 +23,8 @@
     cursor: pointer;
     margin-left: 0.25rem;
 
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

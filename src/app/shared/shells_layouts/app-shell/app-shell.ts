@@ -3,19 +3,18 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/rou
 import { CityService } from '../../../core/services/city.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 // import { AuthService } from '../../../core/services/auth.service';
+import { NavAuth } from '../../components/nav-auth/nav-auth';
 
 @Component({
   selector: 'app-app-shell',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoModule],
+  imports: [NavAuth,RouterOutlet, RouterLink, RouterLinkActive, TranslocoModule],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
 })
 export class AppShell {
   protected readonly cityService = inject(CityService);
   private readonly translocoService = inject(TranslocoService);
-  // protected readonly authService = inject(AuthService);
-  // protected readonly router = inject(Router);
 
   currentLang = signal(this.translocoService.getActiveLang());
 

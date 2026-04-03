@@ -1,0 +1,22 @@
+<div class="nav-action-auth">
+  
+  @if (authService.isLoggedIn()) {
+    <span class="username-label">
+      <i class="pi pi-user"></i>
+      {{ authService.currentUser()?.username }}
+    </span>
+    <button class="btn-theme-style logout-btn" (click)="authService.logout()">
+      <i class="pi pi-sign-out"></i>
+      {{ 'auth.logout' | transloco }}
+    </button>
+  } @else {
+    <button class="btn-theme-style" (click)="router.navigate(['/login'])">
+      <i class="pi pi-sign-in"></i>
+      {{ 'auth.btnLogin' | transloco }}
+    </button>
+    <button class="btn-theme-style register-btn" (click)="router.navigate(['/register'])">
+      <i class="pi pi-user-plus"></i>
+      {{ 'auth.register.btnRegister' | transloco }}
+    </button>
+  }
+</div>
