@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { cityGuard } from './core/guards/city-guard';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -8,23 +9,26 @@ export const routes: Routes = [
       import('./shared/shells_layouts/public-shell/public-shell').then((m) => m.PublicShell),
     children: [
       {
+        path: 'favourites',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/favourites/favourites').then((m) => m.FavouritesComponent),
+      },
+      {
         path: '',
         loadComponent: () =>
           import('./features/city-picker/city-picker').then((m) => m.CityPickerComponent),
       },
-       {
+      {
         path: 'login',
-        loadComponent: () =>
-          import('./features/login/login')
-            .then(m => m.LoginComponent)
+        loadComponent: () => import('./features/login/login').then((m) => m.LoginComponent),
       },
-        {
+      {
         path: 'register',
         loadComponent: () =>
-          import('./features/register/register')
-            .then(m => m.RegisterComponent)
+          import('./features/register/register').then((m) => m.RegisterComponent),
       },
-        {
+      {
         path: 'heat-index',
         loadComponent: () =>
           import('./features/heat-index-calculator/heat-index-calculator').then(
@@ -38,7 +42,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./shared/shells_layouts/app-shell/app-shell').then((m) => m.AppShell),
     children: [
-      
+      {
+        path: 'favourites',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/favourites/favourites').then((m) => m.FavouritesComponent),
+      },
       {
         path: 'weather',
         canActivate: [cityGuard],
@@ -53,7 +62,6 @@ export const routes: Routes = [
             (m) => m.TemperatureChartComponent,
           ),
       },
-   
     ],
   },
 ];

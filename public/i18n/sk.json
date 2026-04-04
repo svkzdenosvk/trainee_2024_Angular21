@@ -3,7 +3,8 @@
     "home": "Vybrať mesto",
     "weather": "Počasie",
     "temperatureChart": "Graf teploty",
-    "heatIndex": "Index tepla"
+    "heatIndex": "Index tepla",
+    "favourites": "Obľúbené"
   },
   "header": {
     "title": "Počasie",
@@ -84,7 +85,8 @@
   "favourites": {
     "empty": "Zatiaľ žiadne obľúbené mestá.",
     "emptyAdvice": "Vyhľadajte mesto a pridajte ho medzi obľúbené.",
-    "fullWarning": "Zoznam obľúbených je plný (10/10). Odstráňte niektoré mesto pre pridanie ďalších."
+    "fullWarning": "Zoznam obľúbených je plný (10/10). Odstráňte niektoré mesto pre pridanie ďalších.",
+    "select": "Vyberte"
   },
   "cityPicker": {
     "title": "Vyberte mesto",

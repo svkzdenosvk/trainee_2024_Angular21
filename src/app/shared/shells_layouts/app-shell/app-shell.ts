@@ -2,7 +2,7 @@ import { Component, inject, computed, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CityService } from '../../../core/services/city.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-// import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { NavAuth } from '../../components/nav-auth/nav-auth';
 
 @Component({
@@ -15,6 +15,7 @@ import { NavAuth } from '../../components/nav-auth/nav-auth';
 export class AppShell {
   protected readonly cityService = inject(CityService);
   private readonly translocoService = inject(TranslocoService);
+  protected readonly authService = inject(AuthService);
 
   currentLang = signal(this.translocoService.getActiveLang());
 

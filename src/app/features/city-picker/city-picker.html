@@ -13,9 +13,9 @@
       <button [class.active]="viewMode() === 'map'" (click)="viewMode.set('map')">
         🗺️ {{ 'cityPicker.modeOption.map' | transloco }}
       </button>
-      <button [class.active]="viewMode() === 'favourites'" (click)="viewMode.set('favourites')">
+      <!-- <button [class.active]="viewMode() === 'favourites'" (click)="viewMode.set('favourites')">
         ⭐ {{ 'cityPicker.modeOption.favourites' | transloco }}
-      </button>
+      </button> -->
     </div>
   </div>
 
@@ -56,18 +56,20 @@
               {{ city.lat | number: '1.2-2' }}°N, {{ city.lon | number: '1.2-2' }}°E
             </div>
             <div class="action-buttons">
-              <button
-                class="fav-btn"
-                (click)="toggleFavourite(city, $event)"
-                [class.favourited]="isFavourite(city)"
-              >
-                ⭐
-                {{
-                  isFavourite(city)
-                    ? ('cityPicker.btnRemove' | transloco)
-                    : ('cityPicker.btnAdd' | transloco)
-                }}
-              </button>
+              @if (authService.isLoggedIn()) {
+                <button
+                  class="fav-btn"
+                  (click)="toggleFavourite(city, $event)"
+                  [class.favourited]="isFavourite(city)"
+                >
+                  ⭐
+                  {{
+                    isFavourite(city)
+                      ? ('cityPicker.btnRemove' | transloco)
+                      : ('cityPicker.btnAdd' | transloco)
+                  }}
+                </button>
+              }
               <button class="select-btn" (click)="selectCity(city)">
                 → {{ 'cityPicker.btnSelect' | transloco }}
               </button>
@@ -89,7 +91,7 @@
     <app-city-map />
   }
 
-  @if (viewMode() === 'favourites') {
+  <!-- @if (viewMode() === 'favourites') {
     <div class="favourites-section">
       <h3>{{ 'cityPicker.favourites' | transloco }}</h3>
       @if (favouritesService.favourites().length > 0) {
@@ -121,5 +123,5 @@
         </div>
       }
     </div>
-  }
+  } -->
 </div>

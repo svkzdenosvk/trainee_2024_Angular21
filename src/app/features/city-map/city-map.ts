@@ -7,6 +7,7 @@ import { CityService } from '../../core/services/city.service';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-city-map',
@@ -21,6 +22,7 @@ export class CityMapComponent implements AfterViewInit {
   private readonly favouritesService = inject(FavouritesService);
   private readonly router = inject(Router);
   private readonly translocoService = inject(TranslocoService);
+  protected readonly authService = inject(AuthService);
 
   private map!: L.Map;
   private marker?: L.Marker;
@@ -101,14 +103,19 @@ export class CityMapComponent implements AfterViewInit {
       ? this.translocoService.translate('cityPicker.btnRemove')
       : this.translocoService.translate('cityPicker.btnAdd');
 
+    const favButton = this.authService.isLoggedIn()
+      ? `<button id="fav-city-btn" class="popup-btn-fav">⭐ ${favLabel}</button>`
+      : '';
+
     this.marker.setPopupContent(`
   <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
     <strong>${city.name}</strong><br/>
     <small>${city.country}</small>
     <div class="popup-actions">
-      <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
-      <button id="fav-city-btn" class="popup-btn-fav">⭐ ${favLabel}</button>
-    </div>
+        
+        <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
+
+ ${favButton}    </div>
   </div>
 `);
 

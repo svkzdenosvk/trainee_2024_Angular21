@@ -3,7 +3,8 @@
     "home": "Choose City",
     "weather": "Weather Data",
     "temperatureChart": "Temperature Chart",
-    "heatIndex": "Heat Index"
+    "heatIndex": "Heat Index",
+    "favourites": "Favourites"
   },
   "header": {
     "title": "Weather",
@@ -84,7 +85,8 @@
   "favourites": {
     "empty": "No favourite cities yet.",
     "emptyAdvice": "Search for a city and add it to favourites.",
-    "fullWarning": "Favourites are full (10/10). Remove one to add more."
+    "fullWarning": "Favourites are full (10/10). Remove one to add more.",
+    "select": "Select"
   },
   "cityPicker": {
     "title": "Select a City",

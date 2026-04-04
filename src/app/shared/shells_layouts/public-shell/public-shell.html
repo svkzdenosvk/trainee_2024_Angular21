@@ -16,6 +16,12 @@
     <a routerLink="/heat-index" routerLinkActive="active">
       <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
     </a>
+    @if (authService.isLoggedIn()) {
+  <a routerLink="/favourites" routerLinkActive="active">
+    <i class="pi pi-star"></i>
+    {{ 'nav.favourites' | transloco }}
+  </a>
+}
     <div class="nav-actions">
       <button class="lang-btn" (click)="switchLang('en')" [class.active]="currentLang() === 'en'">
         EN

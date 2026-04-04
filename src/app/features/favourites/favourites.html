@@ -1,4 +1,4 @@
-<div class="favourites-container">
+<!-- <div class="favourites-container">
   @if (favouritesService.favourites().length === 0) {
     <div class="empty-state">
       <i class="pi pi-star"></i>
@@ -46,23 +46,58 @@
               <span class="city-country">{{ city.country }}</span>
             </div>
           </div>
+       
           <div class="actions">
-            <p-button
-              icon="pi pi-pencil"
-              [text]="true"
-              severity="secondary"
-              [style]="{ color: '#64748b' }"
-              (onClick)="startEdit(city)"
-            />
-            <p-button
-              icon="pi pi-trash"
-              [text]="true"
-              [style]="{ color: '#ef4444' }"
-              severity="danger"
-              (onClick)="favouritesService.remove(city)"
-            />
-          </div>
+  <button class="action-btn edit-btn" (click)="startEdit(city)">
+    <i class="pi pi-pencil"></i>
+  </button>
+  <button class="action-btn remove-btn" (click)="favouritesService.remove(city)">
+    <i class="pi pi-trash"></i>
+  </button>
+  <button class="action-btn select-btn" (click)="selectCity(city)">
+    → {{ 'favourites.select' | transloco }}
+  </button>
+</div>
         }
+      </div>
+    }
+  </div>
+</div> -->
+
+<div class="favourites-container">
+  @if (favouritesService.favourites().length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-star"></i>
+      <p>{{ 'favourites.empty' | transloco }}</p>
+      <small>{{ 'favourites.emptyAdvice' | transloco }}</small>
+    </div>
+  }
+
+  @if (favouritesService.isFull()) {
+    <div class="full-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ 'favourites.fullWarning' | transloco }}
+    </div>
+  }
+
+  <div class="favourites-list">
+    @for (city of favouritesService.favourites(); track city.lat) {
+      <div class="favourite-item">
+        <div class="city-info">
+          <i class="pi pi-star-fill star-icon"></i>
+          <div>
+            <span class="city-name">{{ city.name }}</span>
+            <span class="city-country">{{ city.country }}</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="action-btn remove-btn" (click)="favouritesService.remove(city)">
+            <i class="pi pi-trash" style="font-size: 1rem"></i>
+          </button>
+          <button class="action-btn select-btn" (click)="selectCity(city)">
+            → {{ 'favourites.select' | transloco }}
+          </button>
+        </div>
       </div>
     }
   </div>

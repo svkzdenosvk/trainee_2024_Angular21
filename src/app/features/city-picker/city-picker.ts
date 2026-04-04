@@ -12,6 +12,7 @@ import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-city-picker',
@@ -32,11 +33,14 @@ export class CityPickerComponent {
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
   protected readonly favouritesService = inject(FavouritesService);
+  protected readonly authService = inject(AuthService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
-  viewMode = signal<'search' | 'map' | 'favourites'>('search');
+  // viewMode = signal<'search' | 'map' | 'favourites'>('search');
+    viewMode = signal<'search' | 'map' >('search');
+
   showFullWarning = signal(false);
 
   private searchSubject = new Subject<string>();
