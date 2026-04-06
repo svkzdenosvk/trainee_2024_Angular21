@@ -2,12 +2,7 @@
   <!-- //user, login reg. logout buttons -->
   <app-nav-auth />
 
-  <header class="app-header">
-    <h1>{{ 'header.title' | transloco }}</h1>
-    <!-- <h1>{{ cityService.selectedCity()?.name }} Weather</h1> -->
-
-    <p>{{ 'header.subtitle' | transloco }}</p>
-  </header>
+  <app-header />
 
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
@@ -17,26 +12,18 @@
       <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
     </a>
     @if (authService.isLoggedIn()) {
-  <a routerLink="/favourites" routerLinkActive="active">
-    <i class="pi pi-star"></i>
-    {{ 'nav.favourites' | transloco }}
-  </a>
-}
-    <div class="nav-actions">
-      <button class="lang-btn" (click)="switchLang('en')" [class.active]="currentLang() === 'en'">
-        EN
-      </button>
-      <button class="lang-btn" (click)="switchLang('sk')" [class.active]="currentLang() === 'sk'">
-        SK
-      </button>
-    </div>
+      <a routerLink="/favourites" routerLinkActive="active">
+        <i class="pi pi-star"></i>
+        {{ 'nav.favourites' | transloco }}
+      </a>
+    }
+    <!--  lang switcher -->
+    <app-lang-switcher />
   </nav>
 
   <main>
     <router-outlet />
   </main>
 
-  <footer class="app-footer">
-    {{ 'footer' | transloco }}
-  </footer>
+  <app-footer />
 </div>

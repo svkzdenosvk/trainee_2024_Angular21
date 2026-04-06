@@ -2,33 +2,23 @@
   <!-- //user, login reg. logout buttons -->
   <app-nav-auth />
 
-  <header class="app-header">
-    <h1>{{ cityService.selectedCity()?.name }} {{ 'header.title' | transloco }}</h1>
-    <p>{{ 'header.subtitle' | transloco }}</p>
-  </header>
+  <app-header [cityName]="cityService.selectedCity()?.name" />
 
   <nav class="app-nav">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <i class="pi pi-map-marker"></i>
-      {{ 'nav.home' | transloco }}
+      <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
     </a>
     <a routerLink="/heat-index" routerLinkActive="active">
-      <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}</a
-    >
+      <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+    </a>
     @if (authService.isLoggedIn()) {
       <a routerLink="/favourites" routerLinkActive="active">
         <i class="pi pi-star"></i>
         {{ 'nav.favourites' | transloco }}
       </a>
     }
-    <div class="nav-actions">
-      <button class="lang-btn" (click)="switchLang('en')" [class.active]="currentLang() === 'en'">
-        EN
-      </button>
-      <button class="lang-btn" (click)="switchLang('sk')" [class.active]="currentLang() === 'sk'">
-        SK
-      </button>
-    </div>
+    <!--  lang switcher   -->
+    <app-lang-switcher /> 
   </nav>
   <nav class="app-nav">
     <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
@@ -43,5 +33,5 @@
     <router-outlet />
   </main>
 
-  <footer class="app-footer">{{ 'footer' | transloco }}</footer>
+  <app-footer />
 </div>

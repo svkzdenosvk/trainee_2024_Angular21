@@ -1,0 +1,53 @@
+@use '_theme-btn';
+
+.shell-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.app-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #1e293b;
+  margin: 0rem 2rem 1.5rem 2rem;
+  // padding: 0rem 2rem 1.5rem 2rem;
+
+  a {
+    padding: 0.75rem 1.5rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      color: #60a5fa;
+    }
+    &.active {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+  }
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+  margin-left: auto;
+  // justify-content: flex-end;
+  // float: right;
+}
