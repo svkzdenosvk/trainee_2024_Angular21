@@ -31,6 +31,6 @@ import { LangService } from '../../../core/services/lang.service';
   ],
   styleUrl: '../../scss/_shells.scss',
 })
-export class LangSwitcher {
+export class AppLangSwitcher {
   protected readonly langService = inject(LangService);
 }

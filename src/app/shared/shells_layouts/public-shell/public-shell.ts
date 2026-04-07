@@ -3,21 +3,23 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/rou
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../../core/services/auth.service';
 import { LangService } from '../../../core/services/lang.service';
-import { NavAuth } from '../../components/nav-auth/nav-auth';
+import { AppNavAuth } from '../../components/app-nav-auth/app-nav-auth';
 import { AppFooter } from '../../components/app-footer/app-footer';
 import { AppHeader } from '../../components/app-header/app-header';
-import { LangSwitcher } from '../../components/lang-switcher/lang-switcher';
+import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
+import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
 
 @Component({
   selector: 'app-public-shell',
   imports: [
-    NavAuth,
-    LangSwitcher,
+    AppNavAuth,
+    AppPublicNav,
+    // AppLangSwitcher,
     AppFooter,
     AppHeader,
     RouterOutlet,
-    RouterLinkActive,
-    RouterLink,
+    // RouterLinkActive,
+    // RouterLink,
     TranslocoModule,
   ],
   templateUrl: './public-shell.html',

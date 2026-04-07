@@ -4,17 +4,19 @@ import { CityService } from '../../../core/services/city.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../../core/services/auth.service';
 import { LangService } from '../../../core/services/lang.service';
-import { NavAuth } from '../../components/nav-auth/nav-auth';
+import { AppNavAuth } from '../../components/app-nav-auth/app-nav-auth';
 import { AppFooter } from '../../components/app-footer/app-footer';
 import { AppHeader } from '../../components/app-header/app-header';
-import { LangSwitcher } from '../../components/lang-switcher/lang-switcher';
+import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
+import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
 
 @Component({
   selector: 'app-app-shell',
   standalone: true,
   imports: [
-    NavAuth,
-    LangSwitcher,
+    AppNavAuth,
+    // AppLangSwitcher,
+    AppPublicNav,
     AppFooter,
     AppHeader,
     RouterOutlet,

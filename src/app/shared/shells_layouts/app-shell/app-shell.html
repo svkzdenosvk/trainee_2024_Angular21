@@ -1,25 +1,13 @@
 <div class="app-container">
-  <!-- //user, login reg. logout buttons -->
+
+  <!-- user, login reg. logout buttons -->
   <app-nav-auth />
 
   <app-header [cityName]="cityService.selectedCity()?.name" />
 
-  <nav class="app-nav">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
-    </a>
-    <a routerLink="/heat-index" routerLinkActive="active">
-      <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
-    </a>
-    @if (authService.isLoggedIn()) {
-      <a routerLink="/favourites" routerLinkActive="active">
-        <i class="pi pi-star"></i>
-        {{ 'nav.favourites' | transloco }}
-      </a>
-    }
-    <!--  lang switcher   -->
-    <app-lang-switcher /> 
-  </nav>
+  <!-- nav part same for both shells -->
+  <app-public-nav />
+
   <nav class="app-nav">
     <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
       <i class="pi pi-table"></i> {{ 'nav.weather' | transloco }}
