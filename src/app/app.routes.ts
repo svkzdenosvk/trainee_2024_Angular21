@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { cityGuard } from './core/guards/city-guard';
 import { authGuard } from './core/guards/auth-guard';
+import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,12 @@ export const routes: Routes = [
           import('./features/heat-index-calculator/heat-index-calculator').then(
             (m) => m.HeatIndexCalculatorComponent,
           ),
+      },
+      {
+        path: 'admin',
+        canActivate: [authGuard, adminGuard],
+        loadComponent: () =>
+          import('./features/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboardComponent),
       },
     ],
   },

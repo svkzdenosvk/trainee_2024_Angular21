@@ -1,0 +1,76 @@
+<div class="admin-container">
+  <!-- <h2><i class="pi pi-users"></i> Admin Dashboard</h2> -->
+
+  <div class="admin-header">
+    <h2><i class="pi pi-users"></i> Admin Dashboard</h2>
+    @if (errorMessage()) {
+      <div class="error-banner">
+        <i class="pi pi-exclamation-triangle"></i>
+        {{ errorMessage() }}
+      </div>
+    }
+  </div>
+
+  <p-table
+    [value]="users()"
+    [paginator]="true"
+    [rows]="10"
+    styleClass="p-datatable-dark"
+    [rowHover]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
+        <th pSortableColumn="role">Role <p-sortIcon field="role" /></th>
+        <th pSortableColumn="favouritesCount">Favourites <p-sortIcon field="favouritesCount" /></th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <!-- <td><i class="pi pi-user"></i> {{ user.username }}</td> -->
+        <td>
+          <i class="pi pi-user"></i> {{ user.username }}
+          @if (isDefaultUser(user)) {
+            <p-tag value="default" severity="secondary" styleClass="ml-2" />
+          }
+        </td>
+        <td>
+          <!-- <p-tag [value]="user.role" [severity]="getSeverity(user.role)" /> -->
+          <span class="role-badge" [class]="'role-' + user.role">
+            {{ user.role }}
+          </span>
+        </td>
+        <td>{{ user.favouritesCount }}</td>
+        <td>
+          <div class="actions">
+            <p-button
+              [icon]="user.role === 'admin' ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
+              [severity]="user.role === 'admin' ? 'secondary' : 'warn'"
+              [text]="true"
+              [pTooltip]="user.role === 'admin' ? 'Downgrade to user' : 'Promote to admin'"
+              (onClick)="changeRole(user)"
+            />
+            <!-- [disabled]="!authService.canChangeRole(user)" -->
+
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              pTooltip="Delete user"
+              (onClick)="deleteUser(user)"
+            />
+            <!-- [disabled]="!authService.canDelete(user)" -->
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" style="text-align: center; color: #64748b">No users found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
