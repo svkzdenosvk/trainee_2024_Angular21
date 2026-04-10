@@ -96,7 +96,6 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
         },
         error: () => {
           this.error.set('temperatureChart.loadingError');
-          // this.error.set(this.translocoService.translate('temperatureChart.loadingError'));
           this.loading.set(false);
         },
       });

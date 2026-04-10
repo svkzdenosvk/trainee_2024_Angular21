@@ -24,6 +24,7 @@ export class LoginComponent {
   password = signal('');
   error = signal<string | null>(null);
   loading = signal(false);
+  showPassword = signal(false);
 
   login(): void {
     if (!this.username().trim() || !this.password().trim()) {

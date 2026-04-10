@@ -118,6 +118,7 @@
     "btnLogin": "Sign In",
     "logout": "Sign Out",
     "errors": {
+      "userExists": "Username already registered.",
       "required": "Please enter username and password.",
       "invalid": "Invalid username or password."
     },
@@ -130,11 +131,29 @@
       "confirmPasswordPlaceholder": "Confirm your password",
       "haveAccount": "Already have an account?",
       "errors": {
+        "passwordNeedsUppercase": "Password must contain at least one uppercase letter.",
+        "passwordNeedsNumber": "Password must contain at least one number.",
         "passwordMismatch": "Passwords do not match.",
         "passwordTooShort": "Password must be at least 6 characters.",
         "userExists": "Username already exists."
       },
       "btnRegister": "Register"
+    },
+    "adminDashboard": {
+      "title": "Admin Dashboard",
+      "userList": "Registered users",
+      "role": "Role",
+      "favouritesCount": "Count of favourites",
+      "actions": "Actions",
+      "roleDowngrade":"Downgrade to user",
+      "roleUpgrade":"Promote to admin",
+      "deleteBtn": "Delete User",
+      "confirmDelete": "Are you sure you want to delete this user?",
+      "noUsers": "No registered users found.",
+      "errors": {
+        "errorRole": "Cannot change role of default users or yourself.",
+        "errorDelete": "Cannot delete default users."
+      }
     }
   },
   "btnLoadData": "Load Data",

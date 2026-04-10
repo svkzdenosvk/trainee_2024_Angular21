@@ -11,7 +11,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { HeatIndexService } from '../../core/services/heat-index.service';
 import { HeatIndexEntry, TemperatureUnit } from '../../core/models/weather.model';
 import { TranslocoModule,   } from '@jsverse/transloco';
-// import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-heat-index-calculator',

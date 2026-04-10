@@ -20,17 +20,29 @@
             type="text"
             [ngModel]="username()"
             (ngModelChange)="username.set($event)"
-            [placeholder]="'auth.usernamePlaceholder' | transloco" />
+            [placeholder]="'auth.usernamePlaceholder' | transloco"
+          />
         </div>
 
         <div class="form-group">
           <label>{{ 'auth.password' | transloco }}</label>
-          <input
-            pInputText
-            type="password"
-            [ngModel]="password()"
-            (ngModelChange)="password.set($event)"
-            [placeholder]="'auth.passwordPlaceholder' | transloco" />
+          <div class="input-wrapper">
+            <input
+              pInputText
+              [type]="showPassword() ? 'text' : 'password'"
+              [ngModel]="password()"
+              (ngModelChange)="password.set($event)"
+              [placeholder]="'auth.passwordPlaceholder' | transloco"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              (click)="showPassword.set(!showPassword())"
+              tabindex="-1"
+            >
+              <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
@@ -40,7 +52,8 @@
             type="password"
             [ngModel]="confirmPassword()"
             (ngModelChange)="confirmPassword.set($event)"
-            [placeholder]="'auth.register.confirmPasswordPlaceholder' | transloco" />
+            [placeholder]="'auth.register.confirmPasswordPlaceholder' | transloco"
+          />
         </div>
 
         @if (error()) {
@@ -55,7 +68,8 @@
           icon="pi pi-user-plus"
           styleClass="login-btn"
           [loading]="loading()"
-          (onClick)="register()" />
+          (onClick)="register()"
+        />
 
         <div class="login-link">
           {{ 'auth.register.haveAccount' | transloco }}

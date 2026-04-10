@@ -17,10 +17,5 @@ export const cityGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   router.navigate(['/']);
   return false;
 
-  // if (!cityService.selectedCity()) {
-  //   router.navigate(['/']);
-  //   return false;
-  // }
-
-  return true;
+  // return true;
 };

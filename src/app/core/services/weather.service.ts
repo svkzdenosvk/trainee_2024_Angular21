@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map, EMPTY } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { WeatherApiResponse, WeatherRow } from '../models/weather.model';
 import { CityService } from './city.service';
 

@@ -1,8 +1,6 @@
 <div class="admin-container">
-  <!-- <h2><i class="pi pi-users"></i> Admin Dashboard</h2> -->
-
   <div class="admin-header">
-    <h2><i class="pi pi-users"></i> Admin Dashboard</h2>
+    <h2><i class="pi pi-users"></i> {{ 'auth.adminDashboard.title' | transloco }}</h2>
     @if (errorMessage()) {
       <div class="error-banner">
         <i class="pi pi-exclamation-triangle"></i>
@@ -20,16 +18,22 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
-        <th pSortableColumn="role">Role <p-sortIcon field="role" /></th>
-        <th pSortableColumn="favouritesCount">Favourites <p-sortIcon field="favouritesCount" /></th>
-        <th>Actions</th>
+        <th pSortableColumn="username">
+          {{ 'auth.adminDashboard.userList' | transloco }} <p-sortIcon field="username" />
+        </th>
+        <th pSortableColumn="role">
+          {{ 'auth.adminDashboard.role' | transloco }} <p-sortIcon field="role" />
+        </th>
+        <th pSortableColumn="favouritesCount">
+          {{ 'auth.adminDashboard.favouritesCount' | transloco }}
+          <p-sortIcon field="favouritesCount" />
+        </th>
+        <th>{{ 'auth.adminDashboard.actions' | transloco }}</th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-user>
       <tr>
-        <!-- <td><i class="pi pi-user"></i> {{ user.username }}</td> -->
         <td>
           <i class="pi pi-user"></i> {{ user.username }}
           @if (isDefaultUser(user)) {
@@ -49,7 +53,7 @@
               [icon]="user.role === 'admin' ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
               [severity]="user.role === 'admin' ? 'secondary' : 'warn'"
               [text]="true"
-              [pTooltip]="user.role === 'admin' ? 'Downgrade to user' : 'Promote to admin'"
+              [pTooltip]="getTooltip(user.role)"
               (onClick)="changeRole(user)"
             />
             <!-- [disabled]="!authService.canChangeRole(user)" -->
@@ -58,7 +62,7 @@
               icon="pi pi-trash"
               severity="danger"
               [text]="true"
-              pTooltip="Delete user"
+              [pTooltip]="'auth.adminDashboard.deleteBtn' | transloco"
               (onClick)="deleteUser(user)"
             />
             <!-- [disabled]="!authService.canDelete(user)" -->
@@ -69,7 +73,9 @@
 
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="4" style="text-align: center; color: #64748b">No users found.</td>
+        <td colspan="4" style="text-align: center; color: #64748b">
+          {{ 'auth.adminDashboard.noUsers' | transloco }}
+        </td>
       </tr>
     </ng-template>
   </p-table>

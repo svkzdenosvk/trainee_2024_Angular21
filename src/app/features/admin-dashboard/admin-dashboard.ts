@@ -1,9 +1,9 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { UserWithStats } from '../../core/models/user.model';
 import { TooltipModule } from 'primeng/tooltip';
@@ -19,6 +19,8 @@ const DEFAULT_USER_IDS = ['1', '2'];
 })
 export class AdminDashboardComponent {
   protected readonly authService = inject(AuthService);
+  private readonly translocoService = inject(TranslocoService);
+
   errorMessage = signal<string | null>(null);
 
   users = this.authService.allUsersWithStats;
@@ -28,15 +30,20 @@ export class AdminDashboardComponent {
     this.authService.refreshStats();
   }
 
-private _showError(msg: string): void {
-  this.errorMessage.set(msg);
-  setTimeout(() => this.errorMessage.set(null), 3500);
-}
+  getTooltip(role: string): string {
+    return role === 'admin'
+      ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
+      : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
+  }
+
+  private _showError(msg: string): void {
+    this.errorMessage.set(msg);
+    setTimeout(() => this.errorMessage.set(null), 3500);
+  }
 
   deleteUser(user: UserWithStats): void {
     if (!this.authService.canDelete(user)) {
-      // this.errorMessage.set('Default users cannot be deleted.'); //will be translated with transloco!!!
-this._showError('Default users cannot be deleted.')
+      this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorDelete'));
       return;
     }
     this.errorMessage.set(null);
@@ -52,17 +59,14 @@ this._showError('Default users cannot be deleted.')
 
   changeRole(user: UserWithStats): void {
     if (!this.authService.canChangeRole(user)) {
-      // this.errorMessage.set('Cannot change role of default users or yourself.');//will be translated with transloco!!!
-      this._showError('Cannot change role of default users or yourself.')
+      this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorRole'));
       return;
     }
     this.errorMessage.set(null);
 
-
     const newRole = user.role === 'admin' ? 'user' : 'admin';
     this.authService.updateRole(user.id, newRole);
   }
-
 
   isDefaultUser(user: UserWithStats): boolean {
     return DEFAULT_USER_IDS.includes(user.id);

@@ -13,9 +13,7 @@
       <button [class.active]="viewMode() === 'map'" (click)="viewMode.set('map')">
         🗺️ {{ 'cityPicker.modeOption.map' | transloco }}
       </button>
-      <!-- <button [class.active]="viewMode() === 'favourites'" (click)="viewMode.set('favourites')">
-        ⭐ {{ 'cityPicker.modeOption.favourites' | transloco }}
-      </button> -->
+     
     </div>
   </div>
 
@@ -90,38 +88,5 @@
   @if (viewMode() === 'map') {
     <app-city-map />
   }
-
-  <!-- @if (viewMode() === 'favourites') {
-    <div class="favourites-section">
-      <h3>{{ 'cityPicker.favourites' | transloco }}</h3>
-      @if (favouritesService.favourites().length > 0) {
-        <div class="results-list">
-          @for (city of favouritesService.favourites(); track city.name) {
-            <div class="result-item">
-              <div class="city-info">
-                <span class="city-name">{{ city.name }}</span>
-                <span class="city-country">{{ city.country }}</span>
-              </div>
-              <div class="city-coords">
-                {{ city.lat | number: '1.2-2' }}°N, {{ city.lon | number: '1.2-2' }}°E
-              </div>
-              <div class="action-buttons">
-                <button class="fav-btn favourited" (click)="toggleFavourite(city, $event)">
-                  ⭐ {{ 'cityPicker.btnRemove' | transloco }}
-                </button>
-                <button class="select-btn" (click)="selectCity(city)">
-                  → {{ 'cityPicker.btnSelect' | transloco }}
-                </button>
-              </div>
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="no-favourites">
-          <i class="pi pi-star"></i>
-          <p>{{ 'cityPicker.noFavourites' | transloco }}</p>
-        </div>
-      }
-    </div>
-  } -->
+ 
 </div>

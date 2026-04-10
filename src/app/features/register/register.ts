@@ -13,7 +13,6 @@ import { AuthService } from '../../core/services/auth.service';
   imports: [CommonModule, FormsModule, InputText, Button, TranslocoModule],
   templateUrl: './register.html',
    styleUrls: ['./register.scss']
-    // styleUrls: ['../login/login.scss']
 
 })
 export class RegisterComponent {
@@ -26,6 +25,7 @@ export class RegisterComponent {
   error = signal<string | null>(null);
   success = signal(false);
   loading = signal(false);
+   showPassword = signal(false);
 
   register(): void {
     if (!this.username().trim() || !this.password().trim()) {
@@ -40,6 +40,16 @@ export class RegisterComponent {
 
     if (this.password().length < 6) {
       this.error.set('auth.register.errors.passwordTooShort');
+      return;
+    }
+
+     if (!/[A-Z]/.test(this.password())) {
+      this.error.set('auth.register.errors.passwordNeedsUppercase');
+      return;
+    }
+
+    if (!/[0-9]/.test(this.password())) {
+      this.error.set('auth.register.errors.passwordNeedsNumber');
       return;
     }
 

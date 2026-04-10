@@ -14,17 +14,29 @@
           type="text"
           [ngModel]="username()"
           (ngModelChange)="username.set($event)"
-          [placeholder]="'auth.usernamePlaceholder' | transloco" />
+          [placeholder]="'auth.usernamePlaceholder' | transloco"
+        />
       </div>
 
       <div class="form-group">
         <label>{{ 'auth.password' | transloco }}</label>
-        <input
-          pInputText
-          type="password"
-          [ngModel]="password()"
-          (ngModelChange)="password.set($event)"
-          [placeholder]="'auth.passwordPlaceholder' | transloco" />
+        <div class="input-wrapper">
+          <input
+            pInputText
+            [type]="showPassword() ? 'text' : 'password'"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            [placeholder]="'auth.passwordPlaceholder' | transloco"
+          />
+          <button
+            type="button"
+            class="eye-btn"
+            (click)="showPassword.set(!showPassword())"
+            tabindex="-1"
+          >
+            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
+        </div>
       </div>
 
       @if (error()) {
@@ -39,7 +51,8 @@
         icon="pi pi-sign-in"
         styleClass="login-btn"
         [loading]="loading()"
-        (onClick)="login()" />
+        (onClick)="login()"
+      />
     </div>
 
     <div class="login-hint">
