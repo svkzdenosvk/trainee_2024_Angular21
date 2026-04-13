@@ -16,14 +16,22 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - ⭐ **Favourites** – Save up to 10 favourite cities with full CRUD operations
 - 🗺️ **OpenStreetMap Integration** – Interactive Leaflet map for city selection
 - 🌐 **Multilingual** – English and Slovak language support (Transloco)
+- 🔐 **Authentication** – Register, login and logout with localStorage-based user management
+- 🛡️ **Role-based Authorization** – Admin and user roles with protected routes and admin dashboard
+- 👤 **Admin Dashboard** – Manage users, change roles and delete accounts with PrimeNG data table
+
 
 ### Technical Features
 - Lazy loading for all routes
-- Route guards protecting weather/chart routes
+- Route guards protecting weather/chart routes (`cityGuard`, `authGuard`, `adminGuard`)
 - Linkable routes with city coordinates in URL params
 - Route shell architecture (public/app shell)
 - Reactive state management with Angular Signals
-- Input validation (90-day date range limit, coordinate validation)
+- Input validation (90-day date range limit, coordinate validation, password rules)
+- Shared component architecture (`AppHeader`, `AppFooter`, `PublicNav`, `LangSwitcher`)
+- Centralized language management via `LangService`
+- Per-user favourites stored in localStorage
+- Unit tests with Vitest covering services and guards
 
 ## Tech Stack
 
@@ -40,6 +48,7 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 | Styling | SCSS |
 | State Management | Angular Signals |
 | Async | RxJS |
+| Testing | Vitest |
 | Deployment | Netlify |
 
 ## APIs Used
@@ -69,6 +78,16 @@ ng serve
 
 Open [http://localhost:4200](http://localhost:4200) in your browser.
 
+### Default Accounts
+
+| Username | Password | Role |
+|---|---|---|
+| admin | admin123 | admin |
+| user | user123 | user |
+
+> ⚠️ These accounts are seeded from localStorage on first run. Do not use real passwords.
+
+
 ### Build
 ```bash
 ng build
@@ -81,8 +100,8 @@ Output will be in `dist/weather-app/browser/`.
 src/app/
 ├── core/
 │   ├── models/          # TypeScript interfaces (City, WeatherRow, etc.)
-│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService)
-│   └── guards/          # Route guards (CityGuard)
+│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService, AuthService, LangService)
+│   └── guards/          # Route guards (CityGuard, AuthGuard, AdminGuard )
 ├── features/
 │   ├── city-picker/     # Home page with search, map and favourites
 │   ├── city-map/        # Leaflet map component
@@ -90,7 +109,16 @@ src/app/
 │   ├── weather-table/   # Weather data table
 │   ├── temperature-chart/ # Chart.js temperature chart
 │   └── heat-index-calculator/ # Heat index calculator
+│   ├── login/           # Login page
+│   ├── register/        # Registration with password validation
+│   └── admin/           # Admin dashboard - user management
 └── shared/
+    ├── components/      # Reusable UI components
+│   |   ├── app-header/
+│   |   ├── app-footer/
+│   |   ├── app-nav-auth/
+│   |   ├── public-nav/
+│   |   └── lang-switcher/
     └── shells_layouts/
         ├── app-shell/   # Authenticated layout with navigation
         └── public-shell/ # Public layout for home page
@@ -101,6 +129,15 @@ src/app/
 Uses the **Rothfusz regression equation** sourced from [weather.gov](https://www.weather.gov/media/epz/wxcalc/heatIndex.pdf) with adjustments for low and high humidity conditions.
 
 > ⚠️ Heat Index cannot be calculated for temperatures below 26.7°C / 80°F
+
+## Authentication
+
+Authentication is implemented using **localStorage** as a demo backend - no real server is involved. This is intentional for the scope of this trainee project to demonstrate role-based access control patterns in Angular.
+
+- Passwords are stored in plain text in localStorage - **not for production use**
+- Admin role is seeded by default and cannot be deleted or demoted
+- Registered users receive the `user` role by default
+- Password requirements: minimum 6 characters, at least one uppercase letter and one digit
 
 ## Deployment
 
