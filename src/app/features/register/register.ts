@@ -56,19 +56,35 @@ export class RegisterComponent {
     this.loading.set(true);
     this.error.set(null);
 
-    setTimeout(() => {
-      const success = this.authService.register(
-        this.username(),
-        this.password()
-      );
+    // setTimeout(() => {
+    //   const success = this.authService.register(
+    //     this.username(),
+    //     this.password()
+    //   );
 
-      if (success) {
+    //   if (success) {
+    //     this.success.set(true);
+    //     setTimeout(() => this.router.navigate(['/login']), 1500);
+    //   } else {
+    //     this.error.set('auth.errors.userExists');
+    //   }
+    //   this.loading.set(false);
+    // }, 500);
+
+    this.authService.register(this.username(), this.password()).subscribe({
+      next: () => {
         this.success.set(true);
         setTimeout(() => this.router.navigate(['/login']), 1500);
-      } else {
-        this.error.set('auth.errors.userExists');
-      }
-      this.loading.set(false);
-    }, 500);
+      },
+      error: (err) => {
+        if (err.status === 409) {
+          this.error.set('auth.errors.userExists');
+        } else {
+          this.error.set('auth.errors.required');
+        }
+        this.loading.set(false);
+      },
+      complete: () => this.loading.set(false),
+    });
   }
 }

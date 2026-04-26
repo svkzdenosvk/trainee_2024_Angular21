@@ -10,7 +10,7 @@
   </div>
 
   <p-table
-    [value]="users()"
+    [value]="adminService.users()"
     [paginator]="true"
     [rows]="10"
     styleClass="p-datatable-dark"
@@ -42,19 +42,21 @@
         </td>
         <td>
           <!-- <p-tag [value]="user.role" [severity]="getSeverity(user.role)" /> -->
-          <span class="role-badge" [class]="'role-' + user.role">
-            {{ user.role }}
+          <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
+            {{ user.role.toLowerCase() }}
           </span>
         </td>
         <td>{{ user.favouritesCount }}</td>
         <td>
           <div class="actions">
             <p-button
-              [icon]="user.role === 'admin' ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
-              [severity]="user.role === 'admin' ? 'secondary' : 'warn'"
+              [icon]="user.role === 'ADMIN' ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
+              [severity]="user.role === 'ADMIN' ? 'secondary' : 'warn'"
               [text]="true"
               [pTooltip]="getTooltip(user.role)"
               (onClick)="changeRole(user)"
+                [disabled]="authService.currentUser()?.id === user.id"
+
             />
             <!-- [disabled]="!authService.canChangeRole(user)" -->
 
@@ -64,6 +66,8 @@
               [text]="true"
               [pTooltip]="'auth.adminDashboard.deleteBtn' | transloco"
               (onClick)="deleteUser(user)"
+                [disabled]="authService.currentUser()?.id === user.id"
+
             />
             <!-- [disabled]="!authService.canDelete(user)" -->
           </div>

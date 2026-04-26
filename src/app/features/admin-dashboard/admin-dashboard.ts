@@ -1,5 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { AdminService } from '../../core/services/admin.service';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
@@ -8,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { UserWithStats } from '../../core/models/user.model';
 import { TooltipModule } from 'primeng/tooltip';
 
-const DEFAULT_USER_IDS = ['1', '2'];
+// const DEFAULT_USER_IDS = ['1', '2'];
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,19 +20,25 @@ const DEFAULT_USER_IDS = ['1', '2'];
 })
 export class AdminDashboardComponent {
   protected readonly authService = inject(AuthService);
+  protected readonly adminService = inject(AdminService);
+
   private readonly translocoService = inject(TranslocoService);
 
   errorMessage = signal<string | null>(null);
 
-  users = this.authService.allUsersWithStats;
+  // users = this.authService.allUsersWithStats;
+
+  // ngOnInit(): void {
+  //   //refresh stats - mainly favourites count, in case admin or users add/deleted some locations
+  //   this.authService.refreshStats();
+  // }
 
   ngOnInit(): void {
-    //refresh stats - mainly favourites count, in case admin or users add/deleted some locations
-    this.authService.refreshStats();
+    this.adminService.loadUsers();
   }
 
   getTooltip(role: string): string {
-    return role === 'admin'
+    return role === 'ADMIN'
       ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
       : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
   }
@@ -41,38 +48,62 @@ export class AdminDashboardComponent {
     setTimeout(() => this.errorMessage.set(null), 3500);
   }
 
+  // deleteUser(user: UserWithStats): void {
+  //   if (!this.authService.canDelete(user)) {
+  //     this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorDelete'));
+  //     return;
+  //   }
+  //   this.errorMessage.set(null);
+
+  //   // if selfdelete -> then logout, otherwise just delete
+  //   if (this.authService.currentUser()?.id === user.id) {
+  //     this.authService.deleteUser(user.id);
+  //     this.authService.logout();
+  //     return;
+  //   }
+  //   this.authService.deleteUser(user.id);
+  // }
+
   deleteUser(user: UserWithStats): void {
-    if (!this.authService.canDelete(user)) {
+    if (this.authService.currentUser()?.id === user.id) {
       this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorDelete'));
       return;
     }
-    this.errorMessage.set(null);
-
-    // if selfdelete -> then logout, otherwise just delete
-    if (this.authService.currentUser()?.id === user.id) {
-      this.authService.deleteUser(user.id);
-      this.authService.logout();
-      return;
-    }
-    this.authService.deleteUser(user.id);
+    this.adminService.deleteUser(user.id).subscribe({
+      next: () => this.adminService.loadUsers(),
+      error: () => this._showError('Delete failed'),
+    });
   }
 
+  // changeRole(user: UserWithStats): void {
+  //   if (!this.authService.canChangeRole(user)) {
+  //     this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorRole'));
+  //     return;
+  //   }
+  //   this.errorMessage.set(null);
+
+  //   const newRole = user.role === 'admin' ? 'user' : 'admin';
+  //   this.authService.updateRole(user.id, newRole);
+  // }
+
   changeRole(user: UserWithStats): void {
-    if (!this.authService.canChangeRole(user)) {
+    if (this.authService.currentUser()?.id === user.id) {
       this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorRole'));
       return;
     }
-    this.errorMessage.set(null);
-
     const newRole = user.role === 'admin' ? 'user' : 'admin';
-    this.authService.updateRole(user.id, newRole);
+    this.adminService.updateRole(user.id, newRole).subscribe({
+      next: () => this.adminService.loadUsers(),
+      error: () => this._showError('Role update failed'),
+    });
   }
 
   isDefaultUser(user: UserWithStats): boolean {
-    return DEFAULT_USER_IDS.includes(user.id);
+    // return DEFAULT_USER_IDS.includes(user.id);
+    return false // just for future 
   }
 
   getSeverity(role: string): 'success' | 'warn' {
-    return role === 'admin' ? 'warn' : 'success';
+    return role === 'ADMIN' ? 'warn' : 'success';
   }
 }
