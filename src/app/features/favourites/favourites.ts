@@ -1,5 +1,5 @@
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit  } from '@angular/core';
 import { Router } from '@angular/router';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
@@ -13,10 +13,14 @@ import { TranslocoModule } from '@jsverse/transloco';
   templateUrl: './favourites.html',
   styleUrls: ['./favourites.scss']
 })
-export class FavouritesComponent {
+export class FavouritesComponent implements OnInit {
   protected readonly favouritesService = inject(FavouritesService);
   private readonly cityService = inject(CityService);
   private readonly router = inject(Router);
+
+   ngOnInit(): void {
+    this.favouritesService.reloadForUser();
+  }
 
   selectCity(city: City): void {
     this.cityService.selectCity(city);

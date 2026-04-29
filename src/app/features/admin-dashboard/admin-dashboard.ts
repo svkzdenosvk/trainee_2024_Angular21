@@ -8,8 +8,8 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { UserWithStats } from '../../core/models/user.model';
 import { TooltipModule } from 'primeng/tooltip';
-
-// const DEFAULT_USER_IDS = ['1', '2'];
+import { Role } from '../../core/models/role.enum';
+import { DEFAULT_USER_IDS } from '../../core/constants/constants';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -21,6 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
 export class AdminDashboardComponent {
   protected readonly authService = inject(AuthService);
   protected readonly adminService = inject(AdminService);
+  protected readonly Role = Role;
 
   private readonly translocoService = inject(TranslocoService);
 
@@ -38,7 +39,7 @@ export class AdminDashboardComponent {
   }
 
   getTooltip(role: string): string {
-    return role === 'ADMIN'
+    return role === Role.ADMIN
       ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
       : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
   }
@@ -64,14 +65,19 @@ export class AdminDashboardComponent {
   //   this.authService.deleteUser(user.id);
   // }
 
+  canDelete(user: UserWithStats): boolean {
+    if (this.authService.currentUser()?.id === user.id) return false;
+    if (DEFAULT_USER_IDS.includes(user.id)) return false;
+    return true;
+  }
+
   deleteUser(user: UserWithStats): void {
-    if (this.authService.currentUser()?.id === user.id) {
-      this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorDelete'));
-      return;
-    }
+    if (!this.canDelete(user)) return;
+
     this.adminService.deleteUser(user.id).subscribe({
       next: () => this.adminService.loadUsers(),
-      error: () => this._showError('Delete failed'),
+      error: () =>
+        this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed')),
     });
   }
 
@@ -86,24 +92,45 @@ export class AdminDashboardComponent {
   //   this.authService.updateRole(user.id, newRole);
   // }
 
+  canChangeRole(user: UserWithStats): boolean {
+    if (this.authService.currentUser()?.id === user.id) return false;
+    if (DEFAULT_USER_IDS.includes(user.id)) return false;
+    return true;
+  }
+
   changeRole(user: UserWithStats): void {
-    if (this.authService.currentUser()?.id === user.id) {
-      this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorRole'));
-      return;
-    }
-    const newRole = user.role === 'admin' ? 'user' : 'admin';
+    if (!this.canChangeRole(user)) return;
+
+    const newRole = user.role === Role.ADMIN ? Role.USER : Role.ADMIN;
     this.adminService.updateRole(user.id, newRole).subscribe({
       next: () => this.adminService.loadUsers(),
-      error: () => this._showError('Role update failed'),
+      error: () =>
+        this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed')),
     });
   }
 
   isDefaultUser(user: UserWithStats): boolean {
-    // return DEFAULT_USER_IDS.includes(user.id);
-    return false // just for future 
+    return DEFAULT_USER_IDS.includes(user.id);
   }
 
   getSeverity(role: string): 'success' | 'warn' {
-    return role === 'ADMIN' ? 'warn' : 'success';
+    return role === Role.ADMIN ? 'warn' : 'success';
+  }
+
+  //UI
+  getDeleteTooltip(user: UserWithStats): string {
+    if (this.authService.currentUser()?.id === user.id)
+      return this.translocoService.translate('auth.adminDashboard.errors.errorDelSelf');
+    if (DEFAULT_USER_IDS.includes(user.id))
+      return this.translocoService.translate('auth.adminDashboard.errors.errorDelDefault');
+    return this.translocoService.translate('auth.adminDashboard.deleteBtn');
+  }
+
+  getRoleTooltip(user: UserWithStats): string {
+    if (this.authService.currentUser()?.id === user.id)
+      return this.translocoService.translate('auth.adminDashboard.errors.errorSelfRole');
+    if (DEFAULT_USER_IDS.includes(user.id))
+      return this.translocoService.translate('auth.adminDashboard.errors.errorDefRole');
+    return this.getTooltip(user.role);
   }
 }

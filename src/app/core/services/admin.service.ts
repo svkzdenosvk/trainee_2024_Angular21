@@ -1,8 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserWithStats } from '../models/user.model';
+import { Role } from '../models/role.enum';
+import { API_URL } from '../constants/constants';
 
-const API_URL = 'http://localhost:3000';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -20,7 +21,7 @@ export class AdminService {
     return this.http.delete(`${API_URL}/admin/users/${id}`);
   }
 
-  updateRole(id: string, role: 'admin' | 'user') {
+  updateRole(id: string, role: Role) {
     return this.http.patch(`${API_URL}/admin/users/${id}/role`, { role });
   }
 }

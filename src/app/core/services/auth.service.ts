@@ -4,13 +4,11 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
 import { User /*, UserWithStats */ } from '../models/user.model';
+import { API_URL } from '../constants/constants';
+import { Role } from '../models/role.enum';
 
 const AUTH_KEY = 'auth_user';
 const TOKEN_KEY = 'auth_token';
-const API_URL = 'http://localhost:3000';
-
-// const AUTH_KEY = 'auth_user';
-// const USERS_KEY = 'registered_users';
 
 // const DEFAULT_USERS = [
 //   { id: '1', username: 'admin', password: 'admin123', role: 'admin' as const },
@@ -25,11 +23,11 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   currentUser = signal<User | null>(JSON.parse(localStorage.getItem(AUTH_KEY) ?? 'null'));
-  
-  readonly isLoggedIn = computed(() => this.currentUser() !== null);
-  readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 
-   getToken(): string | null {
+  readonly isLoggedIn = computed(() => this.currentUser() !== null);
+  readonly isAdmin = computed(() => this.currentUser()?.role === Role.ADMIN);
+
+  getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
   }
 
@@ -65,23 +63,22 @@ export class AuthService {
   // readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 
   login(username: string, password: string) {
-    return this.http.post<{ access_token: string; user: User }>(
-      `${API_URL}/auth/login`,
-      { username, password }
-    ).pipe(
-      tap(res => {
-        this.currentUser.set(res.user);
-        localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
-        localStorage.setItem(TOKEN_KEY, res.access_token);
-      })
-    );
+    return this.http
+      .post<{ access_token: string; user: User }>(`${API_URL}/auth/login`, { username, password })
+      .pipe(
+        tap((res) => {
+          this.currentUser.set(res.user);
+          localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+          localStorage.setItem(TOKEN_KEY, res.access_token);
+        }),
+      );
   }
 
-   register(username: string, password: string) {
-    return this.http.post<{ message: string; userId: string }>(
-      `${API_URL}/auth/register`,
-      { username, password }
-    );
+  register(username: string, password: string) {
+    return this.http.post<{ message: string; userId: string }>(`${API_URL}/auth/register`, {
+      username,
+      password,
+    });
   }
 
   logout(): void {

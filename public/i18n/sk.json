@@ -135,24 +135,31 @@
         "passwordNeedsNumber": "Heslo musí obsahovat alespoň jedno číslo.",
         "passwordMismatch": "Heslá sa nezhodujú.",
         "passwordTooShort": "Heslo musí mať aspoň 6 znakov.",
-        "userExists": "Používateľské meno už existuje."
+        "userExists": "Používateľské meno už existuje.",
+        "usernameTooShort": "Používateľské meno musí mať aspoň 3 znaky.",
+        "usernameTooLong": "Používateľské meno nesmie presiahnuť dĺžku 20 znakov.",
+        "passwordTooLong": "Heslo nesmie presiahnuť dĺžku 128 znakov."
       },
       "btnRegister": "Registrovať"
     },
-     "adminDashboard": {
+    "adminDashboard": {
       "title": "Administrátorské rozhranie",
       "userList": "Registrovaní používatelia",
       "role": "Rola",
       "favouritesCount": "Počet oblúbených",
       "actions": "Akcie",
-       "roleDowngrade":"Znížiť na používateľa",
-      "roleUpgrade":"Povýšiť na správcu",
+      "roleDowngrade": "Znížiť na používateľa",
+      "roleUpgrade": "Povýšiť na správcu",
       "deleteBtn": "Vymazať používateľa",
       "confirmDelete": "Ste si istý, že chcete odstrániť tohto používateľa?",
       "noUsers": "Neboli nájdení žiadni registrovaní používatelia.",
       "errors": {
-        "errorRole": "Nemožno zmeniť rolu predvoleného používateľa alebo seba.",
-        "errorDelete": "Nemožno odstrániť predvoleného používateľa."
+        "errorDelDefault": "Nemožno odstrániť predvoleného používateľa.",
+        "errorDelSelf": "Nemožno odstrániť samého seba.",
+        "deleteFailed": "Nepodarilo sa vymazať používateľa",
+        "errorDefRole": "Nemožno zmeniť rolu predvoleného používateľa.",
+        "errorSelfRole": "Nemožno zmeniť rolu samého seba.",
+        "roleFailed": "Nepodarilo sa zmeniť rolu používateľa"
       }
     }
   },

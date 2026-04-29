@@ -1,7 +1,9 @@
+import { Role } from './role.enum';
+
 export interface User {
   id: string;
   username: string;
-  role: 'admin' | 'user';
+  role: Role;
 }
 
 export interface UserWithStats extends User {

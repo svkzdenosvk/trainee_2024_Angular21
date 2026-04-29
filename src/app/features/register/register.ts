@@ -12,8 +12,7 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, InputText, Button, TranslocoModule],
   templateUrl: './register.html',
-   styleUrls: ['./register.scss']
-
+  styleUrls: ['./register.scss'],
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
@@ -25,11 +24,21 @@ export class RegisterComponent {
   error = signal<string | null>(null);
   success = signal(false);
   loading = signal(false);
-   showPassword = signal(false);
+  showPassword = signal(false);
 
   register(): void {
     if (!this.username().trim() || !this.password().trim()) {
       this.error.set('auth.errors.required');
+      return;
+    }
+
+    if (this.username().trim().length < 3) {
+      this.error.set('auth.register.errors.usernameTooShort');
+      return;
+    }
+
+    if (this.username().trim().length > 20) {
+      this.error.set('auth.register.errors.usernameTooLong');
       return;
     }
 
@@ -42,8 +51,11 @@ export class RegisterComponent {
       this.error.set('auth.register.errors.passwordTooShort');
       return;
     }
-
-     if (!/[A-Z]/.test(this.password())) {
+    if (this.password().length > 128) {
+      this.error.set('auth.register.errors.passwordTooLong');
+      return;
+    }
+    if (!/[A-Z]/.test(this.password())) {
       this.error.set('auth.register.errors.passwordNeedsUppercase');
       return;
     }

@@ -45,3 +45,11 @@ export interface City {
   lat: number;
   lon: number;
 }
+
+export interface FavouriteResponse {
+  id: string;
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}

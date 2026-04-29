@@ -135,7 +135,10 @@
         "passwordNeedsNumber": "Password must contain at least one number.",
         "passwordMismatch": "Passwords do not match.",
         "passwordTooShort": "Password must be at least 6 characters.",
-        "userExists": "Username already exists."
+        "userExists": "Username already exists.",
+        "usernameTooShort": "Username must be at least 3 characters",
+        "usernameTooLong": "Username cannot exceed 20 characters",
+        "passwordTooLong": "Password cannot exceed 32 characters"
       },
       "btnRegister": "Register"
     },
@@ -145,14 +148,18 @@
       "role": "Role",
       "favouritesCount": "Count of favourites",
       "actions": "Actions",
-      "roleDowngrade":"Downgrade to user",
-      "roleUpgrade":"Promote to admin",
+      "roleDowngrade": "Downgrade to user",
+      "roleUpgrade": "Promote to admin",
       "deleteBtn": "Delete User",
       "confirmDelete": "Are you sure you want to delete this user?",
       "noUsers": "No registered users found.",
       "errors": {
-        "errorRole": "Cannot change role of default users or yourself.",
-        "errorDelete": "Cannot delete default users."
+        "errorDelDefault": "Cannot delete default users.",
+        "errorDelSelf": "Cannot remove yourself.",
+        "deleteFailed": "Failed to delete user",
+        "errorDefRole": "Cannot change role of default users.",
+        "errorSelfRole": "Cannot change the role of yourself.",
+        "roleFailed": "Failed to update role."
       }
     }
   },
