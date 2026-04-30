@@ -107,17 +107,16 @@ export class CityMapComponent implements AfterViewInit {
       ? `<button id="fav-city-btn" class="popup-btn-fav">⭐ ${favLabel}</button>`
       : '';
 
-    this.marker.setPopupContent(`
-  <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
-    <strong>${city.name}</strong><br/>
-    <small>${city.country}</small>
-    <div class="popup-actions">
-        
-        <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
-
- ${favButton}    </div>
-  </div>
-`);
+   this.marker.setPopupContent(`
+      <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
+        <strong>${city.name}</strong><br/>
+        <small>${city.country}</small>
+        <div class="popup-actions">   
+          <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
+          ${favButton}   
+        </div>
+      </div>
+   `);
 
     setTimeout(() => {
       document.getElementById('select-city-btn')?.addEventListener('click', () => {

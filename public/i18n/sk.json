@@ -117,6 +117,7 @@
     "passwordPlaceholder": "Zadajte heslo",
     "btnLogin": "Prihlásiť sa",
     "logout": "Odhlásiť sa",
+    "defaultCredentials":"Ukážkové prihlasovacie údaje",
     "errors": {
       "userExists": "Užívateľ je už zaregistrovaný.",
       "required": "Prosím zadajte meno a heslo.",

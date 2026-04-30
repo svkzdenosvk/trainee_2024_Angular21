@@ -15,7 +15,6 @@ import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
   standalone: true,
   imports: [
     AppNavAuth,
-    // AppLangSwitcher,
     AppPublicNav,
     AppFooter,
     AppHeader,

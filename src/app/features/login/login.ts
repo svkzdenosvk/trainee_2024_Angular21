@@ -26,29 +26,6 @@ export class LoginComponent {
   loading = signal(false);
   showPassword = signal(false);
 
-  // login(): void {
-  //   if (!this.username().trim() || !this.password().trim()) {
-  //     this.error.set('auth.errors.required');
-  //     return;
-  //   }
-
-  //   this.loading.set(true);
-  //   this.error.set(null);
-
-  //   // Simulate async login
-  //   setTimeout(() => {
-  //     const success = this.authService.login(this.username(), this.password());
-
-  //     if (success) {
-  //       this.favouritesService.reloadForUser();
-  //       this.router.navigate(['/']);
-  //     } else {
-  //       this.error.set('auth.errors.invalid');
-  //     }
-  //     this.loading.set(false);
-  //   }, 500);
-  // }
-
   login(): void {
     if (!this.username().trim() || !this.password().trim()) {
       this.error.set('auth.errors.required');
@@ -70,5 +47,4 @@ export class LoginComponent {
       complete: () => this.loading.set(false),
     });
   }
-
 }

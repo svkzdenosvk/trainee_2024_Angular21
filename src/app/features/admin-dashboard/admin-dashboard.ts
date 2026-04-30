@@ -27,21 +27,8 @@ export class AdminDashboardComponent {
 
   errorMessage = signal<string | null>(null);
 
-  // users = this.authService.allUsersWithStats;
-
-  // ngOnInit(): void {
-  //   //refresh stats - mainly favourites count, in case admin or users add/deleted some locations
-  //   this.authService.refreshStats();
-  // }
-
   ngOnInit(): void {
     this.adminService.loadUsers();
-  }
-
-  getTooltip(role: string): string {
-    return role === Role.ADMIN
-      ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
-      : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
   }
 
   private _showError(msg: string): void {
@@ -49,30 +36,14 @@ export class AdminDashboardComponent {
     setTimeout(() => this.errorMessage.set(null), 3500);
   }
 
-  // deleteUser(user: UserWithStats): void {
-  //   if (!this.authService.canDelete(user)) {
-  //     this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorDelete'));
-  //     return;
-  //   }
-  //   this.errorMessage.set(null);
-
-  //   // if selfdelete -> then logout, otherwise just delete
-  //   if (this.authService.currentUser()?.id === user.id) {
-  //     this.authService.deleteUser(user.id);
-  //     this.authService.logout();
-  //     return;
-  //   }
-  //   this.authService.deleteUser(user.id);
-  // }
-
-  canDelete(user: UserWithStats): boolean {
+  _canDelete(user: UserWithStats): boolean {
     if (this.authService.currentUser()?.id === user.id) return false;
     if (DEFAULT_USER_IDS.includes(user.id)) return false;
     return true;
   }
 
   deleteUser(user: UserWithStats): void {
-    if (!this.canDelete(user)) return;
+    if (!this._canDelete(user)) return;
 
     this.adminService.deleteUser(user.id).subscribe({
       next: () => this.adminService.loadUsers(),
@@ -81,25 +52,14 @@ export class AdminDashboardComponent {
     });
   }
 
-  // changeRole(user: UserWithStats): void {
-  //   if (!this.authService.canChangeRole(user)) {
-  //     this._showError(this.translocoService.translate('auth.adminDashboard.errors.errorRole'));
-  //     return;
-  //   }
-  //   this.errorMessage.set(null);
-
-  //   const newRole = user.role === 'admin' ? 'user' : 'admin';
-  //   this.authService.updateRole(user.id, newRole);
-  // }
-
-  canChangeRole(user: UserWithStats): boolean {
+  _canChangeRole(user: UserWithStats): boolean {
     if (this.authService.currentUser()?.id === user.id) return false;
     if (DEFAULT_USER_IDS.includes(user.id)) return false;
     return true;
   }
 
   changeRole(user: UserWithStats): void {
-    if (!this.canChangeRole(user)) return;
+    if (!this._canChangeRole(user)) return;
 
     const newRole = user.role === Role.ADMIN ? Role.USER : Role.ADMIN;
     this.adminService.updateRole(user.id, newRole).subscribe({
@@ -117,7 +77,8 @@ export class AdminDashboardComponent {
     return role === Role.ADMIN ? 'warn' : 'success';
   }
 
-  //UI
+  // UI
+  //-----
   getDeleteTooltip(user: UserWithStats): string {
     if (this.authService.currentUser()?.id === user.id)
       return this.translocoService.translate('auth.adminDashboard.errors.errorDelSelf');
@@ -131,6 +92,8 @@ export class AdminDashboardComponent {
       return this.translocoService.translate('auth.adminDashboard.errors.errorSelfRole');
     if (DEFAULT_USER_IDS.includes(user.id))
       return this.translocoService.translate('auth.adminDashboard.errors.errorDefRole');
-    return this.getTooltip(user.role);
+    return user.role === Role.ADMIN
+      ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
+      : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
   }
 }

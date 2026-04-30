@@ -38,8 +38,7 @@ export class CityPickerComponent {
   searchQuery = signal('');
   results = signal<City[]>([]);
   loading = signal(false);
-  // viewMode = signal<'search' | 'map' | 'favourites'>('search');
-    viewMode = signal<'search' | 'map' >('search');
+  viewMode = signal<'search' | 'map'>('search');
 
   showFullWarning = signal(false);
 

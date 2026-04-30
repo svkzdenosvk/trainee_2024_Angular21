@@ -54,9 +54,8 @@
               [icon]="user.role === Role.ADMIN ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
               [severity]="user.role === Role.ADMIN ? 'secondary' : 'warn'"
               [text]="true"
-              [pTooltip]="getTooltip(user.role)"
               (onClick)="changeRole(user)"
-              [disabled]="!canChangeRole(user)"
+              [disabled]="!_canChangeRole(user)"
               [pTooltip]="getRoleTooltip(user)"
             />
 
@@ -65,7 +64,7 @@
               severity="danger"
               [text]="true"
               (onClick)="deleteUser(user)"
-              [disabled]="!canDelete(user)"
+              [disabled]="!_canDelete(user)"
               [pTooltip]="getDeleteTooltip(user)"
             />
         

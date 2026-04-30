@@ -3,19 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
-import { User /*, UserWithStats */ } from '../models/user.model';
+import { User } from '../models/user.model';
 import { API_URL } from '../constants/constants';
 import { Role } from '../models/role.enum';
 
 const AUTH_KEY = 'auth_user';
 const TOKEN_KEY = 'auth_token';
-
-// const DEFAULT_USERS = [
-//   { id: '1', username: 'admin', password: 'admin123', role: 'admin' as const },
-//   { id: '2', username: 'user', password: 'user123', role: 'user' as const },
-// ];
-
-// const DEFAULT_USER_IDS = ['1', '2'];
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -30,37 +23,6 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
   }
-
-  // private statsVersion = signal(0);
-  // private registeredUsers = signal<any[]>(this.initUsers());
-
-  // init users from localstorage - if localStorage is empty, insert DEFAULT_USERS
-  // private initUsers(): any[] {
-  //   const stored = JSON.parse(localStorage.getItem(USERS_KEY) ?? '[]');
-  //   if (stored.length === 0) {
-  //     localStorage.setItem(USERS_KEY, JSON.stringify(DEFAULT_USERS));
-  //     return DEFAULT_USERS;
-  //   }
-  //   return stored;
-  // }
-
-  //all users with count of favourites - for admin dashboard
-  // readonly allUsersWithStats = computed<UserWithStats[]>(() => {
-  //   this.statsVersion(); // dependency for refresh
-  //   return this.registeredUsers().map((u) => ({
-  //     id: u.id,
-  //     username: u.username,
-  //     role: u.role,
-  //     favouritesCount: JSON.parse(localStorage.getItem(`favourites_${u.id}`) ?? '[]').length,
-  //   }));
-  // });
-
-  // refreshStats(): void {
-  //   this.statsVersion.update((v) => v + 1);
-  // }
-
-  // readonly isLoggedIn = computed(() => this.currentUser() !== null);
-  // readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 
   login(username: string, password: string) {
     return this.http
@@ -87,62 +49,4 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     this.router.navigate(['/login']);
   }
-
-  // deleteUser(id: string): void {
-  //   const updated = this.registeredUsers().filter((u) => u.id !== id);
-  //   this.registeredUsers.set(updated);
-  //   localStorage.setItem(USERS_KEY, JSON.stringify(updated));
-  //   localStorage.removeItem(`favourites_${id}`);
-  // }
-
-  // updateRole(id: string, role: 'admin' | 'user'): void {
-  //   const updated = this.registeredUsers().map((u) => (u.id === id ? { ...u, role } : u));
-  //   this.registeredUsers.set(updated);
-  //   localStorage.setItem(USERS_KEY, JSON.stringify(updated));
-  // }
-
-  // canChangeRole(targetUser: UserWithStats): boolean {
-  //   const current = this.currentUser();
-  //   if (!current) return false;
-  //   if (current.id === targetUser.id) return false;
-  //   if (DEFAULT_USER_IDS.includes(targetUser.id)) return false;
-  //   return true;
-  // }
-
-  // canDelete(targetUser: UserWithStats): boolean {
-  //   const current = this.currentUser();
-  //   if (!current) return false;
-  //   if (DEFAULT_USER_IDS.includes(targetUser.id)) return false;
-  //   return true;
-  // }
-
-  //login register functions
-  // login(username: string, password: string): boolean {
-  //   const found = this.registeredUsers().find(
-  //     (u) => u.username.toLowerCase() === username.toLowerCase() && u.password === password,
-  //   );
-  //   if (!found) return false;
-  //   const user: User = { id: found.id, username: found.username, role: found.role };
-  //   this.currentUser.set(user);
-  //   localStorage.setItem(AUTH_KEY, JSON.stringify(user));
-  //   return true;
-  // }
-
-  // register(username: string, password: string): boolean {
-  //   const exists = this.registeredUsers().some(
-  //     (u) => u.username.toLowerCase() === username.toLowerCase(),
-  //   );
-  //   if (exists) return false;
-  //   const newUser = { id: Date.now().toString(), username, password, role: 'user' as const };
-  //   const updated = [...this.registeredUsers(), newUser];
-  //   this.registeredUsers.set(updated);
-  //   localStorage.setItem(USERS_KEY, JSON.stringify(updated));
-  //   return true;
-  // }
-
-  // logout(): void {
-  //   this.currentUser.set(null);
-  //   localStorage.removeItem(AUTH_KEY);
-  //   this.router.navigate(['/login']);
-  // }
 }

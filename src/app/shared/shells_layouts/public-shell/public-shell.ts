@@ -14,12 +14,9 @@ import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
   imports: [
     AppNavAuth,
     AppPublicNav,
-    // AppLangSwitcher,
     AppFooter,
     AppHeader,
     RouterOutlet,
-    // RouterLinkActive,
-    // RouterLink,
     TranslocoModule,
   ],
   templateUrl: './public-shell.html',

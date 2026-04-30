@@ -9,7 +9,7 @@ export class WeatherService {
   private readonly http = inject(HttpClient);
   private readonly cityService = inject(CityService);
   private readonly API_URL = 'https://api.open-meteo.com/v1/forecast';
-  
+
   getWeatherData(startDate: string, endDate: string): Observable<WeatherRow[]> {
     const city = this.cityService.selectedCity();
 
@@ -88,8 +88,7 @@ export class WeatherService {
   validateDateRange(range: Date[]): string | null {
     if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
       // return 'Please select a valid date range.';
-            return 'weather.errorValidRange';
-
+      return 'weather.errorValidRange';
     }
     const diffDays = Math.round((range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays > 90) {

@@ -117,6 +117,7 @@
     "passwordPlaceholder": "Enter password",
     "btnLogin": "Sign In",
     "logout": "Sign Out",
+    "defaultCredentials": "Demo credentials",
     "errors": {
       "userExists": "Username already registered.",
       "required": "Please enter username and password.",

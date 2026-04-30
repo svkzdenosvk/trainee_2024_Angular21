@@ -16,7 +16,7 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - ⭐ **Favourites** – Save up to 10 favourite cities with full CRUD operations
 - 🗺️ **OpenStreetMap Integration** – Interactive Leaflet map for city selection
 - 🌐 **Multilingual** – English and Slovak language support (Transloco)
-- 🔐 **Authentication** – Register, login and logout with localStorage-based user management
+- 🔐 **Authentication** – Register, login and logout with JWT-based authentication and NestJS backend
 - 🛡️ **Role-based Authorization** – Admin and user roles with protected routes and admin dashboard
 - 👤 **Admin Dashboard** – Manage users, change roles and delete accounts with PrimeNG data table
 
@@ -30,8 +30,12 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - Input validation (90-day date range limit, coordinate validation, password rules)
 - Shared component architecture (`AppHeader`, `AppFooter`, `PublicNav`, `LangSwitcher`)
 - Centralized language management via `LangService`
-- Per-user favourites stored in localStorage
+- Per-user favourites stored in PostgreSQL via NestJS REST API
+- HTTP interceptor for automatic JWT token injection
+- Role enum for type-safe role management
 - Unit tests with Vitest covering services and guards
+- Geocoding proxy via NestJS backend (CORS bypass)
+- DTO validation with class-validator on backend
 
 ## Tech Stack
 
@@ -51,6 +55,16 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 | Testing | Vitest |
 | Deployment | Netlify |
 
+### Backend
+| Category | Technology |
+|---|---|
+| Framework | NestJS |
+| Database | PostgreSQL (Supabase) |
+| ORM | Prisma 7 |
+| Auth | JWT |
+| Validation | class-validator |
+| Deployment | Render |
+
 ## APIs Used
 
 - **[Open-Meteo](https://open-meteo.com/)** – Free weather forecast & historical data (no API key required)
@@ -62,6 +76,7 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 ### Prerequisites
 - Node.js 22+
 - Angular CLI 21
+- NestJS CLI
 
 ### Installation
 ```bash
@@ -82,8 +97,8 @@ Open [http://localhost:4200](http://localhost:4200) in your browser.
 
 | Username | Password | Role |
 |---|---|---|
-| admin | admin123 | admin |
-| user | user123 | user |
+| admin | Admin123* | admin |
+| user | User123* | user |
 
 > ⚠️ These accounts are seeded from localStorage on first run. Do not use real passwords.
 
@@ -99,13 +114,15 @@ Output will be in `dist/weather-app/browser/`.
 ```
 src/app/
 ├── core/
-│   ├── models/          # TypeScript interfaces (City, WeatherRow, etc.)
-│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService, AuthService, LangService)
-│   └── guards/          # Route guards (CityGuard, AuthGuard, AdminGuard )
+│   ├── constants/       # API URL, default user IDs
+│   ├── models/          # TypeScript interfaces (City, WeatherRow, User, Role)
+│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService,AdminService, AuthService, LangService)
+│   ├── guards/          # Route guards (CityGuard, AuthGuard, AdminGuard )
+│   └── interceptors/    # HTTP interceptors (authInterceptor)
 ├── features/
-│   ├── city-picker/     # Home page with search, map and favourites
+│   ├── city-picker/     # Home page with search and map 
 │   ├── city-map/        # Leaflet map component
-│   ├── favourites/      # Favourites list
+│   ├── favourites/      # Per-user favourites list
 │   ├── weather-table/   # Weather data table
 │   ├── temperature-chart/ # Chart.js temperature chart
 │   └── heat-index-calculator/ # Heat index calculator
@@ -121,8 +138,18 @@ src/app/
 │   |   └── lang-switcher/
     └── shells_layouts/
         ├── app-shell/   # Authenticated layout with navigation
-        └── public-shell/ # Public layout for home page
+        └── public-shell/ # Public layout 
 ```
+
+### Backend
+src/
+├── auth/                # Auth module - register, login, JWT guard
+│   └── dto/             # RegisterDto, LoginDto with validation
+├── admin/               # Admin module - user management
+├── favourites/          # Favourites CRUD
+├── geocoding/           # Geocoding proxy
+├── users/               # User profile management
+└── prisma/              # Prisma service and module
 
 ## Heat Index Formula
 
@@ -132,15 +159,24 @@ Uses the **Rothfusz regression equation** sourced from [weather.gov](https://www
 
 ## Authentication
 
-Authentication is implemented using **localStorage** as a demo backend - no real server is involved. This is intentional for the scope of this trainee project to demonstrate role-based access control patterns in Angular.
+Authentication is implemented using **NestJS + JWT + PostgreSQL** via Supabase.
 
-- Passwords are stored in plain text in localStorage - **not for production use**
-- Admin role is seeded by default and cannot be deleted or demoted
-- Registered users receive the `user` role by default
-- Password requirements: minimum 6 characters, at least one uppercase letter and one digit
+- Passwords are hashed with **bcrypt**
+- JWT token stored in localStorage
+- HTTP interceptor automatically attaches Bearer token to all API requests
+- Admin role cannot be self-assigned during registration
+- Default admin and user accounts are protected from deletion and role changes
+- Password requirements: minimum 6, maximum 128 characters, at least one uppercase letter and one digit
+- Username requirements: minimum 3, maximum 20 characters
+
 
 ## Deployment
 
 Deployed on Netlify with the following configuration:
 - **Build command:** `npm run build`
 - **Publish directory:** `dist/weather-app/browser`
+
+### Backend - Render
+- **Build command:** `npm run build`
+- **Start command:** `node dist/main`
+- Environment variables: `DATABASE_URL`, `JWT_SECRET`
