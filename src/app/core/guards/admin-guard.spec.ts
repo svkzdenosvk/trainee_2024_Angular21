@@ -1,36 +1,39 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { adminGuard } from './admin-guard';
 import { AuthService } from '../services/auth.service';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
-const runGuard = () =>
-  TestBed.runInInjectionContext(() =>
-    adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
-  );
 
 describe('adminGuard', () => {
-  let auth: AuthService;
-  let router: Router;
+  let router: { navigate: ReturnType<typeof vi.fn> };
+  let isLoggedIn: ReturnType<typeof vi.fn>;
+  let isAdmin: ReturnType<typeof vi.fn>;
+
+  const runGuard = () =>
+    TestBed.runInInjectionContext(() => adminGuard({} as any, {} as any));
 
   beforeEach(() => {
-    localStorage.clear();
+    router = { navigate: vi.fn() };
+    isLoggedIn = vi.fn().mockReturnValue(false);
+    isAdmin = vi.fn().mockReturnValue(false);
+
     TestBed.configureTestingModule({
-      providers: [{ provide: Router, useValue: { navigate: vi.fn() } }]
+      providers: [
+        { provide: Router, useValue: router },
+        { provide: AuthService, useValue: { isLoggedIn, isAdmin } },
+      ],
     });
-    auth = TestBed.inject(AuthService);
-    router = TestBed.inject(Router);
   });
 
-  afterEach(() => localStorage.clear());
-
   it('should allow access for admin user', () => {
-    auth.login('admin', 'admin123');
+    isLoggedIn.mockReturnValue(true);
+    isAdmin.mockReturnValue(true);
     expect(runGuard()).toBe(true);
   });
 
   it('should deny access for regular user', () => {
-    auth.login('user', 'user123');
+    isLoggedIn.mockReturnValue(true);
+    isAdmin.mockReturnValue(false);
     expect(runGuard()).toBe(false);
   });
 
@@ -39,7 +42,7 @@ describe('adminGuard', () => {
   });
 
   it('should navigate to / when not admin', () => {
-    auth.login('user', 'user123');
+    isLoggedIn.mockReturnValue(true);
     runGuard();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });

@@ -1,31 +1,32 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { authGuard } from './auth-guard';
 import { AuthService } from '../services/auth.service';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
-const runGuard = () =>
-  TestBed.runInInjectionContext(() =>
-    authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
-  );
 
 describe('authGuard', () => {
-  let auth: AuthService;
-  let router: Router;
+  let router: { navigate: ReturnType<typeof vi.fn> };
+  let isLoggedIn: ReturnType<typeof vi.fn>;
+
+  const runGuard = () =>
+    TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
   beforeEach(() => {
-    localStorage.clear();
+    router = { navigate: vi.fn() };
+    isLoggedIn = vi.fn().mockReturnValue(false);
+
     TestBed.configureTestingModule({
-      providers: [{ provide: Router, useValue: { navigate: vi.fn() } }],
+      providers: [
+        { provide: Router, useValue: router },
+        { provide: AuthService, useValue: { isLoggedIn } },
+      ],
     });
-    auth = TestBed.inject(AuthService);
-    router = TestBed.inject(Router);
   });
 
-  afterEach(() => localStorage.clear());
-
   it('should allow access when logged in', () => {
-    auth.login('user', 'user123');
+    isLoggedIn.mockReturnValue(true);
     expect(runGuard()).toBe(true);
   });
 
