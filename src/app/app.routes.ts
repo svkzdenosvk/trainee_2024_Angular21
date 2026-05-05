@@ -10,6 +10,11 @@ export const routes: Routes = [
       import('./shared/shells_layouts/public-shell/public-shell').then((m) => m.PublicShell),
     children: [
       {
+        path: 'profile',
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/profile/profile').then((m) => m.ProfileComponent),
+      },
+      {
         path: 'favourites',
         canActivate: [authGuard],
         loadComponent: () =>
@@ -38,9 +43,19 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
-         canActivate: [authGuard, adminGuard],
+        canActivate: [authGuard, adminGuard],
         loadComponent: () =>
-          import('./features/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboardComponent),
+          import('./features/admin-dashboard/admin-dashboard').then(
+            (m) => m.AdminDashboardComponent,
+          ),
+      },
+      {
+        path: 'admin/users/:id/edit',
+        canActivate: [authGuard, adminGuard],
+        loadComponent: () =>
+          import('./features/admin-user-edit/admin-user-edit').then(
+            (m) => m.AdminUserEditComponent,
+          ),
       },
     ],
   },

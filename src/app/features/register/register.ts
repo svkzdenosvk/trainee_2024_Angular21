@@ -6,6 +6,7 @@ import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
+import { validatePassword, validateUsername } from '../../core/utils/validators';
 
 @Component({
   selector: 'app-register',
@@ -28,40 +29,25 @@ export class RegisterComponent {
 
   register(): void {
     if (!this.username().trim() || !this.password().trim()) {
-      this.error.set('auth.errors.required');
+      this.error.set('auth.required');
       return;
     }
 
-    if (this.username().trim().length < 3) {
-      this.error.set('auth.register.errors.usernameTooShort');
+    //username validator
+    const usernameError = validateUsername(this.username());
+    if (usernameError) {
+      this.error.set(usernameError);
       return;
     }
 
-    if (this.username().trim().length > 20) {
-      this.error.set('auth.register.errors.usernameTooLong');
+    // password valdiator
+    const passwordError = validatePassword(this.password());
+    if (passwordError) {
+      this.error.set(passwordError);
       return;
     }
-
     if (this.password() !== this.confirmPassword()) {
-      this.error.set('auth.register.errors.passwordMismatch');
-      return;
-    }
-
-    if (this.password().length < 6) {
-      this.error.set('auth.register.errors.passwordTooShort');
-      return;
-    }
-    if (this.password().length > 128) {
-      this.error.set('auth.register.errors.passwordTooLong');
-      return;
-    }
-    if (!/[A-Z]/.test(this.password())) {
-      this.error.set('auth.register.errors.passwordNeedsUppercase');
-      return;
-    }
-
-    if (!/[0-9]/.test(this.password())) {
-      this.error.set('auth.register.errors.passwordNeedsNumber');
+      this.error.set('auth.errors.passwordMismatch');
       return;
     }
 

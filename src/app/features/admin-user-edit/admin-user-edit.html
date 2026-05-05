@@ -1,0 +1,54 @@
+<div class="profile-container">
+  <h2>
+    <i class="pi pi-user-edit"></i>
+    {{ 'auth.edit.adminEdit.title' | transloco }}
+  </h2>
+
+  @if (isDefaultUserProtected()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ 'auth..edit.profile.errors.defaultUser' | transloco }}
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ error() | transloco }}
+    </div>
+  }
+
+  @if (success()) {
+    <div class="success-banner">
+      <i class="pi pi-check"></i>
+      {{ 'auth.edit.profile.success' | transloco }}
+    </div>
+  }
+
+  <div class="form-group">
+    <label>{{ 'auth.edit.profile.username' | transloco }}</label>
+    <input
+      pInputText
+      [ngModel]="username()"
+      (ngModelChange)="username.set($event)"
+      [disabled]="isDefaultUserProtected()"
+    />
+  </div>
+
+  <div class="actions">
+    <p-button
+      [label]="'auth.edit.profile.save' | transloco"
+      [loading]="loading()"
+       [pTooltip]="getSaveTooltip()"
+
+      [disabled]="!hasChanges || loading() || isDefaultUserProtected()"
+      (onClick)="save()"
+    />
+    <p-button
+      [label]="'auth.edit.adminEdit.cancel' | transloco"
+      severity="secondary"
+      [text]="true"
+      (onClick)="cancel()"
+    />
+  </div>
+</div>

@@ -37,7 +37,7 @@
       <tr>
         <td>
           <i class="pi pi-user"></i> {{ user.username }}
-          @if (isDefaultUser(user)) {
+          @if (isDefaultUser(user.id)) {
             <p-tag value="default" severity="secondary" styleClass="ml-2" />
           }
         </td>
@@ -67,7 +67,14 @@
               [disabled]="!_canDelete(user)"
               [pTooltip]="getDeleteTooltip(user)"
             />
-        
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              [text]="true"
+              [pTooltip]="getEditTooltip(user)"
+              (onClick)="editUser(user)"
+              [disabled]="!_canEdit(user)"
+            />
           </div>
         </td>
       </tr>

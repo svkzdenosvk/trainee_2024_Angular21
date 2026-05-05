@@ -4,7 +4,8 @@
     "weather": "Počasie",
     "temperatureChart": "Graf teploty",
     "heatIndex": "Index tepla",
-    "favourites": "Obľúbené"
+    "favourites": "Obľúbené",
+    "profile": "Účet"
   },
   "header": {
     "title": "Počasie",
@@ -117,11 +118,18 @@
     "passwordPlaceholder": "Zadajte heslo",
     "btnLogin": "Prihlásiť sa",
     "logout": "Odhlásiť sa",
-    "defaultCredentials":"Ukážkové prihlasovacie údaje",
+    "defaultCredentials": "Ukážkové prihlasovacie údaje",
     "errors": {
-      "userExists": "Užívateľ je už zaregistrovaný.",
       "required": "Prosím zadajte meno a heslo.",
-      "invalid": "Nesprávne meno alebo heslo."
+      "invalid": "Nesprávne meno alebo heslo.",
+      "passwordNeedsUppercase": "Heslo musí obsahovat alespoň jedno velké písmeno.",
+      "passwordNeedsNumber": "Heslo musí obsahovat alespoň jedno číslo.",
+      "passwordMismatch": "Heslá sa nezhodujú.",
+      "passwordTooShort": "Heslo musí mať aspoň 6 znakov.",
+      "userExists": "Používateľské meno je už zaregistrovane",
+      "usernameTooShort": "Používateľské meno musí mať aspoň 3 znaky.",
+      "usernameTooLong": "Používateľské meno nesmie presiahnuť dĺžku 20 znakov.",
+      "passwordTooLong": "Heslo nesmie presiahnuť dĺžku 128 znakov."
     },
     "register": {
       "registerTitle": "Vytvoriť účet",
@@ -131,16 +139,6 @@
       "confirmPassword": "Potvrďte heslo",
       "confirmPasswordPlaceholder": "Potvrďte vaše heslo",
       "haveAccount": "Už máte účet?",
-      "errors": {
-        "passwordNeedsUppercase": "Heslo musí obsahovat alespoň jedno velké písmeno.",
-        "passwordNeedsNumber": "Heslo musí obsahovat alespoň jedno číslo.",
-        "passwordMismatch": "Heslá sa nezhodujú.",
-        "passwordTooShort": "Heslo musí mať aspoň 6 znakov.",
-        "userExists": "Používateľské meno už existuje.",
-        "usernameTooShort": "Používateľské meno musí mať aspoň 3 znaky.",
-        "usernameTooLong": "Používateľské meno nesmie presiahnuť dĺžku 20 znakov.",
-        "passwordTooLong": "Heslo nesmie presiahnuť dĺžku 128 znakov."
-      },
       "btnRegister": "Registrovať"
     },
     "adminDashboard": {
@@ -152,6 +150,7 @@
       "roleDowngrade": "Znížiť na používateľa",
       "roleUpgrade": "Povýšiť na správcu",
       "deleteBtn": "Vymazať používateľa",
+      "editBtn": "Editovať používateľa",
       "confirmDelete": "Ste si istý, že chcete odstrániť tohto používateľa?",
       "noUsers": "Neboli nájdení žiadni registrovaní používatelia.",
       "errors": {
@@ -160,7 +159,29 @@
         "deleteFailed": "Nepodarilo sa vymazať používateľa",
         "errorDefRole": "Nemožno zmeniť rolu predvoleného používateľa.",
         "errorSelfRole": "Nemožno zmeniť rolu samého seba.",
-        "roleFailed": "Nepodarilo sa zmeniť rolu používateľa"
+        "roleFailed": "Nepodarilo sa zmeniť rolu používateľa",
+        "errorDefEdit": "Nemožno editovať predvoleného používateľa.",
+        "errorAdminEdit": "Nemožno editovať iného správcu.",
+        "adminEditFailed": "Nepodarilo sa zmeniť meno užívateľa."
+      }
+    },
+    "edit": {
+      "adminEdit": {
+        "title": "Editácia používateľa",
+        "cancel": "Naspäť"
+      },
+      "profile": {
+        "title": "Účet",
+        "username": "Používateľské meno",
+        "changePassword": "Zmena hesla",
+        "password": "Súčasné heslo",
+        "newPassword": "Nové heslo",
+        "confirmNewPass": "Potvrďte heslo",
+        "save": "Uložiť zmeny",
+        "success": "Zmena prebehla úspešne",
+        "errors": {
+          "defaultUser": "Nemožno editovať default usera"
+        }
       }
     }
   },

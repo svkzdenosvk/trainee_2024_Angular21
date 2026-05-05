@@ -10,6 +10,10 @@
       <i class="pi pi-star"></i>
       {{ 'nav.favourites' | transloco }}
     </a>
+    <a routerLink="/profile" routerLinkActive="active">
+      <i class="pi pi-user-edit"></i>
+      {{ 'nav.profile' | transloco }}
+    </a>
   }
   @if (authService.isAdmin()) {
     <a routerLink="/admin" routerLinkActive="active">

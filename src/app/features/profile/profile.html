@@ -1,0 +1,78 @@
+<div class="profile-container">
+  <h2><i class="pi pi-user-edit"></i> {{ 'auth.edit.profile.title' | transloco }}</h2>
+
+  @if (error()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ error() | transloco }}
+    </div>
+  }
+
+  @if (success()) {
+    <div class="success-banner">
+      <i class="pi pi-check"></i>
+      {{ 'auth.edit.profile.success' | transloco }}
+    </div>
+  }
+
+  <div class="form-group">
+    <label>{{ 'auth.edit.profile.username' | transloco }}</label>
+    <input pInputText [ngModel]="username()" (ngModelChange)="username.set($event)" />
+  </div>
+
+  <div class="section-divider">
+    <span>{{ 'auth.edit.profile.changePassword' | transloco }}</span>
+  </div>
+
+  <div class="form-group">
+    <label>{{ 'auth.edit.profile.password' | transloco }}</label>
+    <div class="input-wrapper">
+      <input
+        pInputText
+        [type]="showPassword() ? 'text' : 'password'"
+        [ngModel]="currentPassword()"
+        (ngModelChange)="currentPassword.set($event)"
+      />
+      <button class="eye-btn" type="button" (click)="showPassword.set(!showPassword())">
+        <i [class]="'pi ' + (showPassword() ? 'pi-eye-slash' : 'pi-eye')"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>{{ 'auth.edit.profile.newPassword' | transloco }}</label>
+    <div class="input-wrapper">
+      <input
+        pInputText
+        [type]="showNewPassword() ? 'text' : 'password'"
+        [ngModel]="newPassword()"
+        (ngModelChange)="newPassword.set($event)"
+      />
+      <button class="eye-btn" type="button" (click)="showNewPassword.set(!showNewPassword())">
+        <i [class]="'pi ' + (showNewPassword() ? 'pi-eye-slash' : 'pi-eye')"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>{{ 'auth.edit.profile.confirmNewPass' | transloco }}</label>
+    <div class="input-wrapper">
+      <input
+        pInputText
+        type="password"
+        [ngModel]="confirmNewPassword()"
+        (ngModelChange)="confirmNewPassword.set($event)"
+      />
+    </div>
+  </div>
+
+  <div class="actions">
+    <p-button
+      [label]="'auth.edit.profile.save' | transloco"
+      [loading]="loading()"
+      [disabled]="!hasChanges || loading()|| isDefaultUser()"
+      [pTooltip]="isDefaultUser() ? ('auth.edit.profile.errors.defaultUser' | transloco) : ''"
+      (onClick)="save()"
+    />
+  </div>
+</div>
