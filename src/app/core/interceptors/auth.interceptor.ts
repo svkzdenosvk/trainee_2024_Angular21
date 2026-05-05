@@ -14,13 +14,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(cloned).pipe(
       //when token is expired but user is still in localstorage - res 401 -> so force to logout
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        //the first solution
+        // // if (error.status === 401) {
+        //the second solution
+        // if (error.status === 401 && !req.url.includes('/auth/') && !req.url.includes('/users/me')) {
+        //   authService.logout();
+        // }
+        const isPasswordChange = req.url.includes('/users/me') && req.method === 'PATCH';
+        if (error.status === 401 && !isPasswordChange) {
           authService.logout();
         }
         return throwError(() => error);
-      })
+      }),
     );
-  };
+  }
 
   return next(req);
 };

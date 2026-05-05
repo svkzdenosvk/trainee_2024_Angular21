@@ -4,16 +4,27 @@ import { UserWithStats } from '../models/user.model';
 import { Role } from '../models/role.enum';
 import { API_URL } from '../constants/constants';
 
-
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private readonly http = inject(HttpClient);
 
   users = signal<UserWithStats[]>([]);
+  loading = signal(false);
+
+  // loadUsers(): void {
+  //   this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe(data => {
+  //     this.users.set(data);
+  //   });
+  // }
 
   loadUsers(): void {
-    this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe(data => {
-      this.users.set(data);
+    this.loading.set(true);
+    this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe({
+      next: (data) => {
+        this.users.set(data);
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
     });
   }
 

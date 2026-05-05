@@ -70,8 +70,8 @@
     <p-button
       [label]="'auth.edit.profile.save' | transloco"
       [loading]="loading()"
-      [disabled]="!hasChanges || loading()|| isDefaultUser()"
-      [pTooltip]="isDefaultUser() ? ('auth.edit.profile.errors.defaultUser' | transloco) : ''"
+      [disabled]="!hasChanges || loading() || isDefaultUser()"
+      [pTooltip]="getSaveTooltip()"
       (onClick)="save()"
     />
   </div>

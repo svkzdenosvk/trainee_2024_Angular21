@@ -9,7 +9,7 @@ export function validatePassword(password: string): string | null {
 
 //username validator 
 export function validateUsername(username: string): string | null {
-  if (username.trim().length < 3) return 'auth.register.errors.usernameTooShort';
-  if (username.trim().length > 20) return 'auth.register.errors.usernameTooLong';
+  if (username.trim().length < 3) return 'auth.errors.usernameTooShort';
+  if (username.trim().length > 20) return 'auth.errors.usernameTooLong';
   return null;
 }

@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
   protected readonly authService = inject(AuthService);
   protected readonly adminService = inject(AdminService);
   protected readonly Role = Role;
@@ -28,6 +28,7 @@ export class AdminDashboardComponent {
   private readonly router = inject(Router);
 
   errorMessage = signal<string | null>(null);
+  loading = signal(true);
 
   ngOnInit(): void {
     this.adminService.loadUsers();
@@ -41,7 +42,7 @@ export class AdminDashboardComponent {
   _canDelete(user: UserWithStats): boolean {
     if (this.authService.currentUser()?.id === user.id) return false;
     if (isDefaultUser(user.id)) return false;
-
+    if (user.role === Role.ADMIN) return false;
     return true;
   }
 
@@ -82,19 +83,12 @@ export class AdminDashboardComponent {
     this.router.navigate(['/admin/users', user.id, 'edit']);
   }
 
-  // _canEdit(user: UserWithStats): boolean {
-
-  //   if (isDefaultUser(user.id)) return false;
-  //   if (this.authService.currentUser()?.id === user.id) return true;
-  //   if (user.role === Role.ADMIN) return false;
-  //   return true;
-  // }
-
   _canEdit(user: UserWithStats): boolean {
     if (isDefaultUser(user.id)) return false;
     if (this.authService.currentUser()?.id !== user.id && user.role === Role.ADMIN) return false;
     return true;
   }
+
   // UI
   //-----
   getDeleteTooltip(user: UserWithStats): string {
@@ -102,6 +96,8 @@ export class AdminDashboardComponent {
       return this.translocoService.translate('auth.adminDashboard.errors.errorDelSelf');
     if (isDefaultUser(user.id))
       return this.translocoService.translate('auth.adminDashboard.errors.errorDelDefault');
+    if (user.role === Role.ADMIN && this.authService.currentUser()?.id !== user.id)
+      return this.translocoService.translate('auth.adminDashboard.errors.errorDelAdmin');
     return this.translocoService.translate('auth.adminDashboard.deleteBtn');
   }
 
@@ -114,17 +110,6 @@ export class AdminDashboardComponent {
       ? this.translocoService.translate('auth.adminDashboard.roleDowngrade')
       : this.translocoService.translate('auth.adminDashboard.roleUpgrade');
   }
-
-  // getEditTooltip(user: UserWithStats): string {
-  //   if (this.authService.currentUser()?.id === user.id)
-  //     return this.translocoService.translate('auth.adminDashboard.edit');
-  //   if (isDefaultUser(user.id))
-  //     return this.translocoService.translate('auth.adminDashboard.errors.errorDefEdit');
-  //   if (user.role === Role.ADMIN)
-  //     return this.translocoService.translate('auth.adminDashboard.errors.errorAdminEdit');
-
-  //   return this.translocoService.translate('auth.adminDashboard.edit');
-  // }
 
   getEditTooltip(user: UserWithStats): string {
     if (isDefaultUser(user.id))

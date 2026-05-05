@@ -19,6 +19,8 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - 🔐 **Authentication** – Register, login and logout with JWT-based authentication and NestJS backend
 - 🛡️ **Role-based Authorization** – Admin and user roles with protected routes and admin dashboard
 - 👤 **Admin Dashboard** – Manage users, change roles and delete accounts with PrimeNG data table
+- ✏️ **User Profile Edit** – Logged-in users can update their username and password
+- 👤 **Admin User Edit** – Admins can edit usernames of non-admin, non-default users
 
 
 ### Technical Features
@@ -36,6 +38,10 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - Unit tests with Vitest covering services and guards
 - Geocoding proxy via NestJS backend (CORS bypass)
 - DTO validation with class-validator on backend
+- Auto-logout on expired JWT token via HTTP interceptor
+- Default user protection - built-in accounts cannot be edited or deleted
+- Multi-layer security - UI guards + Angular service guards + NestJS backend validation
+- User profile management with password validation and change detection
 
 ## Tech Stack
 
@@ -128,6 +134,8 @@ src/app/
 │   └── heat-index-calculator/ # Heat index calculator
 │   ├── login/           # Login page
 │   ├── register/        # Registration with password validation
+│   ├── profile/         # User profile edit page
+│   ├── admin-user-edit/ # Admin edit user page
 │   └── admin/           # Admin dashboard - user management
 └── shared/
     ├── components/      # Reusable UI components
@@ -168,7 +176,9 @@ Authentication is implemented using **NestJS + JWT + PostgreSQL** via Supabase.
 - Default admin and user accounts are protected from deletion and role changes
 - Password requirements: minimum 6, maximum 128 characters, at least one uppercase letter and one digit
 - Username requirements: minimum 3, maximum 20 characters
-
+- Expired JWT tokens trigger automatic logout via HTTP interceptor
+- Default accounts (admin/user) are protected from editing and deletion on both frontend and backend
+- Admins cannot edit or delete other admin accounts
 
 ## Deployment
 

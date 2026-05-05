@@ -39,8 +39,7 @@
     <p-button
       [label]="'auth.edit.profile.save' | transloco"
       [loading]="loading()"
-       [pTooltip]="getSaveTooltip()"
-
+      [pTooltip]="getSaveTooltip()"
       [disabled]="!hasChanges || loading() || isDefaultUserProtected()"
       (onClick)="save()"
     />

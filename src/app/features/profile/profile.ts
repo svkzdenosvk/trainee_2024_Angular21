@@ -4,11 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { API_URL } from '../../core/constants/constants';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { validatePassword, validateUsername} from '../../core/utils/validators';
+import { validatePassword, validateUsername } from '../../core/utils/validators';
 import { isDefaultUser } from '../../core/utils/def_user.utils';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
   private readonly http = inject(HttpClient);
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly translocoService = inject(TranslocoService);
   protected readonly isDefaultUser = computed(() =>
     isDefaultUser(this.authService.currentUser()?.id),
   );
@@ -42,7 +43,7 @@ export class ProfileComponent implements OnInit {
     if (user) this.username.set(user.username);
   }
 
-  //check this f with AI .. to check if it means nochanges -> no save?!
+  // if something has been changed
   get hasChanges(): boolean {
     const user = this.authService.currentUser();
     return this.username() !== user?.username || !!this.newPassword();
@@ -54,7 +55,7 @@ export class ProfileComponent implements OnInit {
     //password validation
     if (this.newPassword()) {
       if (this.newPassword() !== this.confirmNewPassword()) {
-        this.error.set('profile.errors.passwordMismatch');
+        this.error.set('auth.errors.passwordMismatch');
         return;
       }
 
@@ -65,7 +66,7 @@ export class ProfileComponent implements OnInit {
       }
 
       if (!this.currentPassword()) {
-        this.error.set('profile.errors.currentPasswordRequired');
+        this.error.set('edit.profile.errors.currentPasswordRequired');
         return;
       }
     }
@@ -75,10 +76,6 @@ export class ProfileComponent implements OnInit {
       this.error.set(usernameError);
       return;
     }
-    // if (this.username().trim().length < 3) {
-    //   this.error.set('profile.errors.usernameTooShort');
-    //   return;
-    // }
 
     const body: any = {};
     const currentUser = this.authService.currentUser();
@@ -105,11 +102,20 @@ export class ProfileComponent implements OnInit {
           setTimeout(() => this.success.set(false), 3000);
         },
         error: (err) => {
-          if (err.status === 409) this.error.set('profile.errors.usernameTaken');
-          else if (err.status === 401) this.error.set('profile.errors.invalidCurrentPassword');
-          else this.error.set('profile.errors.updateFailed');
+          if (err.status === 409) this.error.set('auth.errors.userExists');
+          else if (err.status === 401) this.error.set('auth.edit.profile.errors.invalidCurrentPassword');
+          else this.error.set('edit.profile.errors.updateFailed');
           this.loading.set(false);
         },
       });
+  }
+
+  //UI
+  getSaveTooltip(): string {
+    if (this.isDefaultUser())
+      return this.translocoService.translate('auth.edit.profile.errors.defaultUser');
+    if (!this.hasChanges)
+      return this.translocoService.translate('auth.edit.profile.errors.noChanges');
+    return '';
   }
 }

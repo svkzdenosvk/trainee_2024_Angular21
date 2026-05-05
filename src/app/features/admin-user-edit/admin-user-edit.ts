@@ -8,7 +8,6 @@ import { Button } from 'primeng/button';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { API_URL } from '../../core/constants/constants';
 import { validateUsername } from '../../core/utils/validators';
-import { UserWithStats } from '../../core/models/user.model';
 import { isDefaultUser } from '../../core/utils/def_user.utils';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../core/services/auth.service';
@@ -103,17 +102,12 @@ export class AdminUserEditComponent implements OnInit {
     this.router.navigate(['/admin']);
   }
 
-  // //UI
-  // getSaveTooltip(user: UserWithStats): string {
-  //   if (isDefaultUser(user.id))
-  //     return this.translocoService.translate('auth.edit.profile.defaultUser');
-  //   if (user.role === Role.ADMIN && this.authService.currentUser()?.id !== user.id)
-  //     return this.translocoService.translate('auth.adminDashboard.errors.errorAdminEdit');
-  //   return this.translocoService.translate('auth.edit.profile.save');
-  // }
+  // UI
   getSaveTooltip(): string {
     if (this.isDefaultUserProtected())
       return this.translocoService.translate('auth.edit.profile.defaultUser');
-    return this.translocoService.translate('auth.edit.profile.save');
+    if (!this.hasChanges)
+      return this.translocoService.translate('auth.edit.profile.errors.noChanges');
+    return '';
   }
 }
