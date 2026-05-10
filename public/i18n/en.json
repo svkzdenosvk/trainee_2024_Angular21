@@ -124,6 +124,7 @@
       "invalid": "Invalid username or password.",
       "passwordNeedsUppercase": "Password must contain at least one uppercase letter.",
       "passwordNeedsNumber": "Password must contain at least one number.",
+      "passwordNeedsSpecChar": "Password must contain at least one number special character.",
       "passwordMismatch": "Passwords do not match.",
       "passwordTooShort": "Password must be at least 6 characters.",
       "userExists": "Username already registered.",
@@ -164,7 +165,7 @@
         "roleFailed": "Failed to update role.",
         "errorDefEdit": "Cannot edit default users.",
         "errorAdminEdit": "Cannot edit other admin.",
-        "adminEditFailed": "Nepodarilo sa zmeniť meno užívateľa."
+        "adminEditFailed": "Failed to update user name."
       }
     },
     "edit": {
@@ -186,7 +187,8 @@
           "currentPasswordRequired": "Current password is required",
           "updateFailed": "Error occurs, update failed",
           "invalidCurrentPassword": "Current password is invalid",
-          "noChanges": "No changes to save"
+          "noChanges": "No changes to save",
+          "confirmRequired": "Please confirm the new password"
         }
       }
     }

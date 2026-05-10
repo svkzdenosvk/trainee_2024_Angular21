@@ -1,19 +1,17 @@
-<div class="login-container">
-  <div class="login-card">
-    <div class="login-header">
-      <div class="login-icon">🔐</div>
+<div class="log-reg-container">
+  <div class="log-reg-card">
+    <div class="log-reg-header">
+      <div class="log-reg-icon">🔐</div>
       <h2>{{ 'auth.title' | transloco }}</h2>
-      <!-- <p>{{ 'auth.subtitle' | transloco }}</p> -->
     </div>
 
-    <div class="login-form">
+    <form class="log-reg-form" [formGroup]="form">
       <div class="form-group">
         <label>{{ 'auth.username' | transloco }}</label>
         <input
           pInputText
           type="text"
-          [ngModel]="username()"
-          (ngModelChange)="username.set($event)"
+          formControlName="username"
           [placeholder]="'auth.usernamePlaceholder' | transloco"
         />
       </div>
@@ -24,8 +22,7 @@
           <input
             pInputText
             [type]="showPassword() ? 'text' : 'password'"
-            [ngModel]="password()"
-            (ngModelChange)="password.set($event)"
+            formControlName="password"
             [placeholder]="'auth.passwordPlaceholder' | transloco"
           />
           <button
@@ -49,13 +46,14 @@
       <p-button
         [label]="'auth.btnLogin' | transloco"
         icon="pi pi-sign-in"
-        styleClass="login-btn"
+        styleClass="log-reg-btn"
         [loading]="loading()"
+        [disabled]="form.invalid || loading()"
         (onClick)="login()"
       />
-    </div>
+    </form>
 
-    <div class="login-hint">
+    <div class="log-reg-hint">
       <p>{{ 'auth.defaultCredentials' | transloco }}:</p>
       <code>admin / Admin123*</code>
       <code>user / User123*</code>

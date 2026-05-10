@@ -1,4 +1,4 @@
-<div class="profile-container">
+<!-- <div class="profile-container">
   <h2>
     <i class="pi pi-user-edit"></i>
     {{ 'auth.edit.adminEdit.title' | transloco }}
@@ -50,4 +50,55 @@
       (onClick)="cancel()"
     />
   </div>
+</div> -->
+
+<div class="profile-container">
+  <h2>
+    <i class="pi pi-user-edit"></i>
+    {{ 'auth.edit.adminEdit.title' | transloco }}
+  </h2>
+
+  @if (error()) {
+    <div class="error-banner">
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ error() | transloco }}
+    </div>
+  }
+
+  @if (success()) {
+    <div class="success-banner">
+      <i class="pi pi-check"></i>
+      {{ 'auth.edit.profile.success' | transloco }}
+    </div>
+  }
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label>{{ 'auth.edit.profile.username' | transloco }}</label>
+      <input
+        pInputText
+        formControlName="username"
+        [disabled]="isDefaultUserProtected()"
+      />
+      @if (getFieldError('username')) {
+        <small class="field-error">{{ getFieldError('username') | transloco }}</small>
+      }
+    </div>
+
+    <div class="actions">
+      <p-button
+        [label]="'auth.edit.profile.save' | transloco"
+        [loading]="loading()"
+        [pTooltip]="getSaveTooltip()"
+        [disabled]="!hasChanges || loading() || isDefaultUserProtected() || form.invalid"
+        (onClick)="save()"
+      />
+      <p-button
+        [label]="'auth.edit.adminEdit.cancel' | transloco"
+        severity="secondary"
+        [text]="true"
+        (onClick)="cancel()"
+      />
+    </div>
+  </form>
 </div>

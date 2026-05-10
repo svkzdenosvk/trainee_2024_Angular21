@@ -1,19 +1,16 @@
-@use '../../shared/scss/login-reg' as *;
+@use '../../shared/scss/_login-reg' as *;
+@use '../../shared/scss/_forms' as *;
 
 .success-banner {
   background: rgba(34, 197, 94, 0.1);
   border: 1px solid rgba(34, 197, 94, 0.3);
   color: #22c55e;
   padding: 1rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   justify-content: center;
   font-weight: 500;
 }
 
-.login-link {
+.log-reg-link {
   text-align: center;
   font-size: 0.85rem;
   color: #475569;

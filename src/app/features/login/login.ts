@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
@@ -11,7 +10,7 @@ import { FavouritesService } from '../../core/services/favourites.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputText, Button, TranslocoModule],
+  imports: [ReactiveFormsModule, InputText, Button, TranslocoModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
 })
@@ -20,14 +19,19 @@ export class LoginComponent {
   private readonly router = inject(Router);
   private readonly favouritesService = inject(FavouritesService);
 
-  username = signal('');
-  password = signal('');
+  // signals ostávajú len pre UI stav
   error = signal<string | null>(null);
   loading = signal(false);
   showPassword = signal(false);
 
+  // FormGroup nahrádza username/password signaly
+  form = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+
   login(): void {
-    if (!this.username().trim() || !this.password().trim()) {
+    if (this.form.invalid) {
       this.error.set('auth.errors.required');
       return;
     }
@@ -35,7 +39,9 @@ export class LoginComponent {
     this.loading.set(true);
     this.error.set(null);
 
-    this.authService.login(this.username(), this.password()).subscribe({
+    const { username, password } = this.form.value;
+
+    this.authService.login(username!, password!).subscribe({
       next: () => {
         this.favouritesService.reloadForUser();
         this.router.navigate(['/']);
