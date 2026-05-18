@@ -83,7 +83,9 @@
 
     .search-input {
       padding-left: 2.2rem !important;
-      width: 280px;
+      // width: 280px;
+       width: 100%;
+  max-width: 280px;
     }
   }
 }
