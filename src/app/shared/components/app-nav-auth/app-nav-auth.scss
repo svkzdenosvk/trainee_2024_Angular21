@@ -1,15 +1,31 @@
 //login-register buttons
 @use '../../scss/_theme-btn';
 
-.nav-action-auth {
+/* Default: stacked layout — login block on top, language buttons below */
+.nav-action-auth-wrapper {
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding-right: 0.5rem;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
   margin: 0.5rem 2rem 0 0;
 
-  span {
-    color: #60a5fa;
+  .nav-action-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    justify-content: flex-end;
+
+    span {
+      color: #60a5fa;
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
   }
 }
+
+/* Mobile-specific overrides removed — the stacked layout is the default for all widths */

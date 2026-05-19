@@ -1,6 +1,7 @@
-<div class="nav-action-auth">
-  
-  @if (authService.isLoggedIn()) {
+<div class="nav-action-auth-wrapper">
+  <div class="nav-action-auth">
+    
+    @if (authService.isLoggedIn()) {
     <span class="username-label">
       <i class="pi pi-user"></i>
       {{ authService.currentUser()?.username }}
@@ -19,4 +20,8 @@
       {{ 'auth.register.btnRegister' | transloco }}
     </button>
   }
+  
+  </div>
+
+  <app-lang-switcher />
 </div>

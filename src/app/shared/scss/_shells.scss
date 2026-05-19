@@ -15,10 +15,18 @@ main {
 
 .app-nav {
   display: flex;
-  gap: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
   border-bottom: 1px solid #1e293b;
   margin: 0rem 2rem 1.5rem 2rem;
   // padding: 0rem 2rem 1.5rem 2rem;
+
+  a,
+  > .nav-actions {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
 
   a {
     padding: 0.75rem 1.5rem;
@@ -39,6 +47,22 @@ main {
       color: #60a5fa;
       border-bottom-color: #60a5fa;
     }
+  }
+}
+
+@media (max-width: 350px) {
+  .app-nav {
+    align-items: stretch;
+  }
+
+  .app-nav a,
+  .app-nav > .nav-actions {
+    flex: 1 1 100%;
+  }
+
+  .app-nav > .nav-actions {
+    margin-left: 0;
+    justify-content: flex-start;
   }
 }
 
