@@ -8,7 +8,7 @@ import { API_URL } from '../constants/constants';
 import { Role } from '../models/role.enum';
 
 const AUTH_KEY = 'auth_user';
-const TOKEN_KEY = 'auth_token';
+// const TOKEN_KEY = 'auth_token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -20,33 +20,78 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this.currentUser() !== null);
   readonly isAdmin = computed(() => this.currentUser()?.role === Role.ADMIN);
 
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
-  }
+  // getToken(): string | null {
+  //   return localStorage.getItem(TOKEN_KEY);
+  // }
 
-  login(username: string, password: string) {
+  // triggered on app init to check if user is still logged in (token is valid) and update currentUser signal accordingly
+  checkAuth() {
     return this.http
-      .post<{ access_token: string; user: User }>(`${API_URL}/auth/login`, { username, password })
+      .get<{ isLoggedIn: boolean; user?: User }>(`${API_URL}/auth/me`, { withCredentials: true })
       .pipe(
         tap((res) => {
-          this.currentUser.set(res.user);
-          localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
-          localStorage.setItem(TOKEN_KEY, res.access_token);
+          if (res.isLoggedIn && res.user) {
+            this.currentUser.set(res.user);
+            localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+          } else {
+            this.currentUser.set(null);
+            localStorage.removeItem(AUTH_KEY);
+          }
         }),
       );
   }
 
-  register(username: string, password: string) {
-    return this.http.post<{ message: string; userId: string }>(`${API_URL}/auth/register`, {
-      username,
-      password,
-    });
+  // login(username: string, password: string) {
+  //   return this.http
+  //     .post<{ access_token: string; user: User }>(`${API_URL}/auth/login`, { username, password })
+  //     .pipe(
+  //       tap((res) => {
+  //         this.currentUser.set(res.user);
+  //         localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+  //         localStorage.setItem(TOKEN_KEY, res.access_token);
+  //       }),
+  //     );
+  // }
+
+  login(username: string, password: string) {
+    return this.http
+      .post<{
+        user: User;
+      }>(`${API_URL}/auth/login`, { username, password }, { withCredentials: true })
+      .pipe(
+        tap((res) => {
+          this.currentUser.set(res.user);
+          localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+        }),
+      );
   }
 
+  // register(username: string, password: string) {
+  //   return this.http.post<{ message: string; userId: string }>(`${API_URL}/auth/register`, {
+  //     username,
+  //     password,
+  //   });
+  // }
+
+  register(username: string, password: string) {
+    return this.http.post<{ message: string; userId: string }>(
+      `${API_URL}/auth/register`,
+      { username, password },
+      { withCredentials: true },
+    );
+  }
+
+  // logout(): void {
+  //   this.currentUser.set(null);
+  //   localStorage.removeItem(AUTH_KEY);
+  //   localStorage.removeItem(TOKEN_KEY);
+  //   this.router.navigate(['/login']);
+  // }
+
   logout(): void {
+    this.http.get(`${API_URL}/auth/logout`, { withCredentials: true }).subscribe();
     this.currentUser.set(null);
     localStorage.removeItem(AUTH_KEY);
-    localStorage.removeItem(TOKEN_KEY);
     this.router.navigate(['/login']);
   }
 }

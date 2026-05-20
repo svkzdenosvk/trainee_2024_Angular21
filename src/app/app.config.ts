@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode,provideAppInitializer, inject  } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 
 // Nora theme
@@ -12,11 +12,18 @@ import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
+import { AuthService } from './core/services/auth.service';
+import { firstValueFrom } from 'rxjs';
+
+function initAuth(authService: AuthService) {
+  return () => authService.checkAuth().subscribe();
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideAnimations(),
+    provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
 
     providePrimeNG({
@@ -28,7 +35,7 @@ export const appConfig: ApplicationConfig = {
       },
       // }), provideHttpClient(), provideTransloco({
     }),
-    
+
     provideTransloco({
       config: {
         availableLangs: ['en', 'sk'],
@@ -38,6 +45,17 @@ export const appConfig: ApplicationConfig = {
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
+    }),
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: (authService: AuthService) => initAuth(authService),
+    //   deps: [AuthService],
+    //   multi: true,
+    // },
+    // namiesto APP_INITIALIZER:
+    provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      return firstValueFrom(authService.checkAuth());
     }),
   ],
 };
