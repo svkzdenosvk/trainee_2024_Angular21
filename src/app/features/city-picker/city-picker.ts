@@ -13,6 +13,7 @@ import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-city-picker',
@@ -59,6 +60,7 @@ export class CityPickerComponent {
             `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=en&format=json`,
           );
         }),
+        takeUntilDestroyed(),
       )
       .subscribe({
         next: (data: any) => {
