@@ -190,3 +190,17 @@ Deployed on Netlify with the following configuration:
 - **Build command:** `npm run build`
 - **Start command:** `node dist/main`
 - Environment variables: `DATABASE_URL`, `JWT_SECRET`
+
+## Known Limitations
+
+### Authentication & Cookies
+Authentication uses `httpOnly` cookies (`SameSite=None; Secure`) for JWT token storage.
+This approach is secure against XSS attacks but may be blocked by privacy-focused browsers
+(e.g. Brave with Shields enabled) due to third-party cookie restrictions.
+
+**Workaround:** Disable browser shields/tracking protection for the app domain,
+or use a Chromium-based browser with default settings.
+
+**Production note:** This limitation would be resolved by deploying frontend and backend
+on the same domain (e.g. `app.example.com` + `api.example.com`), which is standard
+practice in production environments.
