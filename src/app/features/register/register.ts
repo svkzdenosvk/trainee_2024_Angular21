@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal,ChangeDetectionStrategy } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -39,6 +39,7 @@ import { hasUppercase, hasNumber, hasSpecialCharacter, passwordsMatch } from '..
   imports: [ReactiveFormsModule, InputText, Button, TranslocoModule],
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);

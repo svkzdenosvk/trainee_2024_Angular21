@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { City, FavouriteResponse } from '../models/weather.model';
 import { AuthService } from './auth.service';
 import { API_URL } from '../constants/constants';
+// import { API_URL } from '../constants/constants';
 
 const MAX_FAVOURITES = 10;
 
@@ -41,7 +42,10 @@ export class FavouritesService {
   }
 
   remove(city: City): void {
+    console.log('favourites:', this.favourites());
+    console.log('looking for:', city);
     const favourite = this.favourites().find((f) => this.sameCity(f, city)) as any;
+    console.log('found:', favourite);
     if (!favourite?.id) return;
 
     this.http.delete(`${API_URL}/favourites/${favourite.id}`).subscribe({

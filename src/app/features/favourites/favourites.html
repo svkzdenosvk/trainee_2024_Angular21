@@ -1,4 +1,3 @@
-
 <div class="favourites-container">
   @if (favouritesService.favourites().length === 0) {
     <div class="empty-state">
@@ -16,7 +15,7 @@
   }
 
   <div class="favourites-list">
-    @for (city of favouritesService.favourites(); track city.lat) {
+    @for (city of favouritesService.favourites(); track city.id ?? city.lat + city.lon) {
       <div class="favourite-item">
         <div class="city-info">
           <i class="pi pi-star-fill star-icon"></i>

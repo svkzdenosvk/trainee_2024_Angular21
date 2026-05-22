@@ -1,5 +1,4 @@
-
-import { Component, inject, OnInit  } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
@@ -11,14 +10,15 @@ import { TranslocoModule } from '@jsverse/transloco';
   standalone: true,
   imports: [TranslocoModule],
   templateUrl: './favourites.html',
-  styleUrls: ['./favourites.scss']
+  styleUrls: ['./favourites.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavouritesComponent implements OnInit {
   protected readonly favouritesService = inject(FavouritesService);
   private readonly cityService = inject(CityService);
   private readonly router = inject(Router);
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.favouritesService.reloadForUser();
   }
 
@@ -29,8 +29,8 @@ export class FavouritesComponent implements OnInit {
         city: city.name,
         country: city.country,
         lat: city.lat,
-        lon: city.lon
-      }
+        lon: city.lon,
+      },
     });
   }
 }

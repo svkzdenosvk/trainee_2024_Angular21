@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { AdminService } from '../../core/services/admin.service';
 import { TableModule } from 'primeng/table';
@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule, TableModule, TagModule, ButtonModule, TranslocoModule, TooltipModule],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminDashboardComponent implements OnInit {
   protected readonly authService = inject(AuthService);

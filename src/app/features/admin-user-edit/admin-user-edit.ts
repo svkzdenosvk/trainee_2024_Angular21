@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, OnInit, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { Role } from '../../core/models/role.enum';
   imports: [CommonModule, ReactiveFormsModule, InputText, Button, TranslocoModule, TooltipModule],
   templateUrl: './admin-user-edit.html',
   styleUrl: './admin-user-edit.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminUserEditComponent implements OnInit {
   protected readonly authService = inject(AuthService);

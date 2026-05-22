@@ -1,15 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../../core/services/auth.service';
-// import { AppLangSwitcher } from '../_app-lang-switcher/app-lang-switcher';
 
 @Component({
   selector: 'app-public-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslocoModule,/* AppLangSwitcher*/],
+  imports: [RouterLink, RouterLinkActive, TranslocoModule ],
   templateUrl: './app-public-nav.html',
   styleUrl: '../../scss/_shells.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppPublicNav {
   protected readonly authService = inject(AuthService);
@@ -17,7 +17,7 @@ export class AppPublicNav {
   isOpen = signal(false);
 
   toggleMenu(): void {
-    this.isOpen.update(value => !value);
+    this.isOpen.update((value) => !value);
   }
 
   closeMenu(): void {

@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { LangService } from '../../../core/services/lang.service';
 
 @Component({
   selector: 'app-lang-switcher',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="nav-actions">
       <button
