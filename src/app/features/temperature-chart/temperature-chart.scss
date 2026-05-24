@@ -26,6 +26,12 @@
     }
   }
 
+  .view-mode-wrapper {
+    flex: 1 1 100%;
+    margin-top: 0.5rem;
+    align-items: flex-start;
+  }
+
   .load-btn {
     background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
     border: none !important;
@@ -72,7 +78,7 @@
 }
 
 .custom-select-btn {
-  display: flex;
+   display: flex;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #334155;

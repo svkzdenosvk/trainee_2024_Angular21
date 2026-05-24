@@ -98,16 +98,18 @@ export class CityMapComponent implements AfterViewInit {
     if (!this.marker) return;
 
     const isFav = this.favouritesService.isFavourite(city);
+    const isFull = this.favouritesService.favourites().length >= 10;
     const selectLabel = this.translocoService.translate('cityPicker.btnSelect');
     const favLabel = isFav
       ? this.translocoService.translate('cityPicker.btnRemove')
       : this.translocoService.translate('cityPicker.btnAdd');
 
+    
     const favButton = this.authService.isLoggedIn()
-      ? `<button id="fav-city-btn" class="popup-btn-fav">⭐ ${favLabel}</button>`
+      ? `<button id="fav-city-btn" class="popup-btn-fav ${!isFav && isFull ? 'is-full' : ''}">⭐ ${favLabel}</button>`
       : '';
 
-   this.marker.setPopupContent(`
+    this.marker.setPopupContent(`
       <div style="text-align:center; padding: 0.5rem; min-width: 150px;">
         <strong>${city.name}</strong><br/>
         <small>${city.country}</small>
@@ -130,20 +132,23 @@ export class CityMapComponent implements AfterViewInit {
           },
         });
       });
-
-      document.getElementById('fav-city-btn')?.addEventListener('click', () => {
-        if (this.favouritesService.isFavourite(city)) {
-          this.favouritesService.remove(city);
-        } else {
-          if (this.favouritesService.isFull()) {
-            this.showFullWarning.set(true);
-            setTimeout(() => this.showFullWarning.set(false), 5000);
-            return;
+      document.getElementById('fav-city-btn')?.addEventListener(
+        'click',
+        () => {
+          if (this.favouritesService.isFavourite(city)) {
+            this.favouritesService.remove(city);
+          } else {
+            if (this.favouritesService.favourites().length >= 10) {
+              this.showFullWarning.set(true);
+              setTimeout(() => this.showFullWarning.set(false), 3500);
+              return;
+            }
+            this.favouritesService.add(city);
           }
-          this.favouritesService.add(city);
-        }
-        this.updatePopup(city);
-      });
+          this.updatePopup(city);
+        },
+        { once: true },
+      );
     }, 100);
   }
 }

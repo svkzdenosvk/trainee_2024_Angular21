@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -22,10 +29,12 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
     DatePicker,
     Button,
     InputText,
-    ProgressSpinner, TranslocoModule
+    ProgressSpinner,
+    TranslocoModule,
   ],
   templateUrl: './weather-table.html',
   styleUrls: ['./weather-table.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WeatherTableComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);
@@ -37,15 +46,15 @@ export class WeatherTableComponent implements OnInit {
   error = signal<string | null>(null);
   dateRange = signal<Date[]>([]);
 
-readonly columns = [
-  { field: 'datetime',      headerKey: 'weather.columns.datetime',     sortable: true },
-  { field: 'weatherState',  headerKey: 'weather.columns.weatherState', sortable: true },
-  { field: 'temperature',   headerKey: 'weather.columns.temperature',  sortable: true },
-  { field: 'humidity',      headerKey: 'weather.columns.humidity',     sortable: true },
-  { field: 'pressure',      headerKey: 'weather.columns.pressure',     sortable: true },
-  { field: 'windSpeed',     headerKey: 'weather.columns.windSpeed',    sortable: true },
-  { field: 'precipitation', headerKey: 'weather.columns.precipitation',sortable: true }
-];
+  readonly columns = [
+    { field: 'datetime', headerKey: 'weather.columns.datetime', sortable: true },
+    { field: 'weatherState', headerKey: 'weather.columns.weatherState', sortable: true },
+    { field: 'temperature', headerKey: 'weather.columns.temperature', sortable: true },
+    { field: 'humidity', headerKey: 'weather.columns.humidity', sortable: true },
+    { field: 'pressure', headerKey: 'weather.columns.pressure', sortable: true },
+    { field: 'windSpeed', headerKey: 'weather.columns.windSpeed', sortable: true },
+    { field: 'precipitation', headerKey: 'weather.columns.precipitation', sortable: true },
+  ];
 
   ngOnInit(): void {
     const end = new Date();

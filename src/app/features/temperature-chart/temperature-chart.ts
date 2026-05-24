@@ -7,6 +7,7 @@ import {
   ElementRef,
   AfterViewInit,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,16 +26,10 @@ type ViewMode = 'all' | 'daily';
 @Component({
   selector: 'app-temperature-chart',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    Button,
-    DatePicker,
-    ProgressSpinner,
-    TranslocoModule,
-  ],
+  imports: [CommonModule, FormsModule, Button, DatePicker, ProgressSpinner, TranslocoModule],
   templateUrl: './temperature-chart.html',
   styleUrls: ['./temperature-chart.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly weatherService = inject(WeatherService);

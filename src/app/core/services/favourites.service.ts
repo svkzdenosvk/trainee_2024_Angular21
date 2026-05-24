@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { City, FavouriteResponse } from '../models/weather.model';
 import { AuthService } from './auth.service';
 import { API_URL } from '../constants/constants';
-// import { API_URL } from '../constants/constants';
 
 const MAX_FAVOURITES = 10;
 
@@ -32,12 +31,19 @@ export class FavouritesService {
   }
 
   add(city: City): void {
-    if (this.isFull()) return;
+      if (this.favourites().length >= 10) return;
+
+    // if (this.isFull()) return;
     if (this.isFavourite(city)) return;
     if (!city.name?.trim() || !city.country?.trim()) return;
 
+    // optimistic update - pridaj hneď do signalu
+    // this.favourites.update((favs) => [...favs, city]);
+     this.favourites.update(favs => [...favs, { ...city }]);
+
     this.http.post<FavouriteResponse>(`${API_URL}/favourites`, city).subscribe({
       next: () => this.reloadForUser(),
+      error: () => this.reloadForUser(), // when error occurs, reload the correct state
     });
   }
 
@@ -50,6 +56,7 @@ export class FavouritesService {
 
     this.http.delete(`${API_URL}/favourites/${favourite.id}`).subscribe({
       next: () => this.reloadForUser(),
+      error: () => this.reloadForUser(), // when error occurs, reload the correct state
     });
   }
 

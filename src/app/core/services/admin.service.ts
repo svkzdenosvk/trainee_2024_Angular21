@@ -11,12 +11,6 @@ export class AdminService {
   users = signal<UserWithStats[]>([]);
   loading = signal(false);
 
-  // loadUsers(): void {
-  //   this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe(data => {
-  //     this.users.set(data);
-  //   });
-  // }
-
   loadUsers(): void {
     this.loading.set(true);
     this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe({

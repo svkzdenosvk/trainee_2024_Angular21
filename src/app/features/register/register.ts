@@ -1,37 +1,23 @@
-import { Component, inject, signal,ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
   Validators,
-  AbstractControl,
-  ValidationErrors,
+  // AbstractControl,
+  // ValidationErrors,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
-import { hasUppercase, hasNumber, hasSpecialCharacter, passwordsMatch } from '../../core/utils/validators';
-
-// // own validators for password complexity and matching
-// function hasUppercase(control: AbstractControl): ValidationErrors | null {
-//   return /[A-Z]/.test(control.value) ? null : { noUppercase: true };
-// }
-
-// function hasNumber(control: AbstractControl): ValidationErrors | null {
-//   return /[0-9]/.test(control.value) ? null : { noNumber: true };
-// }
-
-// function hasSpecialCharacter(control: AbstractControl): ValidationErrors | null {
-//   return /[!@#$%^&*\-]/.test(control.value) ? null : { noSpecialChar: true };
-// }
-
-// function passwordsMatch(group: AbstractControl): ValidationErrors | null {
-//   const password = group.get('password')?.value;
-//   const confirm = group.get('confirmPassword')?.value;
-//   return password === confirm ? null : { passwordMismatch: true };
-// }
+import {
+  hasUppercase,
+  hasNumber,
+  hasSpecialCharacter,
+  passwordsMatch,
+} from '../../core/utils/validators';
 
 @Component({
   selector: 'app-register',

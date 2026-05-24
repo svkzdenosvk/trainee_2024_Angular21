@@ -1,5 +1,12 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
 import { API_URL } from '../../core/constants/constants';
@@ -9,8 +16,12 @@ import { Button } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { isDefaultUser } from '../../core/utils/def_user.utils';
 import { TooltipModule } from 'primeng/tooltip';
-import { hasUppercase, hasNumber, hasSpecialCharacter, passwordsMatch } from '../../core/utils/validators';
-
+import {
+  hasUppercase,
+  hasNumber,
+  hasSpecialCharacter,
+  passwordsMatch,
+} from '../../core/utils/validators';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +36,7 @@ export class ProfileComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService);
 
   protected readonly isDefaultUser = computed(() =>
-    isDefaultUser(this.authService.currentUser()?.id)
+    isDefaultUser(this.authService.currentUser()?.id),
   );
 
   error = signal<string | null>(null);
@@ -34,23 +45,25 @@ export class ProfileComponent implements OnInit {
   showPassword = signal(false);
   showNewPassword = signal(false);
 
-  form = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(20),
-    ]),
-    currentPassword: new FormControl(''),
-    newPassword: new FormControl('', [
-      Validators.minLength(6),
-      Validators.maxLength(128),
-      hasUppercase,
-      hasNumber,
+  form = new FormGroup(
+    {
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+      ]),
+      currentPassword: new FormControl(''),
+      newPassword: new FormControl('', [
+        Validators.minLength(6),
+        Validators.maxLength(128),
+        hasUppercase,
+        hasNumber,
         hasSpecialCharacter,
-
-    ]),
-    confirmNewPassword: new FormControl(''),
-  }, { validators: passwordsMatch });
+      ]),
+      confirmNewPassword: new FormControl(''),
+    },
+    { validators: passwordsMatch },
+  );
 
   ngOnInit(): void {
     const user = this.authService.currentUser();
@@ -59,13 +72,15 @@ export class ProfileComponent implements OnInit {
 
   get hasChanges(): boolean {
     const user = this.authService.currentUser();
-    return this.form.get('username')?.value !== user?.username ||
-           !!this.form.get('newPassword')?.value;
+    return (
+      this.form.get('username')?.value !== user?.username || !!this.form.get('newPassword')?.value
+    );
   }
 
   get passwordMismatch(): boolean {
-    return !!this.form.errors?.['passwordMismatch'] &&
-           !!this.form.get('confirmNewPassword')?.touched;
+    return (
+      !!this.form.errors?.['passwordMismatch'] && !!this.form.get('confirmNewPassword')?.touched
+    );
   }
 
   getFieldError(field: string): string | null {
@@ -73,14 +88,10 @@ export class ProfileComponent implements OnInit {
     if (!control?.invalid || !control?.touched) return null;
 
     if (control.errors?.['minlength']) {
-      return field === 'username'
-        ? 'auth.errors.usernameTooShort'
-        : 'auth.errors.passwordTooShort';
+      return field === 'username' ? 'auth.errors.usernameTooShort' : 'auth.errors.passwordTooShort';
     }
     if (control.errors?.['maxlength']) {
-      return field === 'username'
-        ? 'auth.errors.usernameTooLong'
-        : 'auth.errors.passwordTooLong';
+      return field === 'username' ? 'auth.errors.usernameTooLong' : 'auth.errors.passwordTooLong';
     }
     if (control.errors?.['noUppercase']) return 'auth.errors.passwordNeedsUppercase';
     if (control.errors?.['noNumber']) return 'auth.errors.passwordNeedsNumber';
@@ -120,22 +131,23 @@ export class ProfileComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    this.http.patch<{ id: string; username: string; role: any }>(
-      `${API_URL}/users/me`, body
-    ).subscribe({
-      next: (res) => {
-        this.authService.currentUser.update(u => u ? { ...u, username: res.username } : null);
-        this.success.set(true);
-        this.form.patchValue({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
-        this.loading.set(false);
-        setTimeout(() => this.success.set(false), 3000);
-      },
-      error: (err) => {
-        if (err.status === 409) this.error.set('auth.errors.userExists');
-        else if (err.status === 401) this.error.set('auth.edit.profile.errors.invalidCurrentPassword');
-        else this.error.set('edit.profile.errors.updateFailed');
-        this.loading.set(false);
-      },
-    });
+    this.http
+      .patch<{ id: string; username: string; role: any }>(`${API_URL}/users/me`, body)
+      .subscribe({
+        next: (res) => {
+          this.authService.currentUser.update((u) => (u ? { ...u, username: res.username } : null));
+          this.success.set(true);
+          this.form.patchValue({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
+          this.loading.set(false);
+          setTimeout(() => this.success.set(false), 3000);
+        },
+        error: (err) => {
+          if (err.status === 409) this.error.set('auth.errors.userExists');
+          else if (err.status === 401)
+            this.error.set('auth.edit.profile.errors.invalidCurrentPassword');
+          else this.error.set('edit.profile.errors.updateFailed');
+          this.loading.set(false);
+        },
+      });
   }
 }

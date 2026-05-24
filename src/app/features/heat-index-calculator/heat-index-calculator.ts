@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -10,17 +17,26 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeatIndexService } from '../../core/services/heat-index.service';
 import { HeatIndexEntry, TemperatureUnit } from '../../core/models/weather.model';
-import { TranslocoModule,   } from '@jsverse/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-heat-index-calculator',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, CardModule, InputNumberModule,
-    SelectButtonModule, ButtonModule, DividerModule, TableModule, TooltipModule, TranslocoModule
+    CommonModule,
+    FormsModule,
+    CardModule,
+    InputNumberModule,
+    SelectButtonModule,
+    ButtonModule,
+    DividerModule,
+    TableModule,
+    TooltipModule,
+    TranslocoModule,
   ],
   templateUrl: './heat-index-calculator.html',
-  styleUrls: ['./heat-index-calculator.scss']
+  styleUrls: ['./heat-index-calculator.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeatIndexCalculatorComponent implements OnInit {
   private readonly heatIndexService = inject(HeatIndexService);
@@ -33,20 +49,20 @@ export class HeatIndexCalculatorComponent implements OnInit {
 
   unitOptions = [
     { label: '°C', value: '°C' },
-    { label: '°F', value: '°F' }
+    { label: '°F', value: '°F' },
   ];
 
   readonly minTemp = computed(() => this.heatIndexService.getMinTemp(this.unit()));
 
-readonly heatIndexLabel = computed(() => {
-  const hi = this.heatIndex();
-  if (hi === null) return null;
-  if (hi >= 54) return { key: 'heatIndex.levels.extremeDanger', color: '#7f1d1d' };
-  if (hi >= 41) return { key: 'heatIndex.levels.danger',        color: '#ef4444' };
-  if (hi >= 32) return { key: 'heatIndex.levels.extremeCaution',color: '#f97316' };
-  if (hi >= 27) return { key: 'heatIndex.levels.caution',       color: '#eab308' };
-  return           { key: 'heatIndex.levels.safe',              color: '#22c55e' };
-});
+  readonly heatIndexLabel = computed(() => {
+    const hi = this.heatIndex();
+    if (hi === null) return null;
+    if (hi >= 54) return { key: 'heatIndex.levels.extremeDanger', color: '#7f1d1d' };
+    if (hi >= 41) return { key: 'heatIndex.levels.danger', color: '#ef4444' };
+    if (hi >= 32) return { key: 'heatIndex.levels.extremeCaution', color: '#f97316' };
+    if (hi >= 27) return { key: 'heatIndex.levels.caution', color: '#eab308' };
+    return { key: 'heatIndex.levels.safe', color: '#22c55e' };
+  });
 
   ngOnInit(): void {
     this.history.set(this.heatIndexService.loadHistory());
@@ -56,7 +72,7 @@ readonly heatIndexLabel = computed(() => {
     const result = this.heatIndexService.calculate(
       this.temperature(),
       this.humidity(),
-      this.unit()
+      this.unit(),
     );
     this.heatIndex.set(result);
 
@@ -66,7 +82,7 @@ readonly heatIndexLabel = computed(() => {
         humidity: this.humidity(),
         heatIndex: result,
         unit: this.unit(),
-        timestamp: new Date()
+        timestamp: new Date(),
       };
       this.history.set(this.heatIndexService.saveToHistory(entry));
     }

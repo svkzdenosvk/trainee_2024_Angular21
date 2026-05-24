@@ -1,5 +1,11 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode,provideAppInitializer, inject  } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  isDevMode,
+  provideAppInitializer,
+  inject,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
@@ -33,7 +39,6 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: 'system', // dark mode by the system
         },
       },
-      // }), provideHttpClient(), provideTransloco({
     }),
 
     provideTransloco({
@@ -46,13 +51,8 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader,
     }),
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: (authService: AuthService) => initAuth(authService),
-    //   deps: [AuthService],
-    //   multi: true,
-    // },
-    // namiesto APP_INITIALIZER:
+
+    // instead of  APP_INITIALIZER:
     provideAppInitializer(() => {
       const authService = inject(AuthService);
       return firstValueFrom(authService.checkAuth());

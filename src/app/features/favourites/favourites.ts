@@ -11,7 +11,7 @@ import { TranslocoModule } from '@jsverse/transloco';
   imports: [TranslocoModule],
   templateUrl: './favourites.html',
   styleUrls: ['./favourites.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavouritesComponent implements OnInit {
   protected readonly favouritesService = inject(FavouritesService);

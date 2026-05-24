@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: 0.75rem;
 }
+.popup-btn-fav.is-full {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .map-container {
   height: 500px;

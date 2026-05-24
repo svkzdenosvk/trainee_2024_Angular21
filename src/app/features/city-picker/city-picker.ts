@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
   templateUrl: './city-picker.html',
   styleUrls: ['./city-picker.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CityPickerComponent {
   private readonly http = inject(HttpClient);

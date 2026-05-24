@@ -62,22 +62,13 @@
     <div class="form-group">
       <label>{{ 'auth.edit.profile.confirmNewPass' | transloco }}</label>
       <div class="input-wrapper">
-        <input
-          pInputText
-          type="password"
-          formControlName="confirmNewPassword"
-        />
+        <input pInputText type="password" formControlName="confirmNewPassword" />
       </div>
       @if (passwordMismatch) {
         <small class="field-error">
           {{ 'auth.errors.passwordMismatch' | transloco }}
         </small>
       }
-       <!-- @if (form.get('newPassword')?.value && !form.get('confirmNewPassword')?.value && form.get('confirmNewPassword')?.touched) {
-    <small class="field-error">
-      {{ 'auth.edit.profile.errors.confirmRequired' | transloco }}
-    </small>
-  } -->
     </div>
 
     <div class="actions">

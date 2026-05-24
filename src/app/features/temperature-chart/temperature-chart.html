@@ -14,10 +14,16 @@
       >
       </p-datepicker>
     </div>
-
+    <p-button
+      [label]="'btnLoadData' | transloco"
+      icon="pi pi-refresh"
+      severity="secondary"
+      (onClick)="loadData()"
+      [disabled]="loading()"
+    />
     <div class="view-mode-wrapper">
       <label>{{ 'temperatureChart.view' | transloco }}</label>
-  
+
       <div class="custom-select-btn">
         <button
           [class.active]="viewMode() === 'all'"
@@ -32,17 +38,7 @@
           {{ 'temperatureChart.viewMode.daily' | transloco }}
         </button>
       </div>
-
-   
     </div>
-
-    <p-button
-      [label]="'btnLoadData' | transloco"
-      icon="pi pi-refresh"
-      severity="secondary"
-      (onClick)="loadData()"
-      [disabled]="loading()"
-    />
   </div>
 
   @if (loading()) {

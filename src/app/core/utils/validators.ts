@@ -1,18 +1,3 @@
-//password validator
-// export function validatePassword(password: string): string | null {
-//   if (password.length < 6) return 'auth.errors.passwordTooShort';
-//   if (password.length > 128) return 'auth.errors.passwordTooLong';
-//   if (!/[A-Z]/.test(password)) return 'auth.errors.passwordNeedsUppercase';
-//   if (!/[0-9]/.test(password)) return 'auth.errors.passwordNeedsNumber';
-//   return null;
-// }
-
-// //username validator 
-// export function validateUsername(username: string): string | null {
-//   if (username.trim().length < 3) return 'auth.errors.usernameTooShort';
-//   if (username.trim().length > 20) return 'auth.errors.usernameTooLong';
-//   return null;
-// }
 
 //validators for reactive forms
 import { AbstractControl, ValidationErrors } from '@angular/forms';
@@ -40,7 +25,7 @@ export function passwordsMatch(group: AbstractControl): ValidationErrors | null 
   return password === confirm ? null : { passwordMismatch: true };
 }
 
-// Pure validačné funkcie (pre non-form použitie)
+// Pure functions for validation (for non-form use)
 export function validatePassword(password: string): string | null {
   if (password.length < 6) return 'auth.errors.passwordTooShort';
   if (password.length > 128) return 'auth.errors.passwordTooLong';
