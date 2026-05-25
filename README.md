@@ -1,14 +1,15 @@
 # Weather App
 
-A modern Angular 21 weather application built as part of a frontend developer trainee program entry task.
+A modern Angular 21 weather application.
 
 ## Live Demo
 
-[angular-trainee-2024.netlify.app](https://angular-trainee-2024.netlify.app)
+[weather-angular21.netlify.app](https://weather-angular21.netlify.app/)
 
 ## Features
 
 ### Core Features
+
 - 📊 **Weather Data Table** – Sortable, searchable, paginated hourly weather data with custom date range selection
 - 📈 **Temperature Chart** – Interactive line chart with hourly/daily average toggle (Chart.js)
 - 🌡️ **Heat Index Calculator** – Calculates heat index using the Rothfusz regression equation with last 5 results stored in localStorage
@@ -22,8 +23,8 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 - ✏️ **User Profile Edit** – Logged-in users can update their username and password
 - 👤 **Admin User Edit** – Admins can edit usernames of non-admin, non-default users
 
-
 ### Technical Features
+
 - Lazy loading for all routes
 - Route guards protecting weather/chart routes (`cityGuard`, `authGuard`, `adminGuard`)
 - Linkable routes with city coordinates in URL params
@@ -45,31 +46,32 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | Angular 21 |
-| UI Library | PrimeNG 21 |
-| Maps | Leaflet + OpenStreetMap |
-| Charts | Chart.js |
-| i18n | @jsverse/transloco |
-| Weather API | Open-Meteo |
-| Geocoding | Open-Meteo Geocoding API |
-| Reverse Geocoding | Nominatim |
-| Styling | SCSS |
-| State Management | Angular Signals |
-| Async | RxJS |
-| Testing | Vitest |
-| Deployment | Netlify |
+| Category          | Technology               |
+| ----------------- | ------------------------ |
+| Framework         | Angular 21               |
+| UI Library        | PrimeNG 21               |
+| Maps              | Leaflet + OpenStreetMap  |
+| Charts            | Chart.js                 |
+| i18n              | @jsverse/transloco       |
+| Weather API       | Open-Meteo               |
+| Geocoding         | Open-Meteo Geocoding API |
+| Reverse Geocoding | Nominatim                |
+| Styling           | SCSS                     |
+| State Management  | Angular Signals          |
+| Async             | RxJS                     |
+| Testing           | Vitest                   |
+| Deployment        | Netlify                  |
 
 ### Backend
-| Category | Technology |
-|---|---|
-| Framework | NestJS |
-| Database | PostgreSQL (Supabase) |
-| ORM | Prisma 7 |
-| Auth | JWT |
-| Validation | class-validator |
-| Deployment | Render |
+
+| Category   | Technology            |
+| ---------- | --------------------- |
+| Framework  | NestJS                |
+| Database   | PostgreSQL (Supabase) |
+| ORM        | Prisma 7              |
+| Auth       | JWT                   |
+| Validation | class-validator       |
+| Deployment | Render                |
 
 ## APIs Used
 
@@ -80,11 +82,13 @@ A modern Angular 21 weather application built as part of a frontend developer tr
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 22+
 - Angular CLI 21
 - NestJS CLI
 
 ### Installation
+
 ```bash
 # Clone the repository
 git clone <your-repo-url>
@@ -101,15 +105,15 @@ Open [http://localhost:4200](http://localhost:4200) in your browser.
 
 ### Default Accounts
 
-| Username | Password | Role |
-|---|---|---|
-| admin | Admin123* | admin |
-| user | User123* | user |
+| Username | Password   | Role  |
+| -------- | ---------- | ----- |
+| admin    | Admin123\* | admin |
+| user     | User123\*  | user  |
 
 > ⚠️ These accounts are seeded from localStorage on first run. Do not use real passwords.
 
-
 ### Build
+
 ```bash
 ng build
 ```
@@ -117,6 +121,7 @@ ng build
 Output will be in `dist/weather-app/browser/`.
 
 ## Project Structure
+
 ```
 src/app/
 ├── core/
@@ -126,7 +131,7 @@ src/app/
 │   ├── guards/          # Route guards (CityGuard, AuthGuard, AdminGuard )
 │   └── interceptors/    # HTTP interceptors (authInterceptor)
 ├── features/
-│   ├── city-picker/     # Home page with search and map 
+│   ├── city-picker/     # Home page with search and map
 │   ├── city-map/        # Leaflet map component
 │   ├── favourites/      # Per-user favourites list
 │   ├── weather-table/   # Weather data table
@@ -146,18 +151,19 @@ src/app/
 │   |   └── lang-switcher/
     └── shells_layouts/
         ├── app-shell/   # Authenticated layout with navigation
-        └── public-shell/ # Public layout 
+        └── public-shell/ # Public layout
 ```
 
 ### Backend
+
 src/
-├── auth/                # Auth module - register, login, JWT guard
-│   └── dto/             # RegisterDto, LoginDto with validation
-├── admin/               # Admin module - user management
-├── favourites/          # Favourites CRUD
-├── geocoding/           # Geocoding proxy
-├── users/               # User profile management
-└── prisma/              # Prisma service and module
+├── auth/ # Auth module - register, login, JWT guard
+│ └── dto/ # RegisterDto, LoginDto with validation
+├── admin/ # Admin module - user management
+├── favourites/ # Favourites CRUD
+├── geocoding/ # Geocoding proxy
+├── users/ # User profile management
+└── prisma/ # Prisma service and module
 
 ## Heat Index Formula
 
@@ -183,10 +189,12 @@ Authentication is implemented using **NestJS + JWT + PostgreSQL** via Supabase.
 ## Deployment
 
 Deployed on Netlify with the following configuration:
+
 - **Build command:** `npm run build`
 - **Publish directory:** `dist/weather-app/browser`
 
 ### Backend - Render
+
 - **Build command:** `npm run build`
 - **Start command:** `node dist/main`
 - Environment variables: `DATABASE_URL`, `JWT_SECRET`
@@ -194,6 +202,7 @@ Deployed on Netlify with the following configuration:
 ## Known Limitations
 
 ### Authentication & Cookies
+
 Authentication uses `httpOnly` cookies (`SameSite=None; Secure`) for JWT token storage.
 This approach is secure against XSS attacks but may be blocked by privacy-focused browsers
 (e.g. Brave with Shields enabled) due to third-party cookie restrictions.
