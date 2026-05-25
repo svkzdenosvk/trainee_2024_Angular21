@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { WeatherService } from './weather.service';
 import { CityService } from './city.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 describe('WeatherService', () => {
   let service: WeatherService;
@@ -11,6 +12,7 @@ describe('WeatherService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: TranslocoService, useValue: { translate: (key: string) => key } }],
     });
     service = TestBed.inject(WeatherService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -99,14 +101,14 @@ describe('WeatherService', () => {
 
     it('should call API with correct params', () => {
       service.getWeatherData('2024-01-01', '2024-01-07').subscribe();
-      const req = httpMock.expectOne(r => r.url.includes('open-meteo.com'));
+      const req = httpMock.expectOne((r) => r.url.includes('open-meteo.com'));
       expect(req.request.params.get('latitude')).toBe('51.5');
       expect(req.request.params.get('longitude')).toBe('-0.1');
       req.flush(mockApiResponse);
     });
 
     it('should transform API response to WeatherRow[]', () => {
-      service.getWeatherData('2024-01-01', '2024-01-07').subscribe(rows => {
+      service.getWeatherData('2024-01-01', '2024-01-07').subscribe((rows) => {
         expect(rows.length).toBe(1);
         expect(rows[0].temperature).toBe(5.2);
         expect(rows[0].weatherState).toBe('weather.states.clearSky');
@@ -114,28 +116,26 @@ describe('WeatherService', () => {
         expect(rows[0].humidity).toBe(80);
         expect(rows[0].windSpeed).toBe(10);
       });
-      const req = httpMock.expectOne(r => r.url.includes('open-meteo.com'));
+      const req = httpMock.expectOne((r) => r.url.includes('open-meteo.com'));
       req.flush(mockApiResponse);
     });
 
     it('should map weathercode 0 to clearSky', () => {
-      service.getWeatherData('2024-01-01', '2024-01-07').subscribe(rows => {
+      service.getWeatherData('2024-01-01', '2024-01-07').subscribe((rows) => {
         expect(rows[0].weatherState).toBe('weather.states.clearSky');
       });
-      httpMock.expectOne(r => r.url.includes('open-meteo.com'))
-        .flush(mockApiResponse);
+      httpMock.expectOne((r) => r.url.includes('open-meteo.com')).flush(mockApiResponse);
     });
 
     it('should map weathercode 95 to thunderstorm', () => {
       const thunderResponse = {
         ...mockApiResponse,
-        hourly: { ...mockApiResponse.hourly, weathercode: [95] }
+        hourly: { ...mockApiResponse.hourly, weathercode: [95] },
       };
-      service.getWeatherData('2024-01-01', '2024-01-07').subscribe(rows => {
+      service.getWeatherData('2024-01-01', '2024-01-07').subscribe((rows) => {
         expect(rows[0].weatherState).toBe('weather.states.thunderstorm');
       });
-      httpMock.expectOne(r => r.url.includes('open-meteo.com'))
-        .flush(thunderResponse);
+      httpMock.expectOne((r) => r.url.includes('open-meteo.com')).flush(thunderResponse);
     });
   });
 });

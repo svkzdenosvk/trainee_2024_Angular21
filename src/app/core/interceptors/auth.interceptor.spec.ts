@@ -1,9 +1,7 @@
-// auth.interceptor.spec.ts
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptors, HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { authInterceptor } from './auth.interceptor';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -11,10 +9,10 @@ import { Router } from '@angular/router';
 describe('authInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
-  let authService: { getToken: ReturnType<typeof vi.fn> };
+  let authService: { logout: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    authService = { getToken: vi.fn().mockReturnValue(null) };
+    authService = { logout: vi.fn() };
 
     TestBed.configureTestingModule({
       providers: [
@@ -31,31 +29,38 @@ describe('authInterceptor', () => {
 
   afterEach(() => httpMock.verify());
 
-  it('should add Authorization header when token exists', () => {
-    authService.getToken.mockReturnValue('my-token');
+  it('should add withCredentials to non-external requests', () => {
     http.get('/api/data').subscribe();
     const req = httpMock.expectOne('/api/data');
-    expect(req.request.headers.get('Authorization')).toBe('Bearer my-token');
+    expect(req.request.withCredentials).toBe(true);
     req.flush({});
   });
 
-  it('should NOT add header when no token', () => {
-    http.get('/api/data').subscribe();
+  it('should NOT add withCredentials for open-meteo.com', () => {
+    http.get('https://geocoding-api.open-meteo.com/v1/search').subscribe();
+    const req = httpMock.expectOne('https://geocoding-api.open-meteo.com/v1/search');
+    expect(req.request.withCredentials).toBe(false);
+    req.flush({});
+  });
+
+  it('should NOT add withCredentials for nominatim', () => {
+    http.get('https://nominatim.openstreetmap.org/reverse').subscribe();
+    const req = httpMock.expectOne('https://nominatim.openstreetmap.org/reverse');
+    expect(req.request.withCredentials).toBe(false);
+    req.flush({});
+  });
+
+  it('should call logout on 401 error', () => {
+    http.get('/api/data').subscribe({ error: () => {} });
     const req = httpMock.expectOne('/api/data');
-    expect(req.request.headers.get('Authorization')).toBeNull();
-    req.flush({});
+    req.flush({}, { status: 401, statusText: 'Unauthorized' });
+    expect(authService.logout).toHaveBeenCalled();
   });
 
-  it('should NOT add header for open-meteo.com even with token', () => {
-    authService.getToken.mockReturnValue('my-token');
-    http.get('https://api.open-meteo.com/v1/forecast').subscribe();
-    const req = httpMock.expectOne('https://api.open-meteo.com/v1/forecast');
-    expect(req.request.headers.get('Authorization')).toBeNull();
-    req.flush({});
-  });
-
-  it('should pass request through without modification when no token', () => {
-    http.get('/api/public').subscribe();
-    httpMock.expectOne('/api/public').flush({});
+  it('should NOT logout on 401 for /users/me PATCH', () => {
+    http.patch('/users/me', {}).subscribe({ error: () => {} });
+    const req = httpMock.expectOne('/users/me');
+    req.flush({}, { status: 401, statusText: 'Unauthorized' });
+    expect(authService.logout).not.toHaveBeenCalled();
   });
 });

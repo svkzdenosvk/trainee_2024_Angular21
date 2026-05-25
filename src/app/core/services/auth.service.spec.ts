@@ -1,7 +1,7 @@
+
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { AuthService } from './auth.service';
 import { API_URL } from '../constants/constants';
 import { Role } from '../models/role.enum';
@@ -17,10 +17,7 @@ describe('AuthService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        AuthService,
-        { provide: Router, useValue: router },
-      ],
+      providers: [AuthService, { provide: Router, useValue: router }],
     });
 
     service = TestBed.inject(AuthService);
@@ -29,62 +26,68 @@ describe('AuthService', () => {
 
   afterEach(() => http.verify());
 
-  describe('getToken', () => {
-    it('should return null when no token stored', () => {
-      expect(service.getToken()).toBeNull();
-    });
-
-    it('should return token from localStorage', () => {
-      localStorage.setItem('auth_token', 'abc123');
-      expect(service.getToken()).toBe('abc123');
-    });
-  });
-
   describe('isLoggedIn / isAdmin', () => {
-    it('should be false when no user in localStorage', () => {
+    it('should be false when no user', () => {
       expect(service.isLoggedIn()).toBe(false);
       expect(service.isAdmin()).toBe(false);
     });
 
-    it('should be true when user stored', () => {
-      const user = { username: 'jan', role: Role.USER };
-      localStorage.setItem('auth_user', JSON.stringify(user));
-      // nový service instance prečíta localStorage pri inicializácii
-      const freshService = TestBed.inject(AuthService);
-      // signal sa inicializuje v konstruktore — testujem cez currentUser
-      service.currentUser.set(user as any);
+    it('should be true when user set', () => {
+      service.currentUser.set({ id: '1', username: 'jan', role: Role.USER });
       expect(service.isLoggedIn()).toBe(true);
     });
 
-    it('should return true for admin role', () => {
-      service.currentUser.set({ username: 'admin', role: Role.ADMIN } as any);
+    it('should return true for ADMIN role', () => {
+      service.currentUser.set({ id: '1', username: 'admin', role: Role.ADMIN });
       expect(service.isAdmin()).toBe(true);
     });
 
-    it('should return false for non-admin role', () => {
-      service.currentUser.set({ username: 'jan', role: Role.USER } as any);
+    it('should return false for USER role', () => {
+      service.currentUser.set({ id: '1', username: 'jan', role: Role.USER });
       expect(service.isAdmin()).toBe(false);
     });
   });
 
-  describe('login', () => {
-    it('should POST to /auth/login and store user + token', () => {
-      const mockResponse = {
-        access_token: 'token-xyz',
-        user: { username: 'jan', role: Role.USER },
-      };
+  describe('checkAuth', () => {
+    it('should set user when isLoggedIn true', () => {
+      const mockUser = { id: '1', username: 'jan', role: Role.USER };
 
-      let result: any;
-      service.login('jan', 'pass123').subscribe((res) => (result = res));
+      service.checkAuth().subscribe();
+
+      const req = http.expectOne(`${API_URL}/auth/me`);
+      expect(req.request.method).toBe('GET');
+      req.flush({ isLoggedIn: true, user: mockUser });
+
+      expect(service.currentUser()).toEqual(mockUser);
+      expect(localStorage.getItem('auth_user')).toBe(JSON.stringify(mockUser));
+    });
+
+    it('should clear user when isLoggedIn false', () => {
+      service.currentUser.set({ id: '1', username: 'jan', role: Role.USER });
+
+      service.checkAuth().subscribe();
+
+      const req = http.expectOne(`${API_URL}/auth/me`);
+      req.flush({ isLoggedIn: false });
+
+      expect(service.currentUser()).toBeNull();
+      expect(localStorage.getItem('auth_user')).toBeNull();
+    });
+  });
+
+  describe('login', () => {
+    it('should POST to /auth/login and store user', () => {
+      const mockUser = { id: '1', username: 'jan', role: Role.USER };
+
+      service.login('jan', 'pass123').subscribe();
 
       const req = http.expectOne(`${API_URL}/auth/login`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({ username: 'jan', password: 'pass123' });
-      req.flush(mockResponse);
+      req.flush({ user: mockUser });
 
-      expect(service.currentUser()).toEqual(mockResponse.user);
-      expect(localStorage.getItem('auth_token')).toBe('token-xyz');
-      expect(localStorage.getItem('auth_user')).toBe(JSON.stringify(mockResponse.user));
+      expect(service.currentUser()).toEqual(mockUser);
+      expect(localStorage.getItem('auth_user')).toBe(JSON.stringify(mockUser));
     });
   });
 
@@ -100,15 +103,16 @@ describe('AuthService', () => {
   });
 
   describe('logout', () => {
-    it('should clear user, localStorage and navigate to /login', () => {
-      service.currentUser.set({ username: 'jan', role: Role.USER } as any);
-      localStorage.setItem('auth_token', 'tok');
+    it('should clear user and navigate to /login', () => {
+      service.currentUser.set({ id: '1', username: 'jan', role: Role.USER });
       localStorage.setItem('auth_user', '{"username":"jan"}');
 
       service.logout();
 
+      const req = http.expectOne(`${API_URL}/auth/logout`);
+      req.flush({});
+
       expect(service.currentUser()).toBeNull();
-      expect(localStorage.getItem('auth_token')).toBeNull();
       expect(localStorage.getItem('auth_user')).toBeNull();
       expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
