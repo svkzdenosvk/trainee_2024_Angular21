@@ -3,11 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { WeatherApiResponse, WeatherRow } from '../models/weather.model';
 import { CityService } from './city.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
   private readonly http = inject(HttpClient);
   private readonly cityService = inject(CityService);
+  private readonly translocoService = inject(TranslocoService);
   private readonly API_URL = 'https://api.open-meteo.com/v1/forecast';
 
   getWeatherData(startDate: string, endDate: string): Observable<WeatherRow[]> {
@@ -30,16 +32,20 @@ export class WeatherService {
   }
 
   private transformResponse(response: WeatherApiResponse): WeatherRow[] {
-    return response.hourly.time.map((time, i) => ({
-      datetime: new Date(time),
-      weatherState: this.getWeatherState(response.hourly.weathercode[i]),
-      weatherIcon: this.getWeatherIcon(response.hourly.weathercode[i]),
-      temperature: response.hourly.temperature_2m[i],
-      humidity: response.hourly.relativehumidity_2m[i],
-      pressure: response.hourly.surface_pressure[i],
-      windSpeed: response.hourly.windspeed_10m[i],
-      precipitation: response.hourly.precipitation[i],
-    }));
+    return response.hourly.time.map((time, i) => {
+      const weatherState = this.getWeatherState(response.hourly.weathercode[i]);
+      return {
+        datetime: new Date(time),
+        weatherState,
+        weatherStateLabel: this.translocoService.translate(weatherState),
+        weatherIcon: this.getWeatherIcon(response.hourly.weathercode[i]),
+        temperature: response.hourly.temperature_2m[i],
+        humidity: response.hourly.relativehumidity_2m[i],
+        pressure: response.hourly.surface_pressure[i],
+        windSpeed: response.hourly.windspeed_10m[i],
+        precipitation: response.hourly.precipitation[i],
+      };
+    });
   }
 
   private getWeatherState(code: number): string {

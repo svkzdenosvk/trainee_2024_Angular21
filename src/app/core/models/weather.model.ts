@@ -20,6 +20,7 @@ export interface HourlyApiData {
 export interface WeatherRow {
   datetime: Date;
   weatherState: string;
+  weatherStateLabel: string; // translated text
   weatherIcon: string;
   temperature: number;
   humidity: number;

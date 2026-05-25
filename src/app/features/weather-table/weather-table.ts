@@ -17,6 +17,7 @@ import { WeatherService } from '../../core/services/weather.service';
 import { WeatherRow } from '../../core/models/weather.model';
 import { CityService } from '../../core/services/city.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-weather-table',
@@ -40,6 +41,15 @@ export class WeatherTableComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);
   protected readonly cityService = inject(CityService);
   private readonly translocoService = inject(TranslocoService);
+
+  constructor() {
+    // reload data on language change to update weather state labels
+    this.translocoService.langChanges$.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (this.rows().length > 0) {
+        this.loadData();
+      }
+    });
+  }
 
   rows = signal<WeatherRow[]>([]);
   loading = signal(false);
