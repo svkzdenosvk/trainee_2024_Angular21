@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LangService } from '../../core/services/lang.service';
 
 @Component({
   selector: 'app-city-picker',
@@ -36,6 +37,7 @@ export class CityPickerComponent {
   private readonly cityService = inject(CityService);
   protected readonly favouritesService = inject(FavouritesService);
   protected readonly authService = inject(AuthService);
+  private readonly langService = inject(LangService);
 
   searchQuery = signal('');
   results = signal<City[]>([]);
@@ -47,6 +49,13 @@ export class CityPickerComponent {
   private searchSubject = new Subject<string>();
 
   constructor() {
+    // delete results after language change
+    effect(() => {
+      this.langService.currentLang(); // dependency
+      this.results.set([]);
+      this.searchQuery.set('');
+    });
+
     this.searchSubject
       .pipe(
         debounceTime(300),
@@ -58,7 +67,7 @@ export class CityPickerComponent {
           }
           this.loading.set(true);
           return this.http.get<any>(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=en&format=json`,
+            `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=${this.langService.currentLang()}&format=json`,
           );
         }),
         takeUntilDestroyed(),
