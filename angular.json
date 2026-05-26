@@ -30,7 +30,9 @@
                 "input": "public"
               }
             ],
-            "styles": ["node_modules/primeicons/primeicons.css", "src/styles.scss"]
+            "styles": ["node_modules/primeicons/primeicons.css", "src/styles.scss"],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
