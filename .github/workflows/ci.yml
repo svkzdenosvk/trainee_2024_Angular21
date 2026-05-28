@@ -2,9 +2,9 @@ name: Angular CI
 
 on:
   push:
-    branches: [main, master, refr_token]
+    branches: [refr_token]
   pull_request:
-    branches: [main, master]
+    branches: [refr_token]
 
 jobs:
   test:
