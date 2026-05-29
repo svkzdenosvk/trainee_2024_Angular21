@@ -86,7 +86,7 @@ export class AdminUserEditComponent implements OnInit {
           this.form.patchValue({ username: user.username });
           this.originalUsername.set(user.username);
         },
-        error: () => this.error.set('auth.errors.adminEditFailed'),
+        error: () => this.error.set('auth.adminDashboard.errors.adminEditFailed'),
       });
   }
 
@@ -107,7 +107,7 @@ export class AdminUserEditComponent implements OnInit {
       },
       error: (err) => {
         if (err.status === 409) this.error.set('auth.errors.userExists');
-        else this.error.set('auth.errors.adminEditFailed');
+        else this.error.set('auth.adminDashboard.errors.adminEditFailed');
         this.loading.set(false);
       },
     });
