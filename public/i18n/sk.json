@@ -193,6 +193,12 @@
       }
     }
   },
+  "error": {
+    "title": "Niečo sa pokazilo",
+    "subtitle": "Nepodarilo sa pripojiť k serveru. Prosím, skúste to znova.",
+    "goHome": "Ísť domov",
+    "retry": "Skúsiť znova"
+  },
   "btnLoadData": "Načítať údaje",
   "dateRange": "Rozsah dátumov",
   "dateRangePlaceholder": "Vyberte rozsah dátumov",

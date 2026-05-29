@@ -57,6 +57,11 @@ export const routes: Routes = [
             (m) => m.AdminUserEditComponent,
           ),
       },
+      {
+        path: 'error',
+        loadComponent: () =>
+          import('./features/error-page/error-page').then((m) => m.ErrorPageComponent),
+      },
     ],
   },
   {

@@ -1,0 +1,17 @@
+<div class="error-container">
+  <div class="error-card">
+    <div class="error-icon">⚡</div>
+    <h2>{{ 'error.title' | transloco }}</h2>
+    <p>{{ 'error.subtitle' | transloco }}</p>
+    <div class="error-actions">
+      <p-button [label]="'error.goHome' | transloco" icon="pi pi-home" (onClick)="goHome()" />
+      <p-button
+        [label]="'error.retry' | transloco"
+        icon="pi pi-refresh"
+        severity="secondary"
+        [text]="true"
+        (onClick)="retry()"
+      />
+    </div>
+  </div>
+</div>

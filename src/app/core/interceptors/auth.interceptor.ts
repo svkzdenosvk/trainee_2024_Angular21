@@ -1,12 +1,13 @@
-
-
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { catchError, throwError } from 'rxjs';
 
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
 
   // jump over the open-meteo requests
   if (req.url.includes('open-meteo.com') || req.url.includes('nominatim.openstreetmap.org')) {
@@ -22,6 +23,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401 && !isPasswordChange) {
         authService.logout();
       }
+
+      if (error.status === 500) {
+        router.navigate(['/error']);
+      }
+      if (error.status === 0) {
+        // network error - server not available
+        router.navigate(['/error']);
+      }
+
       return throwError(() => error);
     }),
   );

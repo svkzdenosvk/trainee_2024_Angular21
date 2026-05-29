@@ -9,7 +9,7 @@ export class AdminService {
   private readonly http = inject(HttpClient);
 
   users = signal<UserWithStats[]>([]);
-  loading = signal(false);
+  loading = signal(true);
 
   loadUsers(): void {
     this.loading.set(true);

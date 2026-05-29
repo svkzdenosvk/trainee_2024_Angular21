@@ -193,6 +193,13 @@
       }
     }
   },
+  "error": {
+    "title": "Something went wrong",
+    "subtitle": "We couldn't connect to the server. Please try again.",
+    "goHome": "Go home",
+    "retry": "Try again"
+  },
+
   "btnLoadData": "Load Data",
   "dateRange": "Date Range",
   "dateRangePlaceholder": "Select date range",
