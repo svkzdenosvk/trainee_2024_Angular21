@@ -91,4 +91,9 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/error-page/error-page').then((m) => m.ErrorPageComponent),
+  },
 ];

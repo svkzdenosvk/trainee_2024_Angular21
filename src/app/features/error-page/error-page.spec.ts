@@ -1,23 +1,34 @@
-// import { ComponentFixture, TestBed } from '@angular/core/testing';
+// src/app/features/error-page/error-page.spec.ts
+import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { ErrorPageComponent } from './error-page';
 
-// import { ErrorPage } from './error-page';
+describe('ErrorPageComponent', () => {
+  let component: ErrorPageComponent;
+  let router: { navigate: ReturnType<typeof vi.fn> };
 
-// describe('ErrorPage', () => {
-//   let component: ErrorPage;
-//   let fixture: ComponentFixture<ErrorPage>;
+  beforeEach(() => {
+    router = { navigate: vi.fn() };
 
-//   beforeEach(async () => {
-//     await TestBed.configureTestingModule({
-//       imports: [ErrorPage]
-//     })
-//     .compileComponents();
+    TestBed.configureTestingModule({
+      imports: [ErrorPageComponent],
+      providers: [
+        { provide: Router, useValue: router },
+        { provide: TranslocoService, useValue: { translate: (key: string) => key } },
+      ],
+    });
 
-//     fixture = TestBed.createComponent(ErrorPage);
-//     component = fixture.componentInstance;
-//     await fixture.whenStable();
-//   });
+    const fixture = TestBed.createComponent(ErrorPageComponent);
+    component = fixture.componentInstance;
+  });
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should navigate to / on goHome', () => {
+    component.goHome();
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
+  });
+});
