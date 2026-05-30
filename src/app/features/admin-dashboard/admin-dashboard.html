@@ -55,16 +55,16 @@
               [severity]="user.role === Role.ADMIN ? 'secondary' : 'warn'"
               [text]="true"
               (onClick)="changeRole(user)"
-              [disabled]="!_canChangeRole(user)"
+              [disabled]="!_canChangeRole(user) || pendingUserId() === user.id"
               [pTooltip]="getRoleTooltip(user)"
             />
-
+<!-- [disabled]="!_canChangeRole(user)" -->
             <p-button
               icon="pi pi-trash"
               severity="danger"
               [text]="true"
               (onClick)="deleteUser(user)"
-              [disabled]="!_canDelete(user)"
+              [disabled]="!_canDelete(user) || pendingUserId() === user.id"
               [pTooltip]="getDeleteTooltip(user)"
             />
             <p-button
@@ -73,7 +73,7 @@
               [text]="true"
               [pTooltip]="getEditTooltip(user)"
               (onClick)="editUser(user)"
-              [disabled]="!_canEdit(user)"
+              [disabled]="!_canEdit(user)|| pendingUserId() === user.id"
             />
           </div>
         </td>

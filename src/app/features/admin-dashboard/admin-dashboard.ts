@@ -15,14 +15,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    TableModule,
-    TagModule,
-    ButtonModule,
-    TranslocoModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, TableModule, TagModule, ButtonModule, TranslocoModule, TooltipModule],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +30,7 @@ export class AdminDashboardComponent implements OnInit {
 
   errorMessage = signal<string | null>(null);
   loading = signal(true);
+  pendingUserId = signal<string | null>(null);
 
   ngOnInit(): void {
     this.adminService.loadUsers();
@@ -57,10 +51,18 @@ export class AdminDashboardComponent implements OnInit {
   deleteUser(user: UserWithStats): void {
     if (!this._canDelete(user)) return;
 
+    this.pendingUserId.set(user.id);
     this.adminService.deleteUser(user.id).subscribe({
-      next: () => this.adminService.loadUsers(),
-      error: () =>
-        this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed')),
+      next: () => {
+        this.adminService.loadUsers();
+        this.pendingUserId.set(null);
+      },
+      error: () => {
+        this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed'));
+        this.pendingUserId.set(null);
+      },
+      // error: () =>
+      //   this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed')),
     });
   }
 
@@ -73,12 +75,20 @@ export class AdminDashboardComponent implements OnInit {
 
   changeRole(user: UserWithStats): void {
     if (!this._canChangeRole(user)) return;
+    this.pendingUserId.set(user.id);
 
     const newRole = user.role === Role.ADMIN ? Role.USER : Role.ADMIN;
     this.adminService.updateRole(user.id, newRole).subscribe({
-      next: () => this.adminService.loadUsers(),
-      error: () =>
-        this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed')),
+      next: () => {
+        this.adminService.loadUsers();
+        this.pendingUserId.set(null);
+      },
+      error: () => {
+        this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed'));
+        this.pendingUserId.set(null);
+      },
+      // error: () =>
+      //   this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed')),
     });
   }
 
