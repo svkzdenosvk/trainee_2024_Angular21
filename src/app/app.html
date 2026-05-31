@@ -1,3 +1,7 @@
 
 
-<router-outlet />
+<!-- <router-outlet /> -->
+ 
+<main [@routeAnimations]="outlet.activatedRouteData">
+  <router-outlet #outlet="outlet" />
+</main>

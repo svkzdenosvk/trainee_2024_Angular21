@@ -13,7 +13,6 @@
       <button [class.active]="viewMode() === 'map'" (click)="viewMode.set('map')">
         🗺️ {{ 'cityPicker.modeOption.map' | transloco }}
       </button>
-     
     </div>
   </div>
 
@@ -85,8 +84,16 @@
     }
   }
 
-  @if (viewMode() === 'map') {
+  <!-- @if (viewMode() === 'map') {
     <app-city-map />
+  } -->
+  @if (viewMode() === 'map') {
+    @defer (on immediate; prefetch on idle) {
+      <app-city-map />
+    } @placeholder {
+      <div class="loading-wrapper">
+        <p-progressSpinner strokeWidth="3" />
+      </div>
+    }
   }
- 
 </div>

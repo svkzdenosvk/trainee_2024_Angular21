@@ -52,19 +52,13 @@ export class FavouritesService {
 
     if (!favourite?.id) return;
 
-    // Optimistic removal: update local state immediately for instant UI feedback -> check this  if this can cause error and logout !!
-    this.favourites.update((favs) => favs.filter((f) => !this.sameCity(f, city)));
+    // Optimistic removal: update local state immediately for instant UI feedback -> when quickly removing bounce back to the same city, it will be added again and then removed again, causing an extra server request. To prevent this, we can check if the city is already removed before sending the DELETE request.
+    // this.favourites.update((favs) => favs.filter((f) => !this.sameCity(f, city)));
 
     // Then send DELETE request; if it fails, reload correct state from server
     this.http.delete(`${API_URL}/favourites/${favourite.id}`).subscribe({
       next: () => this.reloadForUser(),
-      error: (err) => {
-        if (err.status !== 401) {
-          // reload only on non-auth errors
-          this.reloadForUser();
-        }
-        // on 401 -> interceptor -> logout
-      },
+      error: () => this.reloadForUser(), // when error occurs, reload the correct state
     });
   }
 
