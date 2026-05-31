@@ -89,7 +89,7 @@ main {
 }
 
 @media (max-width: 350px) {
-  /* Hide primary nav (city..., admin) */
+  /* Hide primary nav (mesta, tepla, obľúbené, účet, admin) */
   .app-nav-primary {
     display: none;
   }
@@ -108,7 +108,7 @@ main {
     cursor: pointer;
     font-size: 1.25rem;
     padding: 0;
-    margin: 0.5rem auto 1.5rem auto;
+    margin: 0.5rem auto -1.5rem auto;
     transition: color 0.2s;
 
     i {
@@ -128,7 +128,9 @@ main {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    transition:
+      max-height 0.3s ease-out,
+      opacity 0.3s ease-out;
     border-bottom: 1px solid #1e293b;
     margin: 0 2rem 1.5rem 2rem;
 

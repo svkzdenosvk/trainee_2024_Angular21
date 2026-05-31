@@ -31,15 +31,15 @@ export class FavouritesService {
   }
 
   add(city: City): void {
-      if (this.favourites().length >= 10) return;
+    if (this.favourites().length >= 10) return;
 
     // if (this.isFull()) return;
     if (this.isFavourite(city)) return;
     if (!city.name?.trim() || !city.country?.trim()) return;
 
-    // optimistic update - pridaj hneď do signalu
+    // optimistic update
     // this.favourites.update((favs) => [...favs, city]);
-     this.favourites.update(favs => [...favs, { ...city }]);
+    this.favourites.update((favs) => [...favs, { ...city }]);
 
     this.http.post<FavouriteResponse>(`${API_URL}/favourites`, city).subscribe({
       next: () => this.reloadForUser(),
@@ -48,12 +48,14 @@ export class FavouritesService {
   }
 
   remove(city: City): void {
-    console.log('favourites:', this.favourites());
-    console.log('looking for:', city);
     const favourite = this.favourites().find((f) => this.sameCity(f, city)) as any;
-    console.log('found:', favourite);
+
     if (!favourite?.id) return;
 
+    // Optimistic removal: update local state immediately for instant UI feedback -> chec this with claude ai if this can case error and logout !!
+    // this.favourites.update((favs) => favs.filter((f) => !this.sameCity(f, city)));
+
+    // Then send DELETE request; if it fails, reload correct state from server
     this.http.delete(`${API_URL}/favourites/${favourite.id}`).subscribe({
       next: () => this.reloadForUser(),
       error: () => this.reloadForUser(), // when error occurs, reload the correct state

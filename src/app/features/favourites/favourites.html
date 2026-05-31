@@ -14,7 +14,7 @@
     </div>
   }
 
-  <div class="favourites-list">
+  <div class="favourites-list" [@listAnimation]="favouritesService.favourites().length">
     @for (city of favouritesService.favourites(); track city.id ?? city.lat + city.lon) {
       <div class="favourite-item">
         <div class="city-info">

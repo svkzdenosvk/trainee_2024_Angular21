@@ -50,10 +50,12 @@
   background: #1e293b;
   border: 1px solid #334155;
   border-radius: 10px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     border-color: #f97316;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 16px rgba(249, 115, 22, 0.2);
   }
 }
 

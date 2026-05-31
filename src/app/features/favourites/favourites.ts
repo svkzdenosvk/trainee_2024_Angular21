@@ -4,8 +4,24 @@ import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule } from '@jsverse/transloco';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
 @Component({
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateX(-10px)' }),
+          stagger('60ms', [
+            animate('200ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
+          ])
+        ], { optional: true }),
+        query(':leave', [
+          animate('150ms ease-in', style({ opacity: 0, transform: 'translateX(10px)' }))
+        ], { optional: true })
+      ])
+    ])
+  ],
   selector: 'app-favourites',
   standalone: true,
   imports: [TranslocoModule],
