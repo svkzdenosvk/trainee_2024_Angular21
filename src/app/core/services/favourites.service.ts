@@ -52,13 +52,19 @@ export class FavouritesService {
 
     if (!favourite?.id) return;
 
-    // Optimistic removal: update local state immediately for instant UI feedback -> chec this with claude ai if this can case error and logout !!
-    // this.favourites.update((favs) => favs.filter((f) => !this.sameCity(f, city)));
+    // Optimistic removal: update local state immediately for instant UI feedback -> check this  if this can cause error and logout !!
+    this.favourites.update((favs) => favs.filter((f) => !this.sameCity(f, city)));
 
     // Then send DELETE request; if it fails, reload correct state from server
     this.http.delete(`${API_URL}/favourites/${favourite.id}`).subscribe({
       next: () => this.reloadForUser(),
-      error: () => this.reloadForUser(), // when error occurs, reload the correct state
+      error: (err) => {
+        if (err.status !== 401) {
+          // reload only on non-auth errors
+          this.reloadForUser();
+        }
+        // on 401 -> interceptor -> logout
+      },
     });
   }
 
