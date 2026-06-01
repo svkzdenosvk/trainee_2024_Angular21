@@ -10,17 +10,23 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
   animations: [
     trigger('listAnimation', [
       transition('* => *', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateX(-10px)' }),
-          stagger('60ms', [
-            animate('200ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
-          ])
-        ], { optional: true }),
-        query(':leave', [
-          animate('150ms ease-in', style({ opacity: 0, transform: 'translateX(10px)' }))
-        ], { optional: true })
-      ])
-    ])
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateX(-10px)' }),
+            stagger('60ms', [
+              animate('200ms ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
+            ]),
+          ],
+          { optional: true },
+        ),
+        query(
+          ':leave',
+          [animate('150ms ease-in', style({ opacity: 0, transform: 'translateX(10px)' }))],
+          { optional: true },
+        ),
+      ]),
+    ]),
   ],
   selector: 'app-favourites',
   standalone: true,

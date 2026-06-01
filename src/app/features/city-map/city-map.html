@@ -1,14 +1,13 @@
-
 <div class="map-wrapper">
   @if (showNoCity()) {
-    <div class="map-banner warning">
+    <div class="map-banner warning" [@fadeInOut]>
       <i class="pi pi-map-marker"></i>
-            {{ 'cityMap.noCity' | transloco }}
+      {{ 'cityMap.noCity' | transloco }}
     </div>
   }
 
   @if (showFullWarning()) {
-    <div class="map-banner danger">
+    <div class="map-banner danger" [@fadeInOut]>
       <i class="pi pi-exclamation-triangle"></i>
       {{ 'favourites.fullWarning' | transloco }}
     </div>

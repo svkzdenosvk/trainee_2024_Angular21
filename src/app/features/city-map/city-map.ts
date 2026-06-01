@@ -8,11 +8,13 @@ import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
+import { fadeInOut } from '../../shared/animations/animations';
 
 @Component({
   selector: 'app-city-map',
   standalone: true,
   imports: [CommonModule, TranslocoModule],
+  animations: [fadeInOut],
   templateUrl: './city-map.html',
   styleUrls: ['./city-map.scss'],
 })
@@ -104,7 +106,6 @@ export class CityMapComponent implements AfterViewInit {
       ? this.translocoService.translate('cityPicker.btnRemove')
       : this.translocoService.translate('cityPicker.btnAdd');
 
-    
     const favButton = this.authService.isLoggedIn()
       ? `<button id="fav-city-btn" class="popup-btn-fav ${!isFav && isFull ? 'is-full' : ''}">⭐ ${favLabel}</button>`
       : '';

@@ -13,12 +13,14 @@ import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
+import { fadeInOut } from '../../shared/animations/animations';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LangService } from '../../core/services/lang.service';
 
 @Component({
   selector: 'app-city-picker',
   standalone: true,
+  animations: [fadeInOut],
   imports: [
     CommonModule,
     FormsModule,

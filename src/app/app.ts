@@ -5,16 +5,6 @@ import { FavouritesService } from './core/services/favourites.service';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
 @Component({
-  // app-shell.ts alebo public-shell.ts
-  animations: [
-    trigger('routeAnimations', [
-      transition('* <=> *', [
-        query(':enter', [style({ opacity: 0 })], { optional: true }),
-        query(':leave', [animate('150ms ease-in', style({ opacity: 0 }))], { optional: true }),
-        query(':enter', [animate('200ms ease-out', style({ opacity: 1 }))], { optional: true }),
-      ]),
-    ]),
-  ],
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
