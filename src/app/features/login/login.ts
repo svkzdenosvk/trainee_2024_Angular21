@@ -6,10 +6,12 @@ import { Button } from 'primeng/button';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
 import { FavouritesService } from '../../core/services/favourites.service';
+import { fadeInOut } from '../../shared/animations/animations';
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  animations: [fadeInOut],
   imports: [ReactiveFormsModule, InputText, Button, TranslocoModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],

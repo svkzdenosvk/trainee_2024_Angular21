@@ -2,14 +2,14 @@
   <h2><i class="pi pi-user-edit"></i> {{ 'auth.edit.profile.title' | transloco }}</h2>
 
   @if (error()) {
-    <div class="error-banner">
+    <div class="error-banner" [@fadeInOut]>
       <i class="pi pi-exclamation-triangle"></i>
       {{ error() | transloco }}
     </div>
   }
 
   @if (success()) {
-    <div class="success-banner">
+    <div class="success-banner" [@fadeInOut]>
       <i class="pi pi-check"></i>
       {{ 'auth.edit.profile.success' | transloco }}
     </div>

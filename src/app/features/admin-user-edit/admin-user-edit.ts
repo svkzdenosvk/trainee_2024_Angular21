@@ -11,11 +11,13 @@ import { isDefaultUser } from '../../core/utils/def_user.utils';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../core/services/auth.service';
 import { Role } from '../../core/models/role.enum';
+import { fadeInOut } from '../../shared/animations/animations';
 
 @Component({
   selector: 'app-admin-user-edit',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputText, Button, TranslocoModule, TooltipModule],
+  animations: [fadeInOut],
   templateUrl: './admin-user-edit.html',
   styleUrl: './admin-user-edit.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

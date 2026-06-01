@@ -12,6 +12,7 @@ import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
+import { fadeInOut } from '../../shared/animations/animations';
 import {
   hasUppercase,
   hasNumber,
@@ -22,6 +23,7 @@ import {
 @Component({
   selector: 'app-register',
   standalone: true,
+  animations: [fadeInOut],
   imports: [ReactiveFormsModule, InputText, Button, TranslocoModule],
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],

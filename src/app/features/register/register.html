@@ -1,7 +1,7 @@
 <div class="log-reg-container">
   <div class="log-reg-card">
     @if (success()) {
-      <div class="success-banner">
+      <div class="success-banner" [@fadeInOut]>
         <i class="pi pi-check"></i>
         {{ 'auth.register.registerSuccess' | transloco }}
       </div>
@@ -69,7 +69,7 @@
       </div>
 
       @if (error()) {
-        <div class="error-banner">
+        <div class="error-banner" [@fadeInOut]>
           <i class="pi pi-exclamation-triangle"></i>
           {{ error() | transloco }}
         </div>

@@ -1,12 +1,5 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl,
-  ValidationErrors,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
 import { API_URL } from '../../core/constants/constants';
@@ -14,6 +7,7 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { fadeInOut } from '../../shared/animations/animations';
 import { isDefaultUser } from '../../core/utils/def_user.utils';
 import { TooltipModule } from 'primeng/tooltip';
 import {
@@ -27,6 +21,7 @@ import {
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputText, Button, TranslocoModule, TooltipModule],
+  animations: [fadeInOut],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })

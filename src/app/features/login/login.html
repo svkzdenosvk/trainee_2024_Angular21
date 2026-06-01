@@ -37,7 +37,7 @@
       </div>
 
       @if (error()) {
-        <div class="error-banner">
+        <div class="error-banner" [@fadeInOut]>
           <i class="pi pi-exclamation-triangle"></i>
           {{ error() | transloco }}
         </div>

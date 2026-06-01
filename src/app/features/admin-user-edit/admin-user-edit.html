@@ -1,5 +1,3 @@
-
-
 <div class="profile-container">
   <h2>
     <i class="pi pi-user-edit"></i>
@@ -7,14 +5,14 @@
   </h2>
 
   @if (error()) {
-    <div class="error-banner">
+    <div class="error-banner" [@fadeInOut]>
       <i class="pi pi-exclamation-triangle"></i>
       {{ error() | transloco }}
     </div>
   }
 
   @if (success()) {
-    <div class="success-banner">
+    <div class="success-banner" [@fadeInOut]>
       <i class="pi pi-check"></i>
       {{ 'auth.edit.profile.success' | transloco }}
     </div>
@@ -23,11 +21,7 @@
   <form [formGroup]="form">
     <div class="form-group">
       <label>{{ 'auth.edit.profile.username' | transloco }}</label>
-      <input
-        pInputText
-        formControlName="username"
-        [disabled]="isDefaultUserProtected()"
-      />
+      <input pInputText formControlName="username" [disabled]="isDefaultUserProtected()" />
       @if (getFieldError('username')) {
         <small class="field-error">{{ getFieldError('username') | transloco }}</small>
       }
