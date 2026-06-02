@@ -9,6 +9,8 @@ import { City } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
 import { fadeInOut } from '../../shared/animations/animations';
+import { Subject } from 'rxjs/internal/Subject';
+import { fromEvent, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-city-map',
@@ -25,6 +27,9 @@ export class CityMapComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly translocoService = inject(TranslocoService);
   protected readonly authService = inject(AuthService);
+  private abortController?: AbortController;
+  private popupDestroy$ = new Subject<void>();
+  private isAdding = false;
 
   private map!: L.Map;
   private marker?: L.Marker;
@@ -92,12 +97,18 @@ export class CityMapComponent implements AfterViewInit {
         if (this.marker) this.marker.remove();
         this.currentCity = city;
         this.marker = L.marker([lat, lon]).addTo(this.map).bindPopup('').openPopup();
+
         this.updatePopup(city);
       });
   }
 
   private updatePopup(city: City): void {
     if (!this.marker) return;
+
+    // destroy old listeners
+    this.popupDestroy$.next();
+    this.popupDestroy$.complete();
+    this.popupDestroy$ = new Subject<void>();
 
     const isFav = this.favouritesService.isFavourite(city);
     const isFull = this.favouritesService.favourites().length >= 10;
@@ -118,38 +129,105 @@ export class CityMapComponent implements AfterViewInit {
           <button id="select-city-btn" class="popup-btn-select">→ ${selectLabel}</button>
           ${favButton}   
         </div>
-      </div>
-   `);
+        </div>
+        `);
 
+    // older approach with event delegation and AbortController (commented out for now)
+    
+    // setTimeout(() => {
+    //   this.abortController?.abort();
+    //   this.abortController = new AbortController();
+    //   const signal = this.abortController.signal;
+
+    //   document.getElementById('select-city-btn')?.addEventListener('click', () => {
+    //     this.cityService.selectCity(city);
+    //     this.router.navigate(['/weather'], {
+    //       queryParams: {
+    //         city: city.name,
+    //         country: city.country,
+    //         lat: city.lat,
+    //         lon: city.lon,
+    //       },
+    //     });
+    //   });
+
+    //   document.getElementById('fav-city-btn')?.addEventListener(
+    //     'click',
+    //     () => {
+    //       if (this.favouritesService.isFavourite(city)) {
+    //         this.favouritesService.remove(city);
+    //       } else {
+    //         if (this.favouritesService.favourites().length >= 10) {
+    //           this.showFullWarning.set(true);
+    //           setTimeout(() => this.showFullWarning.set(false), 3500);
+    //           return;
+    //         }
+    //         this.favouritesService.add(city);
+    //       }
+    //       this.updatePopup(city);
+    //       //   },
+    //       //   { once: true },
+    //       // );
+    //     },
+    //     { signal },
+    //   );
+    // }, 100);
     setTimeout(() => {
-      document.getElementById('select-city-btn')?.addEventListener('click', () => {
-        this.cityService.selectCity(city);
-        this.router.navigate(['/weather'], {
-          queryParams: {
-            city: city.name,
-            country: city.country,
-            lat: city.lat,
-            lon: city.lon,
-          },
-        });
-      });
-      document.getElementById('fav-city-btn')?.addEventListener(
-        'click',
-        () => {
-          if (this.favouritesService.isFavourite(city)) {
-            this.favouritesService.remove(city);
-          } else {
-            if (this.favouritesService.favourites().length >= 10) {
-              this.showFullWarning.set(true);
-              setTimeout(() => this.showFullWarning.set(false), 3500);
+      const selectBtn = document.getElementById('select-city-btn');
+      const favBtn = document.getElementById('fav-city-btn');
+
+      if (selectBtn) {
+        fromEvent(selectBtn, 'click')
+          .pipe(takeUntil(this.popupDestroy$))
+          .subscribe(() => {
+            this.cityService.selectCity(city);
+            this.router.navigate(['/weather'], {
+              queryParams: {
+                city: city.name,
+                country: city.country,
+                lat: city.lat,
+                lon: city.lon,
+              },
+            });
+          });
+      }
+
+      if (favBtn) {
+        fromEvent(favBtn, 'click')
+          .pipe(takeUntil(this.popupDestroy$))
+          .subscribe(() => {
+            if (this.isAdding) return; // block during request
+
+            if (this.favouritesService.isFavourite(city)) {
+              this.favouritesService.remove(city);
+            } else {
+              if (this.favouritesService.favourites().length >= 10) {
+                this.showFullWarning.set(true);
+                setTimeout(() => this.showFullWarning.set(false), 3500);
+                return;
+              }
+              this.isAdding = true;
+
+              this.favouritesService.add(city);
+              // }
+
+              setTimeout(() => {
+                this.isAdding = false;
+                this.updatePopup(city);
+              }, 800);
               return;
             }
-            this.favouritesService.add(city);
-          }
-          this.updatePopup(city);
-        },
-        { once: true },
-      );
-    }, 100);
+            this.updatePopup(city);
+          });
+      }
+      // }, 100);
+    }, 150);
+  }
+
+  // add ngOnDestroy
+  ngOnDestroy() {
+    this.popupDestroy$.next();
+    this.popupDestroy$.complete();
+    this.abortController?.abort();
   }
 }
