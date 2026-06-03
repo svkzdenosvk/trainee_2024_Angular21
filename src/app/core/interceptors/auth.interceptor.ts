@@ -3,11 +3,13 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { catchError, throwError } from 'rxjs';
+import { ErrorService } from '../services/error.service';
 
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const errorService = inject(ErrorService);
 
   // jump over the open-meteo requests
   if (req.url.includes('open-meteo.com') || req.url.includes('nominatim.openstreetmap.org')) {
@@ -25,11 +27,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       if (error.status === 500) {
+        errorService.showError('errors.serverError');
         router.navigate(['/error']);
       }
       if (error.status === 0) {
         // network error - server not available
-        router.navigate(['/error']);
+        errorService.showError('errors.networkError');
+        // router.navigate(['/error']);   <-- maybe we want to stay on the same page and just show a message?
       }
 
       return throwError(() => error);

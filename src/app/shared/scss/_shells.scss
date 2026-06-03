@@ -8,6 +8,24 @@
   padding: 0;
 }
 
+.global-error-banner {
+  background: rgba(227, 60, 60, 0.776);
+  border-top: 1px solid rgba(227, 60, 60, 0.976);
+  border-bottom: 1px solid rgba(227, 60, 60, 0.976);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1rem;
+
+  i {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+  }
+}
+
 main {
   flex: 1;
   padding: 2rem;

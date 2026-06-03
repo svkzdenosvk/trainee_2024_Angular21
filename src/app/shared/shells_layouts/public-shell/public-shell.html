@@ -1,9 +1,15 @@
 <div class="public-container">
-
   <!-- user, login reg. logout buttons -->
   <app-nav-auth />
 
   <app-header />
+
+  @if (errorService.error()) {
+    <div class="global-error-banner" @fadeInOut>
+      <i class="pi pi-exclamation-triangle"></i>
+      {{ errorService.error() | transloco }}
+    </div>
+  }
 
   <!-- nav part same for both shells -->
   <app-public-nav />

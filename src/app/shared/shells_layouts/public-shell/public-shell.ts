@@ -2,14 +2,17 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../../core/services/auth.service';
+import { ErrorService } from '../../../core/services/error.service';
 import { LangService } from '../../../core/services/lang.service';
 import { AppNavAuth } from '../../components/app-nav-auth/app-nav-auth';
 import { AppFooter } from '../../components/app-footer/app-footer';
 import { AppHeader } from '../../components/app-header/app-header';
-import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
+// import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
 import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
+import { fadeInOut } from '../../animations/animations';
 
 @Component({
+  animations: [fadeInOut],
   selector: 'app-public-shell',
   imports: [
     AppNavAuth,
@@ -25,4 +28,5 @@ import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
 export class PublicShell {
   protected readonly authService = inject(AuthService);
   protected readonly langService = inject(LangService);
+  protected readonly errorService = inject(ErrorService);
 }

@@ -7,10 +7,13 @@ import { LangService } from '../../../core/services/lang.service';
 import { AppNavAuth } from '../../components/app-nav-auth/app-nav-auth';
 import { AppFooter } from '../../components/app-footer/app-footer';
 import { AppHeader } from '../../components/app-header/app-header';
-import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
+// import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
 import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
+import { ErrorService } from '../../../core/services/error.service';
+import { fadeInOut } from '../../animations/animations';
 
 @Component({
+  animations: [fadeInOut],
   selector: 'app-app-shell',
   standalone: true,
   imports: [
@@ -31,6 +34,7 @@ export class AppShell {
   private readonly translocoService = inject(TranslocoService);
   protected readonly authService = inject(AuthService);
   protected readonly langService = inject(LangService);
+  protected readonly errorService = inject(ErrorService);
 
   currentLang = signal(this.translocoService.getActiveLang());
 
