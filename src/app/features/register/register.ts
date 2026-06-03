@@ -1,12 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-  Validators,
-  // AbstractControl,
-  // ValidationErrors,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
@@ -18,7 +11,9 @@ import {
   hasNumber,
   hasSpecialCharacter,
   passwordsMatch,
+  usernameAvailableValidator,
 } from '../../core/utils/validators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -32,6 +27,7 @@ import {
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
   protected readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   error = signal<string | null>(null);
   success = signal(false);
@@ -40,11 +36,13 @@ export class RegisterComponent {
 
   form = new FormGroup(
     {
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(20),
-      ]),
+      username: new FormControl(
+        '',
+        // sync validators
+        [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
+        // async validator
+        [usernameAvailableValidator(this.http)],
+      ),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
@@ -73,7 +71,9 @@ export class RegisterComponent {
       },
       error: (err) => {
         if (err.status === 409) this.error.set('auth.errors.userExists');
-        else this.error.set('auth.errors.required');
+        // else this.error.set('auth.errors.required');
+        else this.error.set('auth.registererrors.registrationFailed'); // maybe this better - will see
+
         this.loading.set(false);
       },
       complete: () => this.loading.set(false),
@@ -83,7 +83,7 @@ export class RegisterComponent {
   // helper for template
   getFieldError(field: string): string | null {
     const control = this.form.get(field);
-    if (!control?.invalid || !control?.touched) return null;
+    if (!control?.invalid || !control?.touched || control?.pending) return null;
 
     if (control.errors?.['required']) return 'auth.errors.required';
     if (control.errors?.['minlength']) {
@@ -95,6 +95,8 @@ export class RegisterComponent {
     if (control.errors?.['noUppercase']) return 'auth.errors.passwordNeedsUppercase';
     if (control.errors?.['noNumber']) return 'auth.errors.passwordNeedsNumber';
     if (control.errors?.['noSpecialChar']) return 'auth.errors.passwordNeedsSpecChar';
+    if (control.errors?.['usernameTaken']) return 'auth.errors.userExists';
+
     return null;
   }
 

@@ -140,7 +140,10 @@
       "confirmPassword": "Potvrďte heslo",
       "confirmPasswordPlaceholder": "Potvrďte vaše heslo",
       "haveAccount": "Už máte účet?",
-      "btnRegister": "Registrovať"
+      "btnRegister": "Registrovať",
+      "errors":{
+        "registrationFailed":"Registrácia zlyhala. Skúste neskôr."
+      }
     },
     "adminDashboard": {
       "title": "Administrátorské rozhranie",
@@ -193,7 +196,7 @@
       }
     }
   },
-  "error": {
+  "error_page": {
     "title": "Niečo sa pokazilo",
     "subtitle": "Nepodarilo sa pripojiť k serveru. Prosím, skúste to znova.",
     "goHome": "Ísť domov",

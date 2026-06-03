@@ -13,17 +13,25 @@
     <form class="log-reg-form" [formGroup]="form">
       <div class="form-group">
         <label>{{ 'auth.username' | transloco }}</label>
-        <input
-          pInputText
-          type="text"
-          formControlName="username"
-          [placeholder]="'auth.usernamePlaceholder' | transloco"
-        />
+        <div class="input-wrapper">
+          <input
+            pInputText
+            type="text"
+            formControlName="username"
+            [placeholder]="'auth.usernamePlaceholder' | transloco"
+          />
+          @if (form.get('username')?.pending) {
+            <i class="pi pi-spin pi-spinner input-spinner"></i>
+          }
+        </div>
         @if (getFieldError('username')) {
           <small class="field-error">
             {{ getFieldError('username') | transloco }}
           </small>
         }
+        <!-- @if (form.get('username')?.errors?.['usernameTaken'] && form.get('username')?.touched) {
+          <small class="field-error">{{ 'auth.errors.userExists' | transloco }}</small>
+        } -->
       </div>
 
       <div class="form-group">

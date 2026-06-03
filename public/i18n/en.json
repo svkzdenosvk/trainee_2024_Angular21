@@ -140,7 +140,10 @@
       "confirmPassword": "Confirm Password",
       "confirmPasswordPlaceholder": "Confirm your password",
       "haveAccount": "Already have an account?",
-      "btnRegister": "Register"
+      "btnRegister": "Register",
+      "errors":{
+        "registrationFailed":"Registration failed. Please try again later."
+      }
     },
     "adminDashboard": {
       "title": "Admin Dashboard",
@@ -193,13 +196,12 @@
       }
     }
   },
-  "error": {
+  "error_page": {
     "title": "Something went wrong",
     "subtitle": "We couldn't connect to the server. Please try again.",
     "goHome": "Go home",
     "retry": "Try again"
   },
-
   "btnLoadData": "Load Data",
   "dateRange": "Date Range",
   "dateRangePlaceholder": "Select date range",

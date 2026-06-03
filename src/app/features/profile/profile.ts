@@ -15,6 +15,7 @@ import {
   hasNumber,
   hasSpecialCharacter,
   passwordsMatch,
+  usernameAvailableValidator,
 } from '../../core/utils/validators';
 
 @Component({
@@ -42,11 +43,11 @@ export class ProfileComponent implements OnInit {
 
   form = new FormGroup(
     {
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(20),
-      ]),
+      username: new FormControl(
+        '',
+        [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
+        [usernameAvailableValidator(this.http, this.authService.currentUser()?.username)],
+      ),
       currentPassword: new FormControl(''),
       newPassword: new FormControl('', [
         Validators.minLength(6),
@@ -80,7 +81,7 @@ export class ProfileComponent implements OnInit {
 
   getFieldError(field: string): string | null {
     const control = this.form.get(field);
-    if (!control?.invalid || !control?.touched) return null;
+    if (!control?.invalid || !control?.touched || control?.pending) return null;
 
     if (control.errors?.['minlength']) {
       return field === 'username' ? 'auth.errors.usernameTooShort' : 'auth.errors.passwordTooShort';
@@ -91,6 +92,8 @@ export class ProfileComponent implements OnInit {
     if (control.errors?.['noUppercase']) return 'auth.errors.passwordNeedsUppercase';
     if (control.errors?.['noNumber']) return 'auth.errors.passwordNeedsNumber';
     if (control.errors?.['noSpecialChar']) return 'auth.errors.passwordNeedsSpecChar';
+    if (control.errors?.['usernameTaken']) return 'auth.errors.userExists';
+
     return null;
   }
 
