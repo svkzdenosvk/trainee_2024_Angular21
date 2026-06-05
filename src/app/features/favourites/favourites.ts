@@ -1,11 +1,13 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule } from '@jsverse/transloco';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
-
+import { FavouritesActions } from '../../store/favourites/favourites.actions';
+import { selectAllFavourites, selectIsFull } from '../../store/favourites/favourites.selectors';
 @Component({
   animations: [
     trigger('listAnimation', [
@@ -36,12 +38,20 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavouritesComponent implements OnInit {
+  private readonly store = inject(Store);
   protected readonly favouritesService = inject(FavouritesService);
   private readonly cityService = inject(CityService);
   private readonly router = inject(Router);
 
+  favourites = this.store.selectSignal(selectAllFavourites);
+  isFull = this.store.selectSignal(selectIsFull);
+
   ngOnInit(): void {
-    this.favouritesService.reloadForUser();
+    // this.favouritesService.reloadForUser();
+    this.store.dispatch(FavouritesActions.loadFavourites());
+  }
+  remove(city: City): void {
+    this.store.dispatch(FavouritesActions.removeFavourite({ city }));
   }
 
   selectCity(city: City): void {

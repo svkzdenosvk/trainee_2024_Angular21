@@ -21,6 +21,10 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthService } from './core/services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { favouritesReducer } from './store/favourites/favourites.reducer';
+import { FavouritesEffects } from './store/favourites/favourites.effects';
 
 function initAuth(authService: AuthService) {
   return () => authService.checkAuth().subscribe();
@@ -62,5 +66,7 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    provideStore({ favourites: favouritesReducer }),
+    provideEffects(FavouritesEffects),
   ],
 };
