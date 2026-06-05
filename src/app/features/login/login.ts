@@ -5,7 +5,6 @@ import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
-import { FavouritesService } from '../../core/services/favourites.service';
 import { fadeInOut } from '../../shared/animations/animations';
 
 @Component({
@@ -20,14 +19,13 @@ import { fadeInOut } from '../../shared/animations/animations';
 export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly favouritesService = inject(FavouritesService);
 
-  // signals ostávajú len pre UI stav
+  // signals stay only for UI state
   error = signal<string | null>(null);
   loading = signal(false);
   showPassword = signal(false);
 
-  // FormGroup nahrádza username/password signaly
+  // FormGroup replaces username/password signals
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -46,7 +44,6 @@ export class LoginComponent {
 
     this.authService.login(username!, password!).subscribe({
       next: () => {
-        this.favouritesService.reloadForUser();
         this.router.navigate(['/']);
       },
       error: () => {

@@ -61,8 +61,6 @@ export class AdminDashboardComponent implements OnInit {
         this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed'));
         this.pendingUserId.set(null);
       },
-      // error: () =>
-      //   this._showError(this.translocoService.translate('auth.adminDashboard.errors.deleteFailed')),
     });
   }
 
@@ -87,8 +85,6 @@ export class AdminDashboardComponent implements OnInit {
         this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed'));
         this.pendingUserId.set(null);
       },
-      // error: () =>
-      //   this._showError(this.translocoService.translate('auth.adminDashboard.errors.roleFailed')),
     });
   }
 

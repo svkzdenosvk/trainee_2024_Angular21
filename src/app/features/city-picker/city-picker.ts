@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { CityService } from '../../core/services/city.service';
-import { FavouritesService } from '../../core/services/favourites.service';
+// import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -16,6 +16,10 @@ import { AuthService } from '../../core/services/auth.service';
 import { fadeInOut } from '../../shared/animations/animations';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LangService } from '../../core/services/lang.service';
+import { sameCity } from '../../core/utils/city.utils';
+import { Store } from '@ngrx/store';
+import { selectAllFavourites, selectIsFull } from '../../store/favourites/favourites.selectors';
+import { FavouritesActions } from '../../store/favourites/favourites.actions';
 
 @Component({
   selector: 'app-city-picker',
@@ -34,10 +38,12 @@ import { LangService } from '../../core/services/lang.service';
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CityPickerComponent {
+  private readonly store = inject(Store);
+
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
-  protected readonly favouritesService = inject(FavouritesService);
+  // protected readonly favouritesService = inject(FavouritesService);
   protected readonly authService = inject(AuthService);
   private readonly langService = inject(LangService);
 
@@ -94,6 +100,9 @@ export class CityPickerComponent {
       });
   }
 
+  favourites = this.store.selectSignal(selectAllFavourites);
+  isFull = this.store.selectSignal(selectIsFull);
+
   onSearch(query: string): void {
     this.searchQuery.set(query);
     this.searchSubject.next(query);
@@ -118,27 +127,22 @@ export class CityPickerComponent {
   }
 
   isFavourite(city: City): boolean {
-    return this.favouritesService
-      .favourites()
-      .some(
-        (fav) =>
-          Math.round(fav.lat * 100) === Math.round(city.lat * 100) &&
-          Math.round(fav.lon * 100) === Math.round(city.lon * 100),
-      );
+    // sync -signal is always up-to-date
+    return this.favourites().some((f) => sameCity(f, city));
   }
 
   toggleFavourite(city: City, event: Event): void {
     event.stopPropagation();
-    if (this.favouritesService.isFavourite(city)) {
-      this.favouritesService.remove(city);
+    if (this.isFavourite(city)) {
+      this.store.dispatch(FavouritesActions.removeFavourite({ city }));
       this.showFullWarning.set(false);
     } else {
-      if (this.favouritesService.isFull()) {
+      if (this.isFull()) {
         this.showFullWarning.set(true);
         setTimeout(() => this.showFullWarning.set(false), 3500);
         return;
       }
-      this.favouritesService.add(city);
+      this.store.dispatch(FavouritesActions.addFavourite({ city }));
     }
   }
 }

@@ -4,13 +4,17 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import { CityService } from '../../core/services/city.service';
-import { FavouritesService } from '../../core/services/favourites.service';
+// import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
 import { fadeInOut } from '../../shared/animations/animations';
 import { Subject } from 'rxjs/internal/Subject';
 import { fromEvent, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectAllFavourites, selectIsFull } from '../../store/favourites/favourites.selectors';
+import { sameCity } from '../../core/utils/city.utils';
+import { FavouritesActions } from '../../store/favourites/favourites.actions';
 
 @Component({
   selector: 'app-city-map',
@@ -23,10 +27,11 @@ import { fromEvent, takeUntil } from 'rxjs';
 export class CityMapComponent implements AfterViewInit {
   private readonly http = inject(HttpClient);
   private readonly cityService = inject(CityService);
-  private readonly favouritesService = inject(FavouritesService);
   private readonly router = inject(Router);
   private readonly translocoService = inject(TranslocoService);
   protected readonly authService = inject(AuthService);
+  private readonly store = inject(Store);
+
   private abortController?: AbortController;
   private popupDestroy$ = new Subject<void>();
   private isAdding = false;
@@ -37,6 +42,9 @@ export class CityMapComponent implements AfterViewInit {
 
   showNoCity = signal(false);
   showFullWarning = signal(false);
+
+  private favourites = this.store.selectSignal(selectAllFavourites);
+  private isFull = this.store.selectSignal(selectIsFull);
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -110,8 +118,9 @@ export class CityMapComponent implements AfterViewInit {
     this.popupDestroy$.complete();
     this.popupDestroy$ = new Subject<void>();
 
-    const isFav = this.favouritesService.isFavourite(city);
-    const isFull = this.favouritesService.favourites().length >= 10;
+    const isFav = this.favourites().some((f) => sameCity(f, city)); // signal, sync check
+    const isFull = this.isFull();
+
     const selectLabel = this.translocoService.translate('cityPicker.btnSelect');
     const favLabel = isFav
       ? this.translocoService.translate('cityPicker.btnRemove')
@@ -132,46 +141,6 @@ export class CityMapComponent implements AfterViewInit {
         </div>
         `);
 
-    // older approach with event delegation and AbortController (commented out for now)
-    
-    // setTimeout(() => {
-    //   this.abortController?.abort();
-    //   this.abortController = new AbortController();
-    //   const signal = this.abortController.signal;
-
-    //   document.getElementById('select-city-btn')?.addEventListener('click', () => {
-    //     this.cityService.selectCity(city);
-    //     this.router.navigate(['/weather'], {
-    //       queryParams: {
-    //         city: city.name,
-    //         country: city.country,
-    //         lat: city.lat,
-    //         lon: city.lon,
-    //       },
-    //     });
-    //   });
-
-    //   document.getElementById('fav-city-btn')?.addEventListener(
-    //     'click',
-    //     () => {
-    //       if (this.favouritesService.isFavourite(city)) {
-    //         this.favouritesService.remove(city);
-    //       } else {
-    //         if (this.favouritesService.favourites().length >= 10) {
-    //           this.showFullWarning.set(true);
-    //           setTimeout(() => this.showFullWarning.set(false), 3500);
-    //           return;
-    //         }
-    //         this.favouritesService.add(city);
-    //       }
-    //       this.updatePopup(city);
-    //       //   },
-    //       //   { once: true },
-    //       // );
-    //     },
-    //     { signal },
-    //   );
-    // }, 100);
     setTimeout(() => {
       const selectBtn = document.getElementById('select-city-btn');
       const favBtn = document.getElementById('fav-city-btn');
@@ -198,18 +167,17 @@ export class CityMapComponent implements AfterViewInit {
           .subscribe(() => {
             if (this.isAdding) return; // block during request
 
-            if (this.favouritesService.isFavourite(city)) {
-              this.favouritesService.remove(city);
+            if (this.favourites().some((f) => sameCity(f, city))) {
+              this.store.dispatch(FavouritesActions.removeFavourite({ city }));
             } else {
-              if (this.favouritesService.favourites().length >= 10) {
+              if (this.isFull()) {
                 this.showFullWarning.set(true);
                 setTimeout(() => this.showFullWarning.set(false), 3500);
                 return;
               }
               this.isAdding = true;
 
-              this.favouritesService.add(city);
-              // }
+              this.store.dispatch(FavouritesActions.addFavourite({ city }));
 
               setTimeout(() => {
                 this.isAdding = false;
@@ -220,7 +188,6 @@ export class CityMapComponent implements AfterViewInit {
             this.updatePopup(city);
           });
       }
-      // }, 100);
     }, 150);
   }
 

@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { FavouritesService } from '../../core/services/favourites.service';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -39,7 +38,6 @@ import { selectAllFavourites, selectIsFull } from '../../store/favourites/favour
 })
 export class FavouritesComponent implements OnInit {
   private readonly store = inject(Store);
-  protected readonly favouritesService = inject(FavouritesService);
   private readonly cityService = inject(CityService);
   private readonly router = inject(Router);
 
@@ -47,7 +45,6 @@ export class FavouritesComponent implements OnInit {
   isFull = this.store.selectSignal(selectIsFull);
 
   ngOnInit(): void {
-    // this.favouritesService.reloadForUser();
     this.store.dispatch(FavouritesActions.loadFavourites());
   }
   remove(city: City): void {

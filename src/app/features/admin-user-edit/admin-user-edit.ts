@@ -52,7 +52,6 @@ export class AdminUserEditComponent implements OnInit {
       // [usernameAvailableValidator(this.http, this.originalUsername())],
     ),
   });
-  // form!: FormGroup; // Zmeniť na !, lebo ho vytvoríme v ngOnInit
 
   get hasChanges(): boolean {
     return this.form.get('username')?.value !== this.originalUsername();
@@ -96,19 +95,16 @@ export class AdminUserEditComponent implements OnInit {
             this.router.navigate(['/admin']);
             return;
           }
-          // creating form now, when already know the original username
-          // this.originalUsername.set(user.username);
-          // this._createForm();
-          // this.form.patchValue({ username: user.username });
+          
           this.form.patchValue({ username: user.username });
           this.originalUsername.set(user.username);
 
-          // 2. Potom PRIDAJ async validátor
+          // adding async validator
           this.form
             .get('username')
             ?.setAsyncValidators([usernameAvailableValidator(this.http, this.originalUsername())]);
 
-          // 3. Spusti re-validáciu (to vykoná aj async check)
+          // trigger re-validation (this will also run the async check)
           this.form.get('username')?.updateValueAndValidity();
         },
         error: () => this.error.set('auth.adminDashboard.errors.adminEditFailed'),

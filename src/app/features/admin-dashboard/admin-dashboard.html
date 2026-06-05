@@ -1,7 +1,6 @@
 <div class="admin-container">
   <div class="admin-header">
     <h2><i class="pi pi-users"></i> {{ 'auth.adminDashboard.title' | transloco }}</h2>
-    <!-- // maybe this error message could be deleted -> check it later !!  -->
     @if (errorMessage()) {
       <div class="error-banner">
         <i class="pi pi-exclamation-triangle"></i>
@@ -42,7 +41,6 @@
           }
         </td>
         <td>
-          <!-- <p-tag [value]="user.role" [severity]="getSeverity(user.role)" /> -->
           <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
             {{ user.role.toLowerCase() }}
           </span>
@@ -58,7 +56,6 @@
               [disabled]="!_canChangeRole(user) || pendingUserId() === user.id"
               [pTooltip]="getRoleTooltip(user)"
             />
-<!-- [disabled]="!_canChangeRole(user)" -->
             <p-button
               icon="pi pi-trash"
               severity="danger"

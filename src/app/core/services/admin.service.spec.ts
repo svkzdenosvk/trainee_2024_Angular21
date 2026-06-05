@@ -24,7 +24,10 @@ describe('AdminService', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    http.verify();
+    TestBed.resetTestingModule(); //  reset between tests
+  });
 
   describe('loadUsers', () => {
     it('should load users from API', () => {

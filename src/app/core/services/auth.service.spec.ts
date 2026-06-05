@@ -1,10 +1,12 @@
-
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { API_URL } from '../constants/constants';
 import { Role } from '../models/role.enum';
+
+import { provideStore } from '@ngrx/store';
+import { favouritesReducer } from '../../store/favourites/favourites.reducer';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -17,14 +19,21 @@ describe('AuthService', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService, { provide: Router, useValue: router }],
+      providers: [
+        AuthService,
+        { provide: Router, useValue: router },
+        provideStore({ favourites: favouritesReducer }),
+      ],
     });
 
     service = TestBed.inject(AuthService);
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    http.verify();
+    TestBed.resetTestingModule(); //  reset between tests
+  });
 
   describe('isLoggedIn / isAdmin', () => {
     it('should be false when no user', () => {

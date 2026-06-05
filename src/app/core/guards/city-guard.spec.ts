@@ -10,14 +10,24 @@ const runGuard = (params = {}) => {
 
 describe('cityGuard', () => {
   let cityService: CityService;
-  let router: Router;
+  // let router: Router;
+  let router: { navigate: ReturnType<typeof vi.fn> };
+
+  // runGuard moved into describe, to TestBed to be configurated
+  const runGuard = (params = {}) => {
+    const route = { queryParams: params } as ActivatedRouteSnapshot;
+    return TestBed.runInInjectionContext(() => cityGuard(route, {} as any));
+  };
 
   beforeEach(() => {
+    router = { navigate: vi.fn() };
+
     TestBed.configureTestingModule({
-      providers: [{ provide: Router, useValue: { navigate: vi.fn() } }],
+      // providers: [{ provide: Router, useValue: { navigate: vi.fn() } }],
+      providers: [{ provide: Router, useValue: router }],
     });
     cityService = TestBed.inject(CityService);
-    router = TestBed.inject(Router);
+    // router = TestBed.inject(Router);
   });
 
   it('should allow access when city already in memory', () => {

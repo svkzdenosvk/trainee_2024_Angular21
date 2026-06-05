@@ -124,7 +124,6 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
         labels,
         datasets: [
           {
-            // label: 'Temperature (°C)',
             label: this.translocoService.translate('temperatureChart.tableTitle'),
             data: rows.map((r) => r.temperature),
             borderColor: '#60a5fa',

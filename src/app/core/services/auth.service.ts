@@ -6,12 +6,14 @@ import { tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { API_URL } from '../constants/constants';
 import { Role } from '../models/role.enum';
-
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../store/auth/auth.actions';
 const AUTH_KEY = 'auth_user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly router = inject(Router);
+  private readonly store = inject(Store);
   private readonly http = inject(HttpClient);
 
   currentUser = signal<User | null>(JSON.parse(localStorage.getItem(AUTH_KEY) ?? 'null'));
@@ -28,6 +30,7 @@ export class AuthService {
           if (res.isLoggedIn && res.user) {
             this.currentUser.set(res.user);
             localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+            this.store.dispatch(AuthActions.loginSuccess()); // cover also page refresh
           } else {
             this.currentUser.set(null);
             localStorage.removeItem(AUTH_KEY);
@@ -45,6 +48,7 @@ export class AuthService {
         tap((res) => {
           this.currentUser.set(res.user);
           localStorage.setItem(AUTH_KEY, JSON.stringify(res.user));
+          this.store.dispatch(AuthActions.loginSuccess());
         }),
       );
   }
@@ -61,6 +65,7 @@ export class AuthService {
     this.http.get(`${API_URL}/auth/logout`, { withCredentials: true }).subscribe();
     this.currentUser.set(null);
     localStorage.removeItem(AUTH_KEY);
+    this.store.dispatch(AuthActions.logout());
     this.router.navigate(['/login']);
   }
 }

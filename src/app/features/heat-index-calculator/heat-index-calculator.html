@@ -70,9 +70,7 @@
           <div class="result-value" [style.color]="heatIndexLabel()?.color">
             {{ heatIndex() | number: '1.1-1' }}{{ unit() }}
           </div>
-          <!-- <div class="result-label" [style.color]="heatIndexLabel()?.color">
-            {{ heatIndexLabel()?.text }}
-          </div> -->
+
           <div class="result-label" [style.color]="heatIndexLabel()?.color">
             {{ heatIndexLabel()?.key | transloco }}
           </div>

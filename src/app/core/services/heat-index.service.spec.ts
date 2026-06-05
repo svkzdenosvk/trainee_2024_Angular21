@@ -81,7 +81,7 @@ describe('HeatIndexService', () => {
     it('should return result in Celsius for °C input', () => {
       const result = service.calculate(35, 70, '°C');
       expect(result).not.toBeNull();
-      // výsledok musí byť v rozumnom rozsahu °C
+      // result has to be within a reasonable range in °C
       expect(result!).toBeGreaterThan(35);
       expect(result!).toBeLessThan(60);
     });

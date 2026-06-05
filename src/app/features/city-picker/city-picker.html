@@ -84,11 +84,9 @@
     }
   }
 
-  <!-- @if (viewMode() === 'map') {
-    <app-city-map />
-  } -->
   @if (viewMode() === 'map') {
-    @defer (on immediate; prefetch on idle) {
+    <!-- @defer (on immediate; prefetch on idle) { -->
+    @defer (on immediate) {
       <app-city-map />
     } @placeholder {
       <div class="loading-wrapper">

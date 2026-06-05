@@ -1,5 +1,5 @@
 <div class="favourites-container">
-  @if (favouritesService.favourites().length === 0) {
+  @if (favourites().length === 0) {
     <div class="empty-state">
       <i class="pi pi-star"></i>
       <p>{{ 'favourites.empty' | transloco }}</p>
@@ -7,15 +7,15 @@
     </div>
   }
 
-  @if (favouritesService.isFull()) {
+  @if (isFull()) {
     <div class="full-banner">
       <i class="pi pi-exclamation-triangle"></i>
       {{ 'favourites.fullWarning' | transloco }}
     </div>
   }
 
-  <div class="favourites-list" [@listAnimation]="favouritesService.favourites().length">
-    @for (city of favouritesService.favourites(); track city.id ?? city.lat + city.lon) {
+  <div class="favourites-list" [@listAnimation]="favourites().length">
+    @for (city of favourites(); track city.id ?? city.lat + city.lon) {
       <div class="favourite-item">
         <div class="city-info">
           <i class="pi pi-star-fill star-icon"></i>
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="actions">
-          <button class="action-btn remove-btn" (click)="favouritesService.remove(city)">
+          <button class="action-btn remove-btn" (click)="remove(city)">
             <i class="pi pi-trash" style="font-size: 1rem"></i>
           </button>
           <button class="action-btn select-btn" (click)="selectCity(city)">
