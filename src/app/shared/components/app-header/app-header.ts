@@ -15,5 +15,6 @@ import { TranslocoModule } from '@jsverse/transloco';
   styleUrl: './app-header.scss',
 })
 export class AppHeader {
+  // Optional city name displayed in the header title.
   cityName = input<string | null | undefined>();
 }

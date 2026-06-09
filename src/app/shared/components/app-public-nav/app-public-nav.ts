@@ -14,6 +14,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class AppPublicNav {
   protected readonly authService = inject(AuthService);
 
+  // Mobile menu open state.
   isOpen = signal(false);
 
   toggleMenu(): void {

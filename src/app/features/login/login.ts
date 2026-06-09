@@ -20,17 +20,18 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  // signals stay only for UI state
+  // Signals used to control UI state for login.
   error = signal<string | null>(null);
   loading = signal(false);
   showPassword = signal(false);
 
-  // FormGroup replaces username/password signals
+  // Reactive login form state.
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
+  // Authenticate the user and navigate to the main page on success.
   login(): void {
     if (this.form.invalid) {
       this.error.set('auth.errors.required');

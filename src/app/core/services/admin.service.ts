@@ -11,6 +11,7 @@ export class AdminService {
   users = signal<UserWithStats[]>([]);
   loading = signal(true);
 
+  // Load user list for the admin dashboard.
   loadUsers(): void {
     this.loading.set(true);
     this.http.get<UserWithStats[]>(`${API_URL}/admin/users`).subscribe({
@@ -22,10 +23,12 @@ export class AdminService {
     });
   }
 
+  // Delete a user by admin action.
   deleteUser(id: string) {
     return this.http.delete(`${API_URL}/admin/users/${id}`);
   }
 
+  // Change the role of a user from the admin panel.
   updateRole(id: string, role: Role) {
     return this.http.patch(`${API_URL}/admin/users/${id}/role`, { role });
   }

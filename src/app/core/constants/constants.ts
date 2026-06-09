@@ -3,3 +3,6 @@ import { environment } from '../../../environments/environment';
 export const API_URL = environment.apiUrl;
 
 export const DEFAULT_USER_IDS = ['cmogjpl6n0000fsumabzq6qw9', 'cmogjt2ga00004wumzpfmp5ub'];
+
+// Maximum number of favourite cities allowed in the app.
+export const MAX_FAVOURITES = 10;

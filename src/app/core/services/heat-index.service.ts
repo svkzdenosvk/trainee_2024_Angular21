@@ -39,6 +39,7 @@ export class HeatIndexService {
     return HI;
   }
 
+  // Calculate heat index for the provided temperature/humidity using selected units.
   calculate(temp: number, humidity: number, unit: TemperatureUnit): number | null {
     const tempF = unit === '°C' ? this.toFahrenheit(temp) : temp;
     const hiF = this.calculateF(tempF, humidity);
@@ -58,6 +59,7 @@ export class HeatIndexService {
     return unit === '°C' ? 26.7 : 80;
   }
 
+  // Persist the latest heat index calculation in localStorage.
   saveToHistory(entry: HeatIndexEntry): HeatIndexEntry[] {
     const history = this.loadHistory();
     const updated = [entry, ...history].slice(0, HISTORY_LIMIT);
@@ -65,6 +67,7 @@ export class HeatIndexService {
     return updated;
   }
 
+  // Load persisted heat index history and restore timestamp objects.
   loadHistory(): HeatIndexEntry[] {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -78,6 +81,7 @@ export class HeatIndexService {
     }
   }
 
+  // Clear stored heat index history from localStorage.
   clearHistory(): void {
     localStorage.removeItem(STORAGE_KEY);
   }

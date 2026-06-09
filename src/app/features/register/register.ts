@@ -34,6 +34,7 @@ export class RegisterComponent {
   loading = signal(false);
   showPassword = signal(false);
 
+  // Reactive registration form with synchronous and async validation.
   form = new FormGroup(
     {
       username: new FormControl(
@@ -56,6 +57,7 @@ export class RegisterComponent {
     { validators: passwordsMatch },
   );
 
+  // Submit registration data and show success/error state.
   register(): void {
     if (this.form.invalid) return;
 
@@ -80,7 +82,7 @@ export class RegisterComponent {
     });
   }
 
-  // helper for template
+  // Helper used by the template to surface validation messages.
   getFieldError(field: string): string | null {
     const control = this.form.get(field);
     if (!control?.invalid || !control?.touched || control?.pending) return null;

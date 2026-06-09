@@ -9,5 +9,3 @@ export function sameCity(a: City, b: City): boolean {
     Math.round(a.lon * 10) === Math.round(b.lon * 10)
   );
 }
-
-export const MAX_FAVOURITES = 10;

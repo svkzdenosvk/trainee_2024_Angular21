@@ -26,6 +26,7 @@ import { fadeInOut } from '../../animations/animations';
   styleUrl: './public-shell.scss',
 })
 export class PublicShell {
+  // Shell component for public-facing routes.
   protected readonly authService = inject(AuthService);
   protected readonly langService = inject(LangService);
   protected readonly errorService = inject(ErrorService);

@@ -28,6 +28,7 @@ export class AdminDashboardComponent implements OnInit {
   private readonly translocoService = inject(TranslocoService);
   private readonly router = inject(Router);
 
+  // UI state flags for admin operations.
   errorMessage = signal<string | null>(null);
   loading = signal(true);
   pendingUserId = signal<string | null>(null);
@@ -36,11 +37,13 @@ export class AdminDashboardComponent implements OnInit {
     this.adminService.loadUsers();
   }
 
+  // Show a transient error message at the top of the admin dashboard.
   private _showError(msg: string): void {
     this.errorMessage.set(msg);
     setTimeout(() => this.errorMessage.set(null), 3500);
   }
 
+  // Only allow deletion of non-admin and non-default users.
   _canDelete(user: UserWithStats): boolean {
     if (this.authService.currentUser()?.id === user.id) return false;
     if (isDefaultUser(user.id)) return false;
@@ -48,6 +51,7 @@ export class AdminDashboardComponent implements OnInit {
     return true;
   }
 
+  // Delete the selected user and refresh the table when complete.
   deleteUser(user: UserWithStats): void {
     if (!this._canDelete(user)) return;
 
@@ -71,6 +75,7 @@ export class AdminDashboardComponent implements OnInit {
     return true;
   }
 
+  // Toggle the user's role between admin and user.
   changeRole(user: UserWithStats): void {
     if (!this._canChangeRole(user)) return;
     this.pendingUserId.set(user.id);
@@ -93,6 +98,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   //edit redirect
+  // Navigate to the admin edit form for the selected user.
   editUser(user: UserWithStats): void {
     this.router.navigate(['/admin/users', user.id, 'edit']);
   }

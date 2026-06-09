@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError, of, debounceTime, switchMap, first } from 'rxjs';
 import { API_URL } from '../constants/constants';
 
-//FE validators
+// FE validators
 // Angular FormControl validators
 export function hasUppercase(control: AbstractControl): ValidationErrors | null {
   if (!control.value) return null;
@@ -44,7 +44,8 @@ export function validateUsername(username: string): string | null {
   return null;
 }
 
-//BE validators
+// BE validators
+// Async validator checks username availability on the server.
 export function usernameAvailableValidator(
   http: HttpClient,
   username?: string,

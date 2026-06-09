@@ -37,6 +37,7 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+  // Chart instance and fetched weather rows.
   private chart: Chart | null = null;
   private allRows: WeatherRow[] = [];
 
@@ -52,6 +53,7 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
     start.setDate(start.getDate() - 7);
     this.dateRange.set([start, end]);
 
+    // Re-render the chart when the translation language changes.
     this.translocoService.langChanges$.subscribe((lang) => {
       this.translocoService.load(lang).subscribe(() => {
         if (this.allRows.length > 0) this.renderChart();
@@ -67,6 +69,7 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
     this.chart?.destroy();
   }
 
+  // Load weather data for the chart range and handle validation.
   loadData(): void {
     const range = this.dateRange();
     const error = this.weatherService.validateDateRange(range);
@@ -100,6 +103,7 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
     this.renderChart();
   }
 
+  // Render the temperature chart using Chart.js.
   private renderChart(): void {
     if (!this.chartCanvas) return;
 
@@ -167,6 +171,7 @@ export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestr
     this.chart = new Chart(this.chartCanvas.nativeElement, config);
   }
 
+  // Aggregate hourly data into daily averages for the daily view mode.
   private aggregateDailyAvg(rows: WeatherRow[]): WeatherRow[] {
     const map = new Map<string, { sum: number; count: number; row: WeatherRow }>();
     for (const row of rows) {

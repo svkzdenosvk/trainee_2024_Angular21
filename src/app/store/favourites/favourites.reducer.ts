@@ -8,7 +8,7 @@ export interface FavouritesState extends EntityState<City> {
   loading: boolean;
 }
 
-// City nema stabilne id vzdy, pouzijeme kompozitny klic
+// City doesn´t have a stable id always, we will use a composite key as the entity ID.
 const adapter = createEntityAdapter<City>({
   selectId: (city) => `${city.lat}_${city.lon}`,
 });

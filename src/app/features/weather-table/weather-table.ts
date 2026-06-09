@@ -44,6 +44,7 @@ export class WeatherTableComponent implements OnInit {
     });
   }
 
+  // Table data and UI state.
   rows = signal<WeatherRow[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
@@ -68,6 +69,7 @@ export class WeatherTableComponent implements OnInit {
     this.loadData();
   }
 
+  // Fetch weather rows for the selected date range.
   loadData(): void {
     const range = this.dateRange();
     const error = this.weatherService.validateDateRange(range);
@@ -96,6 +98,7 @@ export class WeatherTableComponent implements OnInit {
       });
   }
 
+  // Apply temperature-based styling classes to table rows.
   getTempClass(temp: number): string {
     if (temp >= 35) return 'temp-hot';
     if (temp >= 25) return 'temp-warm';
@@ -104,6 +107,7 @@ export class WeatherTableComponent implements OnInit {
     return 'temp-cold';
   }
 
+  // Apply global search text to the table filter.
   onGlobalFilter(event: Event, table: any): void {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }

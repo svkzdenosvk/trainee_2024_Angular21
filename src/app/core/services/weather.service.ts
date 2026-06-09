@@ -12,6 +12,7 @@ export class WeatherService {
   private readonly translocoService = inject(TranslocoService);
   private readonly API_URL = 'https://api.open-meteo.com/v1/forecast';
 
+  // Fetch hourly weather forecast data for the currently selected city.
   getWeatherData(startDate: string, endDate: string): Observable<WeatherRow[]> {
     const city = this.cityService.selectedCity();
 
@@ -31,6 +32,7 @@ export class WeatherService {
       .pipe(map((response) => this.transformResponse(response)));
   }
 
+  // Convert the raw API payload into a UI-friendly WeatherRow array.
   private transformResponse(response: WeatherApiResponse): WeatherRow[] {
     return response.hourly.time.map((time, i) => {
       const weatherState = this.getWeatherState(response.hourly.weathercode[i]);
@@ -91,9 +93,9 @@ export class WeatherService {
     return { start, end };
   }
 
+  // Validate that the selected date range is present and not longer than the allowed maximum.
   validateDateRange(range: Date[]): string | null {
     if (!range || !Array.isArray(range) || range.length < 2 || !range[1]) {
-      // return 'Please select a valid date range.';
       return 'weather.errorValidRange';
     }
     const diffDays = Math.round((range[1].getTime() - range[0].getTime()) / (1000 * 60 * 60 * 24));

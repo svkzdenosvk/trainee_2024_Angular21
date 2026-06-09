@@ -57,7 +57,7 @@ export class CityPickerComponent {
   private searchSubject = new Subject<string>();
 
   constructor() {
-    // delete results after language change
+    // Clear search results when the user changes the language.
     effect(() => {
       this.langService.currentLang(); // dependency
       this.results.set([]);
@@ -103,13 +103,14 @@ export class CityPickerComponent {
   favourites = this.store.selectSignal(selectAllFavourites);
   isFull = this.store.selectSignal(selectIsFull);
 
+  // Update the search term and trigger debounce-based geocoding.
   onSearch(query: string): void {
     this.searchQuery.set(query);
     this.searchSubject.next(query);
   }
 
   selectCity(city: City): void {
-    //small validation
+    // Small validation before changing route.
     if (!city.name || !city.name.trim()) {
       alert('cityPicker.alert');
       return;
@@ -127,10 +128,11 @@ export class CityPickerComponent {
   }
 
   isFavourite(city: City): boolean {
-    // sync -signal is always up-to-date
+    // Sync check using the current favourites signal.
     return this.favourites().some((f) => sameCity(f, city));
   }
 
+  // Add or remove a city from favourites without navigating away.
   toggleFavourite(city: City, event: Event): void {
     event.stopPropagation();
     if (this.isFavourite(city)) {

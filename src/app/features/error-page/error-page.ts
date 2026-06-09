@@ -18,7 +18,7 @@ export class ErrorPageComponent {
   private langChangeSubscription: any;
 
   ngOnInit() {
-    // explicitly set language based on localStorage or default
+    // Ensure the error page uses the current app language setting.
     const currentLang = localStorage.getItem(LANG_KEY) ?? this.translocoService.getActiveLang();
     this.translocoService.setActiveLang(currentLang);
 
@@ -36,6 +36,7 @@ export class ErrorPageComponent {
     this.router.navigate(['/']);
   }
 
+  // Reload the page to retry the failed operation.
   retry(): void {
     window.location.reload();
   }

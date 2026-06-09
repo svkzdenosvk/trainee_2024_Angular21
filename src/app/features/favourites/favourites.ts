@@ -45,6 +45,7 @@ export class FavouritesComponent implements OnInit {
   isFull = this.store.selectSignal(selectIsFull);
 
   ngOnInit(): void {
+    // Load the latest favourites when the component starts.
     this.store.dispatch(FavouritesActions.loadFavourites());
   }
   remove(city: City): void {

@@ -36,6 +36,7 @@ export class AppShell {
   protected readonly langService = inject(LangService);
   protected readonly errorService = inject(ErrorService);
 
+  // Keep the current language in sync with the shell.
   currentLang = signal(this.translocoService.getActiveLang());
 
   protected readonly cityParams = computed(() => ({

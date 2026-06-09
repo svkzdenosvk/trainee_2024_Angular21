@@ -45,6 +45,7 @@ export class AdminUserEditComponent implements OnInit {
 
   readonly isDefaultUserProtected = computed(() => isDefaultUser(this.userId()));
 
+  // Form for editing a user's username in the admin section.
   form = new FormGroup({
     username: new FormControl(
       '',
@@ -121,6 +122,7 @@ export class AdminUserEditComponent implements OnInit {
     });
   }
 
+  // Apply username change for the selected admin user.
   save(): void {
     if (this.form.invalid) return;
 

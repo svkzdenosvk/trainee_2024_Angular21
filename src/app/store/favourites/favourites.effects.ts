@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FavouritesActions } from './favourites.actions';
-import { City, FavouriteResponse } from '../../core/models/weather.model';
+import { FavouriteResponse } from '../../core/models/weather.model';
 import { API_URL } from '../../core/constants/constants';
 import { AuthActions } from '../auth/auth.actions';
 
@@ -14,7 +14,7 @@ export class FavouritesEffects {
   private readonly actions$ = inject(Actions);
   private readonly http = inject(HttpClient);
 
-  // after login load favourites
+  // Load favourites when the user successfully logs in.
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
@@ -22,6 +22,7 @@ export class FavouritesEffects {
     ),
   );
 
+  // Request the current favourites list from the backend API.
   loadFavourites$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavouritesActions.loadFavourites),
@@ -34,6 +35,7 @@ export class FavouritesEffects {
     ),
   );
 
+  // Add a new favourite and then reload the list to keep the client state in sync.
   addFavourite$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavouritesActions.addFavourite),
@@ -50,11 +52,13 @@ export class FavouritesEffects {
     ),
   );
 
+  // Remove a favourite by its ID, then refresh the favourites list.
   removeFavourite$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavouritesActions.removeFavourite),
       mergeMap(({ city }) => {
-        // id musime ziskat zo stavu - pozri poznamku nizsie
+        // The backend delete endpoint requires an ID.
+        // If `city` is missing an ID here, this should be resolved by the calling component or state selector.
         const id = (city as any).id;
         return this.http.delete(`${API_URL}/favourites/${id}`).pipe(
           switchMap(() =>
@@ -68,7 +72,7 @@ export class FavouritesEffects {
     ),
   );
 
-  // after logout clear store
+  // Clear the favourites list from the store after logout.
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),

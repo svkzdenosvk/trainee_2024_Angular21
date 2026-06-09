@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
     isDefaultUser(this.authService.currentUser()?.id),
   );
 
+  // UI state flags for the profile form.
   error = signal<string | null>(null);
   success = signal(false);
   loading = signal(false);
@@ -105,6 +106,7 @@ export class ProfileComponent implements OnInit {
     return '';
   }
 
+  // Save profile changes, including username and optional password update.
   save(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;

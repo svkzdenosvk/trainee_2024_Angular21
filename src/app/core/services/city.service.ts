@@ -3,12 +3,14 @@ import { City } from '../models/weather.model';
 
 @Injectable({ providedIn: 'root' })
 export class CityService {
+  // Selected city is stored as a signal so components can react to changes.
   selectedCity = signal<City | null>(null);
 
   selectCity(city: City): void {
     this.selectedCity.set(city);
   }
 
+  // Try to create a City from URL query params and validate the coordinates.
   loadFromUrl(params: any): boolean {
     const lat = parseFloat(params.lat);
     const lon = parseFloat(params.lon);
@@ -24,6 +26,7 @@ export class CityService {
     return true;
   }
 
+  // Clear the currently selected city from memory.
   clearCity(): void {
     this.selectedCity.set(null);
   }

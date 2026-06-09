@@ -30,6 +30,7 @@ function initAuth(authService: AuthService) {
   return () => authService.checkAuth().subscribe();
 }
 
+// Application-level providers: routing, HTTP interceptors, translations, store, and app initializer.
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

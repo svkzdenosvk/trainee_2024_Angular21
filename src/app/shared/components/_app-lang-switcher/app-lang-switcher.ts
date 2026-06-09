@@ -33,5 +33,6 @@ import { LangService } from '../../../core/services/lang.service';
   styleUrl: '../../scss/_shells.scss',
 })
 export class AppLangSwitcher {
+  // Language switcher used in navigation to toggle between English and Slovak.
   protected readonly langService = inject(LangService);
 }

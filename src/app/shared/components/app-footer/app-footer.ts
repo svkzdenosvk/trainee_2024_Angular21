@@ -20,4 +20,6 @@ import { TranslocoModule } from '@jsverse/transloco';
     `,
   ],
 })
-export class AppFooter {}
+export class AppFooter {
+  // Simple footer component displaying the translated footer text.
+}

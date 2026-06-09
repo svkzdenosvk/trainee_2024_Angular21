@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import { CityService } from '../../core/services/city.service';
-// import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
@@ -40,6 +39,8 @@ export class CityMapComponent implements AfterViewInit {
   private marker?: L.Marker;
   private currentCity: City | null = null;
 
+  // Map interaction state flags.
+
   showNoCity = signal(false);
   showFullWarning = signal(false);
 
@@ -49,6 +50,7 @@ export class CityMapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
 
+    // Update popup content if the language changes.
     this.translocoService.langChanges$.subscribe((lang) => {
       this.translocoService.load(lang).subscribe(() => {
         if (this.marker && this.currentCity) {
@@ -81,6 +83,7 @@ export class CityMapComponent implements AfterViewInit {
   }
 
   private onMapClick(lat: number, lon: number): void {
+    // Reverse-geocode picked coordinates into a city name.
     this.http
       .get<any>(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`,
@@ -113,7 +116,7 @@ export class CityMapComponent implements AfterViewInit {
   private updatePopup(city: City): void {
     if (!this.marker) return;
 
-    // destroy old listeners
+    // Destroy old listeners before attaching new popup handlers.
     this.popupDestroy$.next();
     this.popupDestroy$.complete();
     this.popupDestroy$ = new Subject<void>();
@@ -191,7 +194,7 @@ export class CityMapComponent implements AfterViewInit {
     }, 150);
   }
 
-  // add ngOnDestroy
+  // Clean up map event listeners when the component is destroyed.
   ngOnDestroy() {
     this.popupDestroy$.next();
     this.popupDestroy$.complete();

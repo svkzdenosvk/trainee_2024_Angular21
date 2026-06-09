@@ -68,6 +68,7 @@ export class HeatIndexCalculatorComponent implements OnInit {
     this.history.set(this.heatIndexService.loadHistory());
   }
 
+  // Calculate the current heat index and save it to history when valid.
   calculate(): void {
     const result = this.heatIndexService.calculate(
       this.temperature(),
@@ -88,6 +89,7 @@ export class HeatIndexCalculatorComponent implements OnInit {
     }
   }
 
+  // Convert the current temperature when the user changes the unit.
   onUnitChange(newUnit: TemperatureUnit): void {
     const current = this.temperature();
     if (newUnit === '°F') {
@@ -99,6 +101,7 @@ export class HeatIndexCalculatorComponent implements OnInit {
     this.heatIndex.set(null);
   }
 
+  // Clear saved heat index calculation history.
   clearHistory(): void {
     this.heatIndexService.clearHistory();
     this.history.set([]);

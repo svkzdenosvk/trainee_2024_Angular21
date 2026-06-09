@@ -3,6 +3,8 @@ import { cityGuard } from './core/guards/city-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { adminGuard } from './core/guards/admin-guard';
 
+// Application route definitions with lazy-loaded standalone components.
+// Public pages and authenticated pages use different shell layouts.
 export const routes: Routes = [
   {
     path: '',

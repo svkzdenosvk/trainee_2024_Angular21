@@ -11,12 +11,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const errorService = inject(ErrorService);
 
-  // jump over the open-meteo requests
+  // Skip credentials injection for third-party mapping/geocoding requests.
   if (req.url.includes('open-meteo.com') || req.url.includes('nominatim.openstreetmap.org')) {
     return next(req);
   }
 
-  //  withCredentials for cookies
+  // Ensure browser cookies are included on own backend requests.
   const cloned = req.clone({ withCredentials: true });
 
   return next(cloned).pipe(

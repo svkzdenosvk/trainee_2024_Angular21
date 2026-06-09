@@ -3,8 +3,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FavouritesState, selectAll, selectTotal } from './favourites.reducer';
 import { City } from '../../core/models/weather.model';
 import { sameCity } from '../../core/utils/city.utils';
+import { MAX_FAVOURITES } from '../../core/constants/constants';
 
-const MAX_FAVOURITES = 10;
+// Selectors used by UI components to read the favourites slice.
 
 export const selectFavouritesState =
   createFeatureSelector<FavouritesState>('favourites');
