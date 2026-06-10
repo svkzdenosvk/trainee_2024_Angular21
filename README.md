@@ -14,7 +14,7 @@ A modern Angular 21 weather application.
 - 📈 **Temperature Chart** – Interactive line chart with hourly/daily average toggle (Chart.js)
 - 🌡️ **Heat Index Calculator** – Calculates heat index using the Rothfusz regression equation with last 5 results stored in localStorage
 - 🌍 **City Selection** – Search any city worldwide or select via interactive map
-- ⭐ **Favourites** – Save up to 10 favourite cities with full CRUD operations
+- ⭐ **Favourites** – Save up to 10 favourite cities with full CRUD operations,managed via NgRx Store
 - 🗺️ **OpenStreetMap Integration** – Interactive Leaflet map for city selection
 - 🌐 **Multilingual** – English and Slovak language support (Transloco)
 - 🔐 **Authentication** – Register, login and logout with JWT-based authentication and NestJS backend
@@ -30,6 +30,8 @@ A modern Angular 21 weather application.
 - Linkable routes with city coordinates in URL params
 - Route shell architecture (public/app shell)
 - Reactive state management with Angular Signals
+- NgRx Store for favourites state management with optimistic updates, Effects for async API calls, and EntityAdapter for normalized state
+- NgRx Effects reacting to auth events (login/logout) to automatically load or clear favourites
 - Input validation (90-day date range limit, coordinate validation, password rules)
 - Shared component architecture (`AppHeader`, `AppFooter`, `PublicNav`, `LangSwitcher`)
 - Centralized language management via `LangService`
@@ -57,7 +59,7 @@ A modern Angular 21 weather application.
 | Geocoding         | Open-Meteo Geocoding API |
 | Reverse Geocoding | Nominatim                |
 | Styling           | SCSS                     |
-| State Management  | Angular Signals          |
+| State Management  | Angular Signals + NgRx   |
 | Async             | RxJS                     |
 | Testing           | Vitest                   |
 | Deployment        | Netlify                  |
@@ -127,9 +129,14 @@ src/app/
 ├── core/
 │   ├── constants/       # API URL, default user IDs
 │   ├── models/          # TypeScript interfaces (City, WeatherRow, User, Role)
-│   ├── services/        # Business logic (WeatherService, CityService, FavouritesService, HeatIndexService,AdminService, AuthService, LangService)
+│   ├── services/        # Business logic (WeatherService, CityService,            HeatIndexService,AdminService, AuthService, LangService)
 │   ├── guards/          # Route guards (CityGuard, AuthGuard, AdminGuard )
 │   └── interceptors/    # HTTP interceptors (authInterceptor)
+|   └── utils/           # Utility functions (city.utils, password.validator,
+username.validator)
+├── store/
+│   ├── auth/            # Auth actions (loginSuccess, logout)
+│   └── favourites/      # NgRx feature: actions, reducer, effects, selectors (EntityAdapter)
 ├── features/
 │   ├── city-picker/     # Home page with search and map
 │   ├── city-map/        # Leaflet map component
@@ -164,6 +171,21 @@ src/
 ├── geocoding/ # Geocoding proxy
 ├── users/ # User profile management
 └── prisma/ # Prisma service and module
+
+## NgRx Architecture
+
+Favourites state is managed with NgRx using the following flow:
+User action (add/remove)
+→ dispatch Action
+→ Reducer applies optimistic update instantly
+→ Effect sends HTTP request
+→ On success: reload from server (source of truth)
+→ On failure: rollback to previous state
+
+Auth events
+→ loginSuccess → Effect dispatches loadFavourites
+→ logout → Effect clears favourites from store
+EntityAdapter normalizes the favourites array with a composite key (lat_lon), enabling efficient lookups across all components (CityPickerComponent, CityMapComponent, FavouritesComponent) via shared selectors.
 
 ## Heat Index Formula
 
