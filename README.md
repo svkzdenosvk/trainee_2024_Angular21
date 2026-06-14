@@ -215,6 +215,19 @@ Deployed on Netlify with the following configuration:
 - **Build command:** `npm run build`
 - **Publish directory:** `dist/weather-app/browser`
 
+## CI/CD
+
+### Frontend – GitHub Actions
+
+Automated testing runs on every push and pull request to active branches.
+
+```yaml
+# .github/workflows/angular-ci.yml
+- Setup Node.js 22
+- npm ci
+- Run Vitest tests (watch=false)
+```
+
 ### Backend - Render
 
 - **Build command:** `npm run build`

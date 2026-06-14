@@ -24,39 +24,43 @@
   }
 </nav>
 
-<!-- Mobile: hamburger button -->
-<button class="hamburger-btn" (click)="toggleMenu()" title="Toggle navigation menu">
+<!-- Mobile: hamburger button-->
+<button
+  class="hamburger-btn"
+  (click)="toggleMenu()"
+  [attr.aria-label]="isOpen() ? 'Close navigation menu' : 'Open navigation menu'"
+  [attr.aria-expanded]="isOpen()"
+>
   <i class="pi" [class.pi-times]="isOpen()" [class.pi-bars]="!isOpen()"></i>
 </button>
 
 <!-- Mobile: dropdown menu -->
 <nav class="mobile-menu" [class.open]="isOpen()">
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      (click)="closeMenu()"
-    >
-      <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
+  <a
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    (click)="closeMenu()"
+  >
+    <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
+  </a>
+  <a routerLink="/heat-index" routerLinkActive="active" (click)="closeMenu()">
+    <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+  </a>
+  @if (authService.isLoggedIn()) {
+    <a routerLink="/favourites" routerLinkActive="active" (click)="closeMenu()">
+      <i class="pi pi-star"></i>
+      {{ 'nav.favourites' | transloco }}
     </a>
-    <a routerLink="/heat-index" routerLinkActive="active" (click)="closeMenu()">
-      <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+    <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">
+      <i class="pi pi-user-edit"></i>
+      {{ 'nav.profile' | transloco }}
     </a>
-    @if (authService.isLoggedIn()) {
-      <a routerLink="/favourites" routerLinkActive="active" (click)="closeMenu()">
-        <i class="pi pi-star"></i>
-        {{ 'nav.favourites' | transloco }}
-      </a>
-      <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">
-        <i class="pi pi-user-edit"></i>
-        {{ 'nav.profile' | transloco }}
-      </a>
-    }
-    @if (authService.isAdmin()) {
-      <a routerLink="/admin" routerLinkActive="active" (click)="closeMenu()">
-        <i class="pi pi-shield"></i>
-        Admin
-      </a>
-    }
-  </nav>
-
+  }
+  @if (authService.isAdmin()) {
+    <a routerLink="/admin" routerLinkActive="active" (click)="closeMenu()">
+      <i class="pi pi-shield"></i>
+      Admin
+    </a>
+  }
+</nav>

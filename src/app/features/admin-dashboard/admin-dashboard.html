@@ -2,8 +2,12 @@
   <div class="admin-header">
     <h2><i class="pi pi-users"></i> {{ 'auth.adminDashboard.title' | transloco }}</h2>
     @if (errorMessage()) {
-      <div class="error-banner">
+      <!-- <div class="error-banner">
         <i class="pi pi-exclamation-triangle"></i>
+        {{ errorMessage() }}
+      </div> -->
+      <div class="error-banner" role="alert" aria-live="assertive">
+        <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
         {{ errorMessage() }}
       </div>
     }
@@ -70,7 +74,7 @@
               [text]="true"
               [pTooltip]="getEditTooltip(user)"
               (onClick)="editUser(user)"
-              [disabled]="!_canEdit(user)|| pendingUserId() === user.id"
+              [disabled]="!_canEdit(user) || pendingUserId() === user.id"
             />
           </div>
         </td>
