@@ -60,13 +60,26 @@
         icon="pi pi-calculator"
         class="calc-btn"
         (click)="calculate()"
+        aria-label="Calculate heat index"
       ></button>
 
       <p-divider />
 
       <!-- Result -->
       @if (heatIndex() !== null) {
-        <div class="result-box" [style.border-color]="heatIndexLabel()?.color">
+        <div
+          class="result-box"
+          [style.border-color]="heatIndexLabel()?.color"
+          role="status "
+          aria-live="polite"
+          [attr.aria-label]="
+            'Heat index result: ' +
+            (heatIndex() | number: '1.1-1') +
+            unit() +
+            ', ' +
+            (heatIndexLabel()?.key | transloco)
+          "
+        >
           <div class="result-value" [style.color]="heatIndexLabel()?.color">
             {{ heatIndex() | number: '1.1-1' }}{{ unit() }}
           </div>
@@ -81,7 +94,7 @@
         </div>
       } @else {
         <div class="no-result">
-          <i class="pi pi-info-circle"></i>
+          <i class="pi pi-info-circle" aria-hidden="true"></i>
           <p>
             {{ 'heatIndex.minTempInfo1' | transloco }} {{ minTemp() }}{{ unit() }}
             {{ 'heatIndex.minTempInfo2' | transloco }}
@@ -95,7 +108,7 @@
   <p-card styleClass="history-card">
     <ng-template pTemplate="header">
       <div class="card-header">
-        <i class="pi pi-history"></i>
+        <i class="pi pi-history" aria-hidden="true"></i>
         <h2>{{ 'heatIndex.last5Results' | transloco }}</h2>
         @if (history().length > 0) {
           <button
@@ -103,6 +116,7 @@
             icon="pi pi-trash"
             class="p-button-text p-button-sm clear-btn"
             [pTooltip]="'heatIndex.clearHistory' | transloco"
+            [attr.aria-label]="'heatIndex.clearHistory' | transloco"
             (click)="clearHistory()"
           ></button>
         }
@@ -111,7 +125,7 @@
 
     @if (history().length === 0) {
       <div class="empty-history">
-        <i class="pi pi-clock"></i>
+        <i class="pi pi-clock" aria-hidden="true"></i>
         <p>{{ 'heatIndex.noResults' | transloco }}</p>
       </div>
     } @else {
@@ -136,7 +150,7 @@
     }
 
     <div class="storage-note">
-      <i class="pi pi-database"></i>
+      <i class="pi pi-database" aria-hidden="true"></i>
       {{ 'heatIndex.historyStored' | transloco }}
     </div>
   </p-card>

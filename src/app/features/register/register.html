@@ -1,8 +1,8 @@
 <div class="log-reg-container">
   <div class="log-reg-card">
     @if (success()) {
-      <div class="success-banner" [@fadeInOut]>
-        <i class="pi pi-check"></i>
+      <div class="success-banner" role="status" aria-live="polite" [@fadeInOut]>
+        <i class="pi pi-check" aria-hidden="true"></i>
         {{ 'auth.register.registerSuccess' | transloco }}
       </div>
     }
@@ -12,71 +12,79 @@
 
     <form class="log-reg-form" [formGroup]="form">
       <div class="form-group">
-        <label>{{ 'auth.username' | transloco }}</label>
+        <label for="reg-username">{{ 'auth.username' | transloco }}</label>
         <div class="input-wrapper">
           <input
+            id="reg-username"
             pInputText
             type="text"
             formControlName="username"
             [placeholder]="'auth.usernamePlaceholder' | transloco"
+            autocomplete="username"
+            [attr.aria-describedby]="getFieldError('username') ? 'username-error' : null"
           />
           @if (form.get('username')?.pending) {
-            <i class="pi pi-spin pi-spinner input-spinner"></i>
+            <i class="pi pi-spin pi-spinner input-spinner" aria-hidden="true"></i>
           }
         </div>
         @if (getFieldError('username')) {
-          <small class="field-error">
+          <small id="username-error" class="field-error" role="alert">
             {{ getFieldError('username') | transloco }}
           </small>
         }
-        
       </div>
 
       <div class="form-group">
-        <label>{{ 'auth.password' | transloco }}</label>
+        <label for="reg-password">{{ 'auth.password' | transloco }}</label>
         <div class="input-wrapper">
           <input
+            id="reg-password"
             pInputText
             [type]="showPassword() ? 'text' : 'password'"
             formControlName="password"
             [placeholder]="'auth.passwordPlaceholder' | transloco"
+            autocomplete="new-password"
+            [attr.aria-describedby]="getFieldError('password') ? 'password-error' : null"
           />
           <button
             type="button"
             class="eye-btn"
             (click)="showPassword.set(!showPassword())"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
             tabindex="-1"
           >
-            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
           </button>
         </div>
         @if (getFieldError('password')) {
-          <small class="field-error">
+          <small id="password-error" class="field-error" role="alert">
             {{ getFieldError('password') | transloco }}
           </small>
         }
       </div>
 
       <div class="form-group">
-        <label>{{ 'auth.register.confirmPassword' | transloco }}</label>
+        <label for="reg-confirm">{{ 'auth.register.confirmPassword' | transloco }}</label>
         <div class="input-wrapper">
           <input
+            id="reg-confirm"
             pInputText
             [type]="showPassword() ? 'text' : 'password'"
             formControlName="confirmPassword"
             [placeholder]="'auth.register.confirmPasswordPlaceholder' | transloco"
+            [attr.aria-describedby]="passwordMismatch ? 'confirm-error' : null"
           />
         </div>
         @if (passwordMismatch) {
-          <small class="field-error">
+          <small id="confirm-error" class="field-error" role="alert">
             {{ 'auth.errors.passwordMismatch' | transloco }}
           </small>
         }
       </div>
 
       @if (error()) {
-        <div class="error-banner" [@fadeInOut]>
-          <i class="pi pi-exclamation-triangle"></i>
+        <div class="error-banner" role="alert" aria-live="assertive" [@fadeInOut]>
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
           {{ error() | transloco }}
         </div>
       }
@@ -87,6 +95,7 @@
         styleClass="log-reg-btn"
         [loading]="loading()"
         [disabled]="form.invalid || loading()"
+        [attr.aria-busy]="loading()"
         (onClick)="register()"
       />
     </form>

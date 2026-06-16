@@ -6,11 +6,13 @@ import { LangService } from '../../../core/services/lang.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="nav-actions">
+    <div class="nav-actions" role="group" aria-label="Language selection">
       <button
         class="btn-theme"
         (click)="langService.switchLang('en')"
         [class.active]="langService.currentLang() === 'en'"
+        aria-label="Switch to English"
+        [attr.aria-pressed]="langService.currentLang() === 'en'"
       >
         EN
       </button>
@@ -18,6 +20,8 @@ import { LangService } from '../../../core/services/lang.service';
         class="btn-theme"
         (click)="langService.switchLang('sk')"
         [class.active]="langService.currentLang() === 'sk'"
+        aria-label="Switch to Slovak"
+        [attr.aria-pressed]="langService.currentLang() === 'sk'"
       >
         SK
       </button>

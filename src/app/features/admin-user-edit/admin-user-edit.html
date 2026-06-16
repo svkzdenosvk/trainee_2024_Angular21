@@ -1,37 +1,45 @@
 <div class="profile-container">
   <h2>
-    <i class="pi pi-user-edit"></i>
+    <i class="pi pi-user-edit" aria-hidden="true"></i>
     {{ 'auth.edit.adminEdit.title' | transloco }}
   </h2>
 
   @if (error()) {
-    <div class="error-banner" [@fadeInOut]>
-      <i class="pi pi-exclamation-triangle"></i>
+    <div class="error-banner" role="alert" aria-live="assertive">
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       {{ error() | transloco }}
     </div>
   }
 
   @if (success()) {
-    <div class="success-banner" [@fadeInOut]>
-      <i class="pi pi-check"></i>
+    <div class="success-banner" [@fadeInOut] role="status" aria-live="polite">
+      <i class="pi pi-check" aria-hidden="true"></i>
       {{ 'auth.edit.profile.success' | transloco }}
     </div>
   }
 
   <form [formGroup]="form">
     <div class="form-group">
-      <label>{{ 'auth.edit.profile.username' | transloco }}</label>
+      <label for="profile-username">{{ 'auth.edit.profile.username' | transloco }}</label>
       <div class="input-wrapper">
-        <input pInputText formControlName="username" [disabled]="isDefaultUserProtected()" />
+        <input
+          id="profile-username"
+          pInputText
+          formControlName="username"
+          [disabled]="isDefaultUserProtected()"
+          autocomplete="username"
+          [attr.aria-describedby]="getFieldError('username') ? 'profile-username-error' : null"
+        />
 
         @if (form.get('username')?.pending) {
-          <i class="pi pi-spin pi-spinner input-spinner"></i>
+          <i class="pi pi-spin pi-spinner input-spinner" aria-hidden="true"></i>
         }
       </div>
       @if (getFieldError('username')) {
-        <small class="field-error">{{ getFieldError('username') | transloco }}</small>
+        <small id="profile-username-error" class="field-error" role="alert">
+          {{ getFieldError('username') | transloco }}
+        </small>
       }
-      
     </div>
 
     <div class="actions">
@@ -39,6 +47,8 @@
         [label]="'auth.edit.profile.save' | transloco"
         [loading]="loading()"
         [pTooltip]="getSaveTooltip()"
+        [attr.aria-label]="getSaveTooltip()"
+        [attr.aria-busy]="loading()"
         [disabled]="!hasChanges || loading() || isDefaultUserProtected() || form.invalid"
         (onClick)="save()"
       />

@@ -7,7 +7,6 @@ import { LangService } from '../../../core/services/lang.service';
 import { AppNavAuth } from '../../components/app-nav-auth/app-nav-auth';
 import { AppFooter } from '../../components/app-footer/app-footer';
 import { AppHeader } from '../../components/app-header/app-header';
-// import { AppLangSwitcher } from '../../components/_app-lang-switcher/app-lang-switcher';
 import { AppPublicNav } from '../../components/app-public-nav/app-public-nav';
 import { fadeInOut } from '../../animations/animations';
 

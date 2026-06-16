@@ -5,8 +5,8 @@
   <app-header [cityName]="cityService.selectedCity()?.name" />
 
   @if (errorService.error()) {
-    <div class="global-error-banner" @fadeInOut>
-      <i class="pi pi-exclamation-triangle"></i>
+    <div class="global-error-banner" role="alert" aria-live="assertive" @fadeInOut>
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       {{ errorService.error() | transloco }}
     </div>
   }
@@ -14,12 +14,24 @@
   <!-- nav part same for both shells -->
   <app-public-nav />
 
-  <nav class="app-nav">
-    <a [routerLink]="['/weather']" [queryParams]="cityParams()" routerLinkActive="active">
-      <i class="pi pi-table"></i> {{ 'nav.weather' | transloco }}
+  <nav class="app-nav" aria-label="Weather navigation">
+    <a
+      [routerLink]="['/weather']"
+      [queryParams]="cityParams()"
+      routerLinkActive="active"
+      #weatherLink="routerLinkActive"
+      [attr.aria-current]="weatherLink.isActive ? 'page' : null"
+    >
+      <i class="pi pi-table" aria-hidden="true"></i> {{ 'nav.weather' | transloco }}
     </a>
-    <a [routerLink]="['/chart']" [queryParams]="cityParams()" routerLinkActive="active">
-      <i class="pi pi-chart-line"></i> {{ 'nav.temperatureChart' | transloco }}
+    <a
+      [routerLink]="['/chart']"
+      [queryParams]="cityParams()"
+      routerLinkActive="active"
+      #chartLink="routerLinkActive"
+      [attr.aria-current]="chartLink.isActive ? 'page' : null"
+    >
+      <i class="pi pi-chart-line" aria-hidden="true"></i> {{ 'nav.temperatureChart' | transloco }}
     </a>
   </nav>
 

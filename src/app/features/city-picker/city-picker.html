@@ -58,6 +58,11 @@
                   class="fav-btn"
                   (click)="toggleFavourite(city, $event)"
                   [class.favourited]="isFavourite(city)"
+                  [attr.aria-label]="
+                    isFavourite(city)
+                      ? 'Remove from favourites'
+                      : 'Add ' + city.name + ' to favourites'
+                  "
                 >
                   ⭐
                   {{

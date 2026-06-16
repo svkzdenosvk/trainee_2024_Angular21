@@ -141,16 +141,18 @@
       "confirmPasswordPlaceholder": "Potvrďte vaše heslo",
       "haveAccount": "Už máte účet?",
       "btnRegister": "Registrovať",
-      "errors":{
-        "registrationFailed":"Registrácia zlyhala. Skúste neskôr."
+      "errors": {
+        "registrationFailed": "Registrácia zlyhala. Skúste neskôr."
       }
     },
     "adminDashboard": {
       "title": "Administrátorské rozhranie",
       "userList": "Registrovaní používatelia",
       "role": "Rola",
+      "defaultUser": "Predvolený používateľ",
       "favouritesCount": "Počet oblúbených",
       "actions": "Akcie",
+      "actionsFor": "Akcie pre",
       "roleDowngrade": "Znížiť na používateľa",
       "roleUpgrade": "Povýšiť na správcu",
       "deleteBtn": "Vymazať používateľa",

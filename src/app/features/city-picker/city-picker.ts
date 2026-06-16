@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { CityService } from '../../core/services/city.service';
-// import { FavouritesService } from '../../core/services/favourites.service';
 import { City } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -43,7 +42,6 @@ export class CityPickerComponent {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly cityService = inject(CityService);
-  // protected readonly favouritesService = inject(FavouritesService);
   protected readonly authService = inject(AuthService);
   private readonly langService = inject(LangService);
 

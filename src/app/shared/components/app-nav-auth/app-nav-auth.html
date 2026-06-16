@@ -1,26 +1,24 @@
 <div class="nav-action-auth-wrapper">
   <div class="nav-action-auth">
-    
     @if (authService.isLoggedIn()) {
-    <span class="username-label">
-      <i class="pi pi-user"></i>
-      {{ authService.currentUser()?.username }}
-    </span>
-    <button class="btn-theme logout-btn" (click)="authService.logout()">
-      <i class="pi pi-sign-out"></i>
-      {{ 'auth.logout' | transloco }}
-    </button>
-  } @else {
-    <button class="btn-theme" (click)="router.navigate(['/login'])">
-      <i class="pi pi-sign-in"></i>
-      {{ 'auth.btnLogin' | transloco }}
-    </button>
-    <button class="btn-theme register-btn" (click)="router.navigate(['/register'])">
-      <i class="pi pi-user-plus"></i>
-      {{ 'auth.register.btnRegister' | transloco }}
-    </button>
-  }
-  
+      <span class="username-label">
+        <i class="pi pi-user" aria-hidden="true"></i>
+        {{ authService.currentUser()?.username }}
+      </span>
+      <button class="btn-theme logout-btn" (click)="authService.logout()" aria-label="Logout">
+        <i class="pi pi-sign-out"></i>
+        {{ 'auth.logout' | transloco }}
+      </button>
+    } @else {
+      <button class="btn-theme" (click)="router.navigate(['/login'])" aria-label="Go to login page">
+        <i class="pi pi-sign-in" aria-hidden="true"></i>
+        {{ 'auth.btnLogin' | transloco }}
+      </button>
+      <button class="btn-theme register-btn" (click)="router.navigate(['/register'])" aria-label="Go to registration page">
+        <i class="pi pi-user-plus" aria-hidden="true"></i>
+        {{ 'auth.register.btnRegister' | transloco }}
+      </button>
+    }
   </div>
 
   <app-lang-switcher />

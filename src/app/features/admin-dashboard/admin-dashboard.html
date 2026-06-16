@@ -39,19 +39,40 @@
     <ng-template pTemplate="body" let-user>
       <tr>
         <td>
-          <i class="pi pi-user"></i> {{ user.username }}
+          <i class="pi pi-user" aria-hidden="true"></i> {{ user.username }}
           @if (isDefaultUser(user.id)) {
-            <p-tag value="default" severity="secondary" styleClass="ml-2" />
+            <p-tag
+              value="default"
+              severity="secondary"
+              styleClass="ml-2"
+              [attr.aria-label]="'auth.adminDashboard.defaultUser' | transloco"
+            />
           }
         </td>
         <td>
-          <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
+          <span
+            class="role-badge"
+            [class]="'role-' + user.role.toLowerCase()"
+            [attr.aria-label]="
+              ('auth.adminDashboard.role' | transloco) + ': ' + user.role.toLowerCase()
+            "
+          >
             {{ user.role.toLowerCase() }}
           </span>
         </td>
-        <td>{{ user.favouritesCount }}</td>
+        <td
+          [attr.aria-label]="
+            ('auth.adminDashboard.favouritesCount' | transloco) + ': ' + user.favouritesCount
+          "
+        >
+          {{ user.favouritesCount }}
+        </td>
         <td>
-          <div class="actions">
+          <div
+            class="actions"
+            role="group"
+            [attr.aria-label]="('auth.adminDashboard.actionsFor' | transloco) + ' ' + user.username"
+          >
             <p-button
               [icon]="user.role === Role.ADMIN ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
               [severity]="user.role === Role.ADMIN ? 'secondary' : 'warn'"
@@ -59,6 +80,9 @@
               (onClick)="changeRole(user)"
               [disabled]="!_canChangeRole(user) || pendingUserId() === user.id"
               [pTooltip]="getRoleTooltip(user)"
+              [attr.aria-label]="getRoleTooltip(user)"
+              [attr.aria-disabled]="!_canChangeRole(user) || pendingUserId() === user.id"
+              [attr.aria-busy]="pendingUserId() === user.id"
             />
             <p-button
               icon="pi pi-trash"
@@ -67,6 +91,9 @@
               (onClick)="deleteUser(user)"
               [disabled]="!_canDelete(user) || pendingUserId() === user.id"
               [pTooltip]="getDeleteTooltip(user)"
+              [attr.aria-label]="getDeleteTooltip(user)"
+              [attr.aria-disabled]="!_canDelete(user) || pendingUserId() === user.id"
+              [attr.aria-busy]="pendingUserId() === user.id"
             />
             <p-button
               icon="pi pi-pencil"
@@ -75,20 +102,26 @@
               [pTooltip]="getEditTooltip(user)"
               (onClick)="editUser(user)"
               [disabled]="!_canEdit(user) || pendingUserId() === user.id"
+              [attr.aria-label]="getEditTooltip(user)"
+              [attr.aria-disabled]="!_canEdit(user) || pendingUserId() === user.id"
+              [attr.aria-busy]="pendingUserId() === user.id"
             />
           </div>
         </td>
       </tr>
     </ng-template>
-
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="4" style="text-align: center; color: #64748b">
           @if (adminService.loading()) {
-            <i class="pi pi-spin pi-spinner"></i>
-            {{ 'auth.adminDashboard.loading' | transloco }}
+            <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            <span role="status" aria-live="polite">
+              {{ 'auth.adminDashboard.loading' | transloco }}
+            </span>
           } @else {
-            {{ 'auth.adminDashboard.noUsers' | transloco }}
+            <span role="status">
+              {{ 'auth.adminDashboard.noUsers' | transloco }}
+            </span>
           }
         </td>
       </tr>

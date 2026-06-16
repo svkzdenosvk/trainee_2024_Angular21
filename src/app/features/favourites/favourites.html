@@ -25,7 +25,11 @@
           </div>
         </div>
         <div class="actions">
-          <button class="action-btn remove-btn" (click)="remove(city)">
+          <button
+            class="action-btn remove-btn"
+            (click)="remove(city)"
+            [attr.aria-label]="'Remove ' + city.name + ' from favourites'"
+          >
             <i class="pi pi-trash" style="font-size: 1rem"></i>
           </button>
           <button class="action-btn select-btn" (click)="selectCity(city)">

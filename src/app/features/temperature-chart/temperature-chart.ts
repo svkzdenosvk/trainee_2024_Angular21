@@ -18,6 +18,7 @@ import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { WeatherService } from '../../core/services/weather.service';
 import { WeatherRow } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { CityService } from '../../core/services/city.service';
 
 Chart.register(...registerables);
 
@@ -33,6 +34,7 @@ type ViewMode = 'all' | 'daily';
 })
 export class TemperatureChartComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly weatherService = inject(WeatherService);
+  protected readonly cityService = inject(CityService);
   private readonly translocoService = inject(TranslocoService);
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;

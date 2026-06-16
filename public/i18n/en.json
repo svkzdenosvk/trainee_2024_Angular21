@@ -141,16 +141,18 @@
       "confirmPasswordPlaceholder": "Confirm your password",
       "haveAccount": "Already have an account?",
       "btnRegister": "Register",
-      "errors":{
-        "registrationFailed":"Registration failed. Please try again later."
+      "errors": {
+        "registrationFailed": "Registration failed. Please try again later."
       }
     },
     "adminDashboard": {
       "title": "Admin Dashboard",
       "userList": "Registered users",
       "role": "Role",
+      "defaultUser": "Default User",
       "favouritesCount": "Count of favourites",
       "actions": "Actions",
+      "actionsFor": "Actions for",
       "roleDowngrade": "Downgrade to user",
       "roleUpgrade": "Promote to admin",
       "deleteBtn": "Delete user",

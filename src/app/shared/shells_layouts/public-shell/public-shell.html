@@ -5,8 +5,8 @@
   <app-header />
 
   @if (errorService.error()) {
-    <div class="global-error-banner" @fadeInOut>
-      <i class="pi pi-exclamation-triangle"></i>
+    <div class="global-error-banner" role="alert" aria-live="assertive" @fadeInOut>
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       {{ errorService.error() | transloco }}
     </div>
   }

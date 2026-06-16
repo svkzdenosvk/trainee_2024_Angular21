@@ -1,24 +1,50 @@
 <!-- Desktop: horizontal navigation -->
-<nav class="app-nav-primary">
-  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-    <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
+<nav class="app-nav-primary" aria-label="Primary navigation">
+  <a
+    routerLink="/"
+    routerLinkActive="active"
+    #homeLinkM="routerLinkActive"
+    [routerLinkActiveOptions]="{ exact: true }"
+    [attr.aria-current]="homeLinkM.isActive ? 'page' : null"
+  >
+    <i class="pi pi-map-marker" aria-hidden="true"></i>{{ 'nav.home' | transloco }}
   </a>
-  <a routerLink="/heat-index" routerLinkActive="active">
-    <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+  <a
+    routerLink="/heat-index"
+    routerLinkActive="active"
+    #heatLink="routerLinkActive"
+    [attr.aria-current]="heatLink.isActive ? 'page' : null"
+  >
+    <i class="pi pi-sun" aria-hidden="true"></i> {{ 'nav.heatIndex' | transloco }}
   </a>
   @if (authService.isLoggedIn()) {
-    <a routerLink="/favourites" routerLinkActive="active">
-      <i class="pi pi-star"></i>
+    <a
+      routerLink="/favourites"
+      routerLinkActive="active"
+      #favLink="routerLinkActive"
+      [attr.aria-current]="favLink.isActive ? 'page' : null"
+    >
+      <i class="pi pi-star" aria-hidden="true"></i>
       {{ 'nav.favourites' | transloco }}
     </a>
-    <a routerLink="/profile" routerLinkActive="active">
-      <i class="pi pi-user-edit"></i>
+    <a
+      routerLink="/profile"
+      routerLinkActive="active"
+      #profileLink="routerLinkActive"
+      [attr.aria-current]="profileLink.isActive ? 'page' : null"
+    >
+      <i class="pi pi-user-edit" aria-hidden="true"></i>
       {{ 'nav.profile' | transloco }}
     </a>
   }
   @if (authService.isAdmin()) {
-    <a routerLink="/admin" routerLinkActive="active">
-      <i class="pi pi-shield"></i>
+    <a
+      routerLink="/admin"
+      routerLinkActive="active"
+      #adminLink="routerLinkActive"
+      [attr.aria-current]="adminLink.isActive ? 'page' : null"
+    >
+      <i class="pi pi-shield" aria-hidden="true"></i>
       Admin
     </a>
   }
@@ -30,36 +56,63 @@
   (click)="toggleMenu()"
   [attr.aria-label]="isOpen() ? 'Close navigation menu' : 'Open navigation menu'"
   [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="'mobile-menu'"
 >
-  <i class="pi" [class.pi-times]="isOpen()" [class.pi-bars]="!isOpen()"></i>
+  <i class="pi" [class.pi-times]="isOpen()" [class.pi-bars]="!isOpen()" aria-hidden="true"></i>
 </button>
 
 <!-- Mobile: dropdown menu -->
-<nav class="mobile-menu" [class.open]="isOpen()">
+<nav id="mobile-menu" class="mobile-menu" [class.open]="isOpen()" aria-label="Mobile navigation">
   <a
     routerLink="/"
     routerLinkActive="active"
+    #homeLinkM="routerLinkActive"
     [routerLinkActiveOptions]="{ exact: true }"
+    [attr.aria-current]="homeLinkM.isActive ? 'page' : null"
     (click)="closeMenu()"
   >
-    <i class="pi pi-map-marker"></i>{{ 'nav.home' | transloco }}
+    <i class="pi pi-map-marker" aria-hidden="true"></i>{{ 'nav.home' | transloco }}
   </a>
-  <a routerLink="/heat-index" routerLinkActive="active" (click)="closeMenu()">
-    <i class="pi pi-sun"></i> {{ 'nav.heatIndex' | transloco }}
+  <a
+    routerLink="/heat-index"
+    routerLinkActive="active"
+    #heatLinkM="routerLinkActive"
+    [attr.aria-current]="heatLinkM.isActive ? 'page' : null"
+    (click)="closeMenu()"
+  >
+    <i class="pi pi-sun" aria-hidden="true"></i> {{ 'nav.heatIndex' | transloco }}
   </a>
   @if (authService.isLoggedIn()) {
-    <a routerLink="/favourites" routerLinkActive="active" (click)="closeMenu()">
-      <i class="pi pi-star"></i>
+    <a
+      routerLink="/favourites"
+      routerLinkActive="active"
+      #favLinkM="routerLinkActive"
+      [attr.aria-current]="favLinkM.isActive ? 'page' : null"
+      (click)="closeMenu()"
+    >
+      <i class="pi pi-star" aria-hidden="true"></i>
       {{ 'nav.favourites' | transloco }}
     </a>
-    <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">
-      <i class="pi pi-user-edit"></i>
+    <a
+      routerLink="/profile"
+      routerLinkActive="active"
+      #profileLinkM="routerLinkActive"
+      [attr.aria-current]="profileLinkM.isActive ? 'page' : null"
+      (click)="closeMenu()"
+    >
+      <i class="pi pi-user-edit" aria-hidden="true"></i>
       {{ 'nav.profile' | transloco }}
     </a>
   }
   @if (authService.isAdmin()) {
-    <a routerLink="/admin" routerLinkActive="active" (click)="closeMenu()">
-      <i class="pi pi-shield"></i>
+    <a
+      routerLink="/admin"
+      routerLinkActive="active"
+      #adminLinkM="routerLinkActive"
+      [attr.aria-current]="adminLinkM.isActive ? 'page' : null"
+      (click)="closeMenu()"
+    >
+      <i class="pi pi-shield" aria-hidden="true"></i>
       Admin
     </a>
   }

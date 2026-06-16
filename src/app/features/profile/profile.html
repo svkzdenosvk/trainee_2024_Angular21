@@ -1,33 +1,42 @@
 <div class="profile-container">
-  <h2><i class="pi pi-user-edit"></i> {{ 'auth.edit.profile.title' | transloco }}</h2>
+  <h2>
+    <i class="pi pi-user-edit" aria-hidden="true"></i> {{ 'auth.edit.profile.title' | transloco }}
+  </h2>
 
   @if (error()) {
-    <div class="error-banner" [@fadeInOut]>
-      <i class="pi pi-exclamation-triangle"></i>
+    <div class="error-banner" [@fadeInOut] role="alert" aria-live="assertive">
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       {{ error() | transloco }}
     </div>
   }
 
   @if (success()) {
-    <div class="success-banner" [@fadeInOut]>
-      <i class="pi pi-check"></i>
+    <div class="success-banner" role="status" aria-live="polite" [@fadeInOut]>
+      <i class="pi pi-check" aria-hidden="true"></i>
       {{ 'auth.edit.profile.success' | transloco }}
     </div>
   }
 
   <form [formGroup]="form">
     <div class="form-group">
-      <label>{{ 'auth.edit.profile.username' | transloco }}</label>
+      <label for="profile-username">{{ 'auth.edit.profile.username' | transloco }}</label>
       <div class="input-wrapper">
-        <input pInputText formControlName="username" />
+        <input
+          id="profile-username"
+          pInputText
+          formControlName="username"
+          autocomplete="username"
+          [attr.aria-describedby]="getFieldError('username') ? 'profile-username-error' : null"
+        />
         @if (form.get('username')?.pending) {
-          <i class="pi pi-spin pi-spinner input-spinner"></i>
+          <i class="pi pi-spin pi-spinner input-spinner" aria-hidden="true"></i>
         }
       </div>
       @if (getFieldError('username')) {
-        <small class="field-error">{{ getFieldError('username') | transloco }}</small>
+        <small id="profile-username-error" class="field-error" role="alert">
+          {{ getFieldError('username') | transloco }}
+        </small>
       }
-      
     </div>
 
     <div class="section-divider">
@@ -35,43 +44,69 @@
     </div>
 
     <div class="form-group">
-      <label>{{ 'auth.edit.profile.password' | transloco }}</label>
+      <label for="current-password">{{ 'auth.edit.profile.password' | transloco }}</label>
       <div class="input-wrapper">
         <input
+          id="current-password"
           pInputText
           [type]="showPassword() ? 'text' : 'password'"
           formControlName="currentPassword"
+          autocomplete="current-password"
         />
-        <button class="eye-btn" type="button" (click)="showPassword.set(!showPassword())">
-          <i [class]="'pi ' + (showPassword() ? 'pi-eye-slash' : 'pi-eye')"></i>
+        <button
+          class="eye-btn"
+          type="button"
+          (click)="showPassword.set(!showPassword())"
+          [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+        >
+          <i [class]="'pi ' + (showPassword() ? 'pi-eye-slash' : 'pi-eye')" aria-hidden="true"></i>
         </button>
       </div>
     </div>
 
     <div class="form-group">
-      <label>{{ 'auth.edit.profile.newPassword' | transloco }}</label>
+      <label for="new-password">{{ 'auth.edit.profile.newPassword' | transloco }}</label>
       <div class="input-wrapper">
         <input
+          id="new-password"
           pInputText
           [type]="showNewPassword() ? 'text' : 'password'"
           formControlName="newPassword"
+          autocomplete="new-password"
+          [attr.aria-describedby]="getFieldError('newPassword') ? 'new-password-error' : null"
         />
-        <button class="eye-btn" type="button" (click)="showNewPassword.set(!showNewPassword())">
-          <i [class]="'pi ' + (showNewPassword() ? 'pi-eye-slash' : 'pi-eye')"></i>
+        <button
+          class="eye-btn"
+          type="button"
+          (click)="showNewPassword.set(!showNewPassword())"
+          [attr.aria-label]="showNewPassword() ? 'Hide new password' : 'Show new password'"
+        >
+          <i
+            [class]="'pi ' + (showNewPassword() ? 'pi-eye-slash' : 'pi-eye')"
+            aria-hidden="true"
+          ></i>
         </button>
       </div>
       @if (getFieldError('newPassword')) {
-        <small class="field-error">{{ getFieldError('newPassword') | transloco }}</small>
+        <small id="new-password-error" class="field-error" role="alert">
+          {{ getFieldError('newPassword') | transloco }}
+        </small>
       }
     </div>
 
     <div class="form-group">
-      <label>{{ 'auth.edit.profile.confirmNewPass' | transloco }}</label>
+      <label for="confirm-new-password">{{ 'auth.edit.profile.confirmNewPass' | transloco }}</label>
       <div class="input-wrapper">
-        <input pInputText type="password" formControlName="confirmNewPassword" />
+        <input
+          id="confirm-new-password"
+          pInputText
+          type="password"
+          formControlName="confirmNewPassword"
+          [attr.aria-describedby]="passwordMismatch ? 'confirm-new-password-error' : null"
+        />
       </div>
       @if (passwordMismatch) {
-        <small class="field-error">
+        <small id="confirm-new-password-error" class="field-error" role="alert">
           {{ 'auth.errors.passwordMismatch' | transloco }}
         </small>
       }
@@ -83,6 +118,8 @@
         [loading]="loading()"
         [disabled]="!hasChanges || loading() || isDefaultUser()"
         [pTooltip]="getSaveTooltip()"
+        [attr.aria-label]="getSaveTooltip()"
+        [attr.aria-busy]="loading()"
         (onClick)="save()"
       />
     </div>

@@ -1,44 +1,52 @@
 <div class="log-reg-container">
   <div class="log-reg-card">
     <div class="log-reg-header">
-      <div class="log-reg-icon">🔐</div>
+      <div class="log-reg-icon" aria-hidden="true">🔐</div>
       <h2>{{ 'auth.title' | transloco }}</h2>
     </div>
 
     <form class="log-reg-form" [formGroup]="form">
       <div class="form-group">
-        <label>{{ 'auth.username' | transloco }}</label>
+        <!-- <label>{{ 'auth.username' | transloco }}</label> -->
+        <label for="login-username">{{ 'auth.username' | transloco }}</label>
+
         <input
+          id="login-username"
           pInputText
           type="text"
           formControlName="username"
           [placeholder]="'auth.usernamePlaceholder' | transloco"
+          autocomplete="username"
         />
       </div>
 
       <div class="form-group">
-        <label>{{ 'auth.password' | transloco }}</label>
+        <!-- <label>{{ 'auth.password' | transloco }}</label> -->
+        <label for="login-password">{{ 'auth.password' | transloco }}</label>
         <div class="input-wrapper">
           <input
+            id="login-password"
             pInputText
             [type]="showPassword() ? 'text' : 'password'"
             formControlName="password"
             [placeholder]="'auth.passwordPlaceholder' | transloco"
+            autocomplete="current-password"
           />
           <button
             type="button"
             class="eye-btn"
             (click)="showPassword.set(!showPassword())"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
             tabindex="-1"
           >
-            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
           </button>
         </div>
       </div>
 
       @if (error()) {
-        <div class="error-banner" [@fadeInOut]>
-          <i class="pi pi-exclamation-triangle"></i>
+        <div class="error-banner" role="alert" aria-live="assertive" [@fadeInOut]>
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
           {{ error() | transloco }}
         </div>
       }
@@ -49,6 +57,7 @@
         styleClass="log-reg-btn"
         [loading]="loading()"
         [disabled]="form.invalid || loading()"
+        [attr.aria-busy]="loading()"
         (onClick)="login()"
       />
     </form>

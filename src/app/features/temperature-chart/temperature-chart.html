@@ -42,20 +42,24 @@
   </div>
 
   @if (loading()) {
-    <div class="loading-wrapper">
-      <p-progressSpinner strokeWidth="3" />
+    <div class="loading-wrapper" role="status" aria-live="polite">
+      <p-progressSpinner strokeWidth="3" aria-hidden="true" />
       <p>{{ 'temperatureChart.loading' | transloco }}</p>
     </div>
   }
 
   @if (error()) {
-    <div class="error-banner">
-      <i class="pi pi-exclamation-triangle"></i>
+    <div class="error-banner" role="alert" aria-live="assertive">
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       {{ error() | transloco }}
     </div>
   }
 
   <div class="canvas-wrapper" [class.hidden]="loading()">
-    <canvas #chartCanvas></canvas>
+    <canvas
+      #chartCanvas
+      role="img"
+      [attr.aria-label]="'Temperature chart for ' + cityService.selectedCity()?.name"
+    ></canvas>
   </div>
 </div>
