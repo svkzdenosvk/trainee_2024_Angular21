@@ -1,10 +1,10 @@
-import { Component, AfterViewInit, inject, signal } from '@angular/core';
+import { Component, AfterViewInit, inject, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import { CityService } from '../../core/services/city.service';
-import { City } from '../../core/models/weather.model';
+import { City, NominatimResponse } from '../../core/models/weather.model';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
 import { fadeInOut } from '../../shared/animations/animations';
@@ -23,7 +23,7 @@ import { FavouritesActions } from '../../store/favourites/favourites.actions';
   templateUrl: './city-map.html',
   styleUrls: ['./city-map.scss'],
 })
-export class CityMapComponent implements AfterViewInit {
+export class CityMapComponent implements AfterViewInit, OnDestroy {
   private readonly http = inject(HttpClient);
   private readonly cityService = inject(CityService);
   private readonly router = inject(Router);
@@ -85,7 +85,7 @@ export class CityMapComponent implements AfterViewInit {
   private onMapClick(lat: number, lon: number): void {
     // Reverse-geocode picked coordinates into a city name.
     this.http
-      .get<any>(
+      .get<NominatimResponse>(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`,
       )
       .subscribe((data) => {

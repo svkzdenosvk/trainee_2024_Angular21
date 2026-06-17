@@ -1,8 +1,9 @@
 <div class="chart-container">
   <div class="controls-bar">
     <div class="date-range-wrapper">
-      <label>{{ 'dateRange' | transloco }}</label>
+      <label for="date-range">{{ 'dateRange' | transloco }}</label>
       <p-datepicker
+        inputId="date-range"
         [(ngModel)]="dateRange"
         (ngModelChange)="dateRange.set($event)"
         selectionMode="range"
@@ -22,8 +23,7 @@
       [disabled]="loading()"
     />
     <div class="view-mode-wrapper">
-      <label>{{ 'temperatureChart.view' | transloco }}</label>
-
+      <label for="view-mode">{{ 'temperatureChart.view' | transloco }}</label>
       <div class="custom-select-btn">
         <button
           [class.active]="viewMode() === 'all'"

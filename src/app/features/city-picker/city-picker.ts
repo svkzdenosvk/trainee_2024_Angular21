@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { CityService } from '../../core/services/city.service';
-import { City } from '../../core/models/weather.model';
+import { City, GeocodingResult, GeocodingResponse } from '../../core/models/weather.model';
 import { CityMapComponent } from '../city-map/city-map';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../core/services/auth.service';
@@ -72,18 +72,18 @@ export class CityPickerComponent {
             return [];
           }
           this.loading.set(true);
-          return this.http.get<any>(
+          return this.http.get<GeocodingResponse>(
             `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=10&language=${this.langService.currentLang()}&format=json`,
           );
         }),
         takeUntilDestroyed(),
       )
       .subscribe({
-        next: (data: any) => {
+        next: (data: GeocodingResponse) => {
           this.loading.set(false);
           if (data?.results) {
             this.results.set(
-              data.results.map((r: any) => ({
+              data.results.map((r: GeocodingResult) => ({
                 name: r.name,
                 country: r.country,
                 lat: Math.round(r.latitude * 100) / 100,

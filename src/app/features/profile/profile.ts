@@ -17,6 +17,7 @@ import {
   passwordsMatch,
   usernameAvailableValidator,
 } from '../../core/utils/validators';
+import { User } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -119,7 +120,12 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    const body: any = {};
+    // const body: any = {};
+    const body: {
+      username?: string | null;
+      newPassword?: string | null;
+      currentPassword?: string | null;
+    } = {};
     if (username !== currentUser?.username) body.username = username;
     if (newPassword) {
       body.newPassword = newPassword;
@@ -132,7 +138,10 @@ export class ProfileComponent implements OnInit {
     this.error.set(null);
 
     this.http
-      .patch<{ id: string; username: string; role: any }>(`${API_URL}/users/me`, body)
+      // .patch<{ id: string; username: string; role: any }>(`${API_URL}/users/me`, body)
+      // .patch<{ id: string; username: string; role: Role }>(`${API_URL}/users/me`, body)
+      .patch<User>(`${API_URL}/users/me`, body)
+
       .subscribe({
         next: (res) => {
           this.authService.currentUser.update((u) => (u ? { ...u, username: res.username } : null));

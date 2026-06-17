@@ -11,11 +11,17 @@ export class CityService {
   }
 
   // Try to create a City from URL query params and validate the coordinates.
-  loadFromUrl(params: any): boolean {
-    const lat = parseFloat(params.lat);
-    const lon = parseFloat(params.lon);
-    const name = params.city?.trim();
-    const country = params.country?.trim() ?? '';
+  // loadFromUrl(params: any): boolean {
+  loadFromUrl(params: Record<string, string>): boolean {
+    // const lat = parseFloat(params.lat);
+    // const lon = parseFloat(params.lon);
+    // const name = params.city?.trim();
+    // const country = params.country?.trim() ?? ''; --- these comments will be deleted
+
+    const lat = parseFloat(params['lat']);
+    const lon = parseFloat(params['lon']);
+    const name = params['city']?.trim();
+    const country = params['country']?.trim() ?? '';
 
     if (!name) return false;
     if (isNaN(lat) || isNaN(lon)) return false;

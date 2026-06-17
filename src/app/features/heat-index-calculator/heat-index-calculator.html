@@ -11,8 +11,9 @@
     <div class="form-body">
       <!-- Unit toggle -->
       <div class="form-group">
-        <label>{{ 'heatIndex.units' | transloco }}</label>
+        <label for="units">{{ 'heatIndex.units' | transloco }}</label>
         <p-selectButton
+          inputId="units"
           [options]="unitOptions"
           [ngModel]="unit()"
           (ngModelChange)="onUnitChange($event)"
@@ -24,8 +25,9 @@
 
       <!-- Temperature input -->
       <div class="form-group">
-        <label>{{ 'heatIndex.temperature' | transloco }} ({{ unit() }})</label>
+        <label for="temperature">{{ 'heatIndex.temperature' | transloco }} ({{ unit() }})</label>
         <p-inputNumber
+          inputId="temperature"
           [ngModel]="temperature()"
           (ngModelChange)="temperature.set($event)"
           [suffix]="' ' + unit()"
@@ -41,8 +43,9 @@
 
       <!-- Humidity input -->
       <div class="form-group">
-        <label>{{ 'heatIndex.humidity' | transloco }} (%)</label>
+        <label for="humidity">{{ 'heatIndex.humidity' | transloco }} (%)</label>
         <p-inputNumber
+          inputId="humidity"
           [ngModel]="humidity()"
           (ngModelChange)="humidity.set($event)"
           suffix=" %"

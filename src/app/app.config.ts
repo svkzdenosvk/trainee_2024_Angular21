@@ -26,9 +26,9 @@ import { provideEffects } from '@ngrx/effects';
 import { favouritesReducer } from './store/favourites/favourites.reducer';
 import { FavouritesEffects } from './store/favourites/favourites.effects';
 
-function initAuth(authService: AuthService) {
-  return () => authService.checkAuth().subscribe();
-}
+// function initAuth(authService: AuthService) {
+//   return () => authService.checkAuth().subscribe();
+// }
 
 // Application-level providers: routing, HTTP interceptors, translations, store, and app initializer.
 export const appConfig: ApplicationConfig = {

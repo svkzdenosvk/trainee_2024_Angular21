@@ -3,10 +3,10 @@ import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { cityGuard } from './city-guard';
 import { CityService } from '../services/city.service';
 
-const runGuard = (params = {}) => {
-  const route = { queryParams: params } as ActivatedRouteSnapshot;
-  return TestBed.runInInjectionContext(() => cityGuard(route, {} as any));
-};
+// const runGuard = (params = {}) => {
+//   const route = { queryParams: params } as ActivatedRouteSnapshot;
+//   return TestBed.runInInjectionContext(() => cityGuard(route, {} as any));
+// };
 
 describe('cityGuard', () => {
   let cityService: CityService;

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -108,7 +108,11 @@ export class WeatherTableComponent implements OnInit {
   }
 
   // Apply global search text to the table filter.
-  onGlobalFilter(event: Event, table: any): void {
+  // onGlobalFilter(event: Event, table: any): void {
+  onGlobalFilter(
+    event: Event,
+    table: { filterGlobal: (value: string, mode: string) => void },
+  ): void {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

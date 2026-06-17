@@ -2,8 +2,9 @@
   <!-- Date Range Picker -->
   <div class="controls-bar">
     <div class="date-range-wrapper">
-      <label>{{ 'dateRange' | transloco }}</label>
+      <label for="date-range">{{ 'dateRange' | transloco }}</label>
       <p-datepicker
+        inputId="date-range"
         [ngModel]="dateRange()"
         (ngModelChange)="dateRange.set($event)"
         selectionMode="range"

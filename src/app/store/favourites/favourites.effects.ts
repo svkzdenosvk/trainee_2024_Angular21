@@ -59,7 +59,9 @@ export class FavouritesEffects {
       mergeMap(({ city }) => {
         // The backend delete endpoint requires an ID.
         // If `city` is missing an ID here, this should be resolved by the calling component or state selector.
-        const id = (city as any).id;
+        // const id = (city as any).id;
+        const id = (city as FavouriteResponse).id;
+
         return this.http.delete(`${API_URL}/favourites/${id}`).pipe(
           switchMap(() =>
             this.http

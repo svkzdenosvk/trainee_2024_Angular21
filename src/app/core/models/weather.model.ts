@@ -55,3 +55,26 @@ export interface FavouriteResponse {
   lat: number;
   lon: number;
 }
+
+//in city-map.ts, we will use this interface to parse the response from Nominatim API
+export interface NominatimResponse {
+  address?: {
+    city?: string;
+    town?: string;
+    village?: string;
+    county?: string;
+    country?: string;
+  };
+}
+
+//in city-picker.ts, we will use this interface to parse the response from Geocoding API
+export interface GeocodingResult {
+  name: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface GeocodingResponse {
+  results?: GeocodingResult[];
+}

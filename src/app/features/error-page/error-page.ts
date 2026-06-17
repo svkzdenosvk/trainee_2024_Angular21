@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
+import { Subscription } from 'rxjs';
 
 const LANG_KEY = 'app_lang';
 
@@ -12,10 +13,11 @@ const LANG_KEY = 'app_lang';
   templateUrl: './error-page.html',
   styleUrls: ['./error-page.scss'],
 })
-export class ErrorPageComponent {
+export class ErrorPageComponent implements OnDestroy, OnInit {
   private router = inject(Router);
   private readonly translocoService = inject(TranslocoService);
-  private langChangeSubscription: any;
+  // private langChangeSubscription: any;
+   private langChangeSubscription?: Subscription;
 
   ngOnInit() {
     // Ensure the error page uses the current app language setting.
@@ -23,7 +25,8 @@ export class ErrorPageComponent {
     this.translocoService.setActiveLang(currentLang);
 
     // spy changes in language
-    this.langChangeSubscription = this.translocoService.langChanges$.subscribe((lang) => {
+    // this.langChangeSubscription = this.translocoService.langChanges$.subscribe((lang) => {
+    this.langChangeSubscription = this.translocoService.langChanges$.subscribe(() => {
       // language has been changed automatically
     });
   }

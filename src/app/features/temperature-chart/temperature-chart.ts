@@ -7,7 +7,7 @@ import {
   ElementRef,
   AfterViewInit,
   OnDestroy,
-  ChangeDetectionStrategy,
+  // ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
