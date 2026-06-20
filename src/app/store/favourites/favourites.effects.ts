@@ -39,16 +39,29 @@ export class FavouritesEffects {
   addFavourite$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavouritesActions.addFavourite),
-      mergeMap(({ city }) =>
-        this.http.post<FavouriteResponse>(`${API_URL}/favourites`, city).pipe(
+      // mergeMap(({ city }) =>
+
+      //   this.http.post<FavouriteResponse>(`${API_URL}/favourites`, city).pipe(
+      //     switchMap(() =>
+      //       this.http
+      //         .get<FavouriteResponse[]>(`${API_URL}/favourites`)
+      //         .pipe(map((favourites) => FavouritesActions.addFavouriteSuccess({ favourites }))),
+      //     ),
+      //     catchError(() => of(FavouritesActions.addFavouriteFailure({ city }))),
+      //   ),
+      // ),
+      mergeMap(({ city }) => {
+        return this.http.post<FavouriteResponse>(`${API_URL}/favourites`, city).pipe(
           switchMap(() =>
-            this.http
-              .get<FavouriteResponse[]>(`${API_URL}/favourites`)
-              .pipe(map((favourites) => FavouritesActions.addFavouriteSuccess({ favourites }))),
+            this.http.get<FavouriteResponse[]>(`${API_URL}/favourites`).pipe(
+              map((favourites) => {
+                return FavouritesActions.addFavouriteSuccess({ favourites });
+              }),
+            ),
           ),
           catchError(() => of(FavouritesActions.addFavouriteFailure({ city }))),
-        ),
-      ),
+        );
+      }),
     ),
   );
 

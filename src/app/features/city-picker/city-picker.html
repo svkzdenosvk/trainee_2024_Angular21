@@ -43,7 +43,9 @@
 
     @if (results().length > 0) {
       <div class="results-list">
-        @for (city of results(); track city.name) {
+        <!-- recommended version @for (city of results(); track city.name + '_' + city.lat + '_' + city.lon) { -->
+        <!--original version- works fine before aria maybe @for (city of results(); track city.name) { -->
+        @for (city of results(); track $index) {
           <div class="result-item">
             <div class="city-info">
               <span class="city-name">{{ city.name }}</span>

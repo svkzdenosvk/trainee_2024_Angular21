@@ -131,10 +131,31 @@ export class CityPickerComponent {
   }
 
   // Add or remove a city from favourites without navigating away.
+  // toggleFavourite(city: City, event: Event): void {
+  //   event.stopPropagation();
+  //   if (this.isFavourite(city)) {
+  //     this.store.dispatch(FavouritesActions.removeFavourite({ city }));
+  //     this.showFullWarning.set(false);
+  //   } else {
+  //     if (this.isFull()) {
+  //       this.showFullWarning.set(true);
+  //       setTimeout(() => this.showFullWarning.set(false), 3500);
+  //       return;
+  //     }
+  //     this.store.dispatch(FavouritesActions.addFavourite({ city }));
+  //   }
+  // }
+
+  // Add or remove a city from favourites without navigating away.
   toggleFavourite(city: City, event: Event): void {
     event.stopPropagation();
     if (this.isFavourite(city)) {
-      this.store.dispatch(FavouritesActions.removeFavourite({ city }));
+      // `city` here comes from search results and has no `id` — find the
+      // actual stored favourite (which has the backend id) to remove instead.
+      const storedFavourite = this.favourites().find((f) => sameCity(f, city));
+      if (storedFavourite) {
+        this.store.dispatch(FavouritesActions.removeFavourite({ city: storedFavourite }));
+      }
       this.showFullWarning.set(false);
     } else {
       if (this.isFull()) {

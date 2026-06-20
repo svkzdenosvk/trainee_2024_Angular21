@@ -13,6 +13,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e',
+  // Use a direct path string to avoid using `require` which can cause
+  // TypeScript errors when `@types/node` is not installed.
+  globalTeardown: './e2e/Global-teardown.ts',
+
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

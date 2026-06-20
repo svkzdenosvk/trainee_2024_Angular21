@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // Unique username per test run so we never collide with a previous run
 // and never hit the backend's 409 "user already exists" response by accident.
 const timestamp = Date.now();
-const NEW_USERNAME = `tester${timestamp}`;
+const NEW_USERNAME = `e2e${timestamp}`;
 const VALID_PASSWORD = 'Test123*';
 
 // The username availability check is async (calls the backend), so the UI
@@ -108,7 +108,7 @@ test.describe('Register', () => {
   test('a newly registered user can then log in', async ({ page }) => {
     // Self-contained: registers its own fresh user rather than depending on
     // the previous test's state, so this spec can run standalone or in any order.
-    const username = `tester${Date.now()}`;
+    const username = `e2e${Date.now()}`;
 
     await page.locator('#reg-username').fill(username);
     await page.waitForTimeout(ASYNC_VALIDATOR_DELAY);

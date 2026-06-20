@@ -170,8 +170,15 @@ export class CityMapComponent implements AfterViewInit, OnDestroy {
           .subscribe(() => {
             if (this.isAdding) return; // block during request
 
-            if (this.favourites().some((f) => sameCity(f, city))) {
-              this.store.dispatch(FavouritesActions.removeFavourite({ city }));
+            // if (this.favourites().some((f) => sameCity(f, city))) {
+            //   this.store.dispatch(FavouritesActions.removeFavourite({ city }));
+            const storedFavourite = this.favourites().find((f) => sameCity(f, city));
+
+            if (storedFavourite) {
+              // `city` here comes from reverse-geocoding (Nominatim) and has no
+              // backend `id` — dispatch the actual stored favourite instead, which
+              // carries the id the DELETE endpoint needs.
+              this.store.dispatch(FavouritesActions.removeFavourite({ city: storedFavourite }));
             } else {
               if (this.isFull()) {
                 this.showFullWarning.set(true);
