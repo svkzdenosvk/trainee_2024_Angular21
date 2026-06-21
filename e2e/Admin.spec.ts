@@ -1,6 +1,8 @@
 import { test, expect, Page, APIRequestContext } from '@playwright/test';
 
-const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = process.env.E2E_BACKEND_URL ?? 'http://localhost:3000';
+const BACKEND_URL = process.env.E2E_BACKEND_URL ?? 'https://weather-backend-docker.onrender.com';
 
 async function loginAsAdmin(page: Page): Promise<void> {
   await page.goto('/login');

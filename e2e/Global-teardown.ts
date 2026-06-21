@@ -1,6 +1,8 @@
 import { request as playwrightRequest } from '@playwright/test';
 
-const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = process.env.E2E_BACKEND_URL ?? 'http://localhost:3000';
+const BACKEND_URL = process.env.E2E_BACKEND_URL ?? 'https://weather-backend-docker.onrender.com';
 
 // Any account whose username starts with one of these is considered
 // disposable test data and safe to delete after the run.
