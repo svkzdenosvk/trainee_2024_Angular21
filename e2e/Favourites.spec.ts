@@ -2,7 +2,7 @@ import { test, expect, Page } from '@playwright/test';
 
 // City search hits a real third-party geocoding API (Open-Meteo), so result
 // rendering can take a bit longer than purely local UI interactions.
-const SEARCH_RESULTS_TIMEOUT = 15 * 1000;
+const SEARCH_RESULTS_TIMEOUT = 30 * 1000;
 
 // The backend runs on a free tier (Render + Supabase), both of which can
 // cold-start after inactivity. Favourite add/remove triggers a POST then a
@@ -38,7 +38,8 @@ async function addFirstSearchResultToFavourites(page: Page, query: string): Prom
   // (debounceTime(300) in CityPickerComponent). Waiting past that window
   // avoids racing a stale/in-flight request from a previous keystroke or
   // a previous test's search.
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
+  await page.waitForTimeout(1500);
 
   const firstResult = page.locator('.result-item').first();
   await expect(firstResult).toBeVisible({ timeout: SEARCH_RESULTS_TIMEOUT });

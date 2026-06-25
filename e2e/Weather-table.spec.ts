@@ -17,7 +17,8 @@ async function selectFirstSearchResult(page: Page, query: string): Promise<strin
   await searchInput.fill(query);
 
   // Component debounces search input by 300ms before firing the request.
-  await page.waitForTimeout(500);
+  // await page.waitForTimeout(500);
+  await page.waitForTimeout(1500);
 
   const firstResult = page.locator('.result-item').first();
   await expect(firstResult).toBeVisible({ timeout: SEARCH_RESULTS_TIMEOUT });
