@@ -2,12 +2,12 @@ import { test, expect, Page } from '@playwright/test';
 
 // City search hits a real third-party geocoding API (Open-Meteo), so result
 // rendering can take a bit longer than purely local UI interactions.
-const SEARCH_RESULTS_TIMEOUT = 45 * 1000; // Zvýšené na 45s pre CI
+const SEARCH_RESULTS_TIMEOUT = 30 * 1000;
 
 // The backend runs on a free tier (Render + Supabase), both of which can
 // cold-start after inactivity. Favourite add/remove triggers a POST then a
 // refresh GET, so give that chain plenty of room to complete.
-const FAVOURITES_NETWORK_TIMEOUT = 60 * 1000; // Zvýšené na 60s pre CI
+const FAVOURITES_NETWORK_TIMEOUT = 45 * 1000;
 
 async function loginAsUser(page: Page): Promise<void> {
   await page.goto('/login');
@@ -32,61 +32,22 @@ async function addFirstSearchResultToFavourites(page: Page, query: string): Prom
   await page.goto('/');
 
   const searchInput = page.locator('input.search-input');
-
-  // 🔥 ZMENA: Počkajte na geocoding API odpoveď (Open-Meteo)
-  const searchResponsePromise = page
-    .waitForResponse(
-      (res) => {
-        const url = res.url();
-        return url.includes('geocoding-api.open-meteo.com') || url.includes('geocoding');
-      },
-      { timeout: SEARCH_RESULTS_TIMEOUT },
-    )
-    .catch(() => {
-      // Ak API neodpovedí, pokračujte ďalej (môže byť cached)
-      // eslint-disable-next-line no-console
-      console.log('Search API response timeout, continuing...');
-      return null;
-    });
-
   await searchInput.fill(query);
-
-  // Počkajte na dokončenie API volania
-  await searchResponsePromise;
 
   // The component debounces search input by 300ms before firing the request
   // (debounceTime(300) in CityPickerComponent). Waiting past that window
   // avoids racing a stale/in-flight request from a previous keystroke or
   // a previous test's search.
-  // eslint-disable-next-line playwright/no-wait-for-timeout
-  await page.waitForTimeout(2000); // Zvýšené z 1500ms na 2000ms pre CI
-
-  // 🔥 ZMENA: Použite waitForSelector namiesto expect().toBeVisible()
-  try {
-    await page.waitForSelector('.result-item', {
-      state: 'visible',
-      timeout: SEARCH_RESULTS_TIMEOUT,
-    });
-  } catch (error) {
-    // Debugging pre CI - uloží screenshot a vypíše HTML
-    await page.screenshot({ path: 'test-results/favourites-no-results.png' });
-    // eslint-disable-next-line no-console
-    console.log('Page URL:', page.url());
-    // eslint-disable-next-line no-console
-    console.log('Search query:', query);
-    const html = await page.content();
-    // eslint-disable-next-line no-console
-    console.log('HTML snippet (first 500 chars):', html.substring(0, 500));
-    throw new Error(`Search results not found for "${query}" after ${SEARCH_RESULTS_TIMEOUT}ms`);
-  }
+  // await page.waitForTimeout(500);
+  await page.waitForTimeout(1500);
 
   const firstResult = page.locator('.result-item').first();
+  await expect(firstResult).toBeVisible({ timeout: SEARCH_RESULTS_TIMEOUT });
 
   // Make sure the result actually corresponds to what we searched for,
   // not a stale result from a previous render.
   await expect(firstResult.locator('.city-name')).toContainText(query.slice(0, 3), {
     ignoreCase: true,
-    timeout: 5000,
   });
 
   const cityName = await firstResult.locator('.city-name').innerText();
@@ -102,7 +63,6 @@ async function addFirstSearchResultToFavourites(page: Page, query: string): Prom
     );
     await favButton.click();
     await clearResponse;
-    // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(300);
     await expect(favButton).not.toHaveClass(/favourited/);
   }
@@ -122,8 +82,7 @@ async function addFirstSearchResultToFavourites(page: Page, query: string): Prom
   // always re-render the template on that exact same tick (the UI updates
   // correctly on the next interaction/CD cycle). A short wait here gives
   // change detection room to catch up before we assert on the rendered class.
-  // eslint-disable-next-line playwright/no-wait-for-timeout
-  await page.waitForTimeout(500); // Zvýšené z 300ms na 500ms pre CI
+  await page.waitForTimeout(300);
   await expect(favButton).toHaveClass(/favourited/);
 
   return cityName;
@@ -134,7 +93,6 @@ test.describe('Favourites', () => {
   // favourites list. Running them in parallel (separate browser contexts,
   // same backend account) causes race conditions on the shared list, so we
   // force them to run one after another.
-  // eslint-disable-next-line playwright/no-skipped-test
   test.describe.configure({ mode: 'serial' });
 
   test.beforeEach(async ({ page }) => {
@@ -161,9 +119,7 @@ test.describe('Favourites', () => {
     const cityName = await addFirstSearchResultToFavourites(page, 'Bratislava');
 
     await page.goto('/favourites');
-    await expect(page.locator('.favourite-item', { hasText: cityName })).toBeVisible({
-      timeout: FAVOURITES_NETWORK_TIMEOUT,
-    });
+    await expect(page.locator('.favourite-item', { hasText: cityName })).toBeVisible();
   });
 
   test('removes a city from favourites via the trash button', async ({ page }) => {
@@ -171,9 +127,7 @@ test.describe('Favourites', () => {
 
     await page.goto('/favourites');
     const favouriteItem = page.locator('.favourite-item', { hasText: cityName });
-    await expect(favouriteItem).toBeVisible({
-      timeout: FAVOURITES_NETWORK_TIMEOUT,
-    });
+    await expect(favouriteItem).toBeVisible();
 
     const refreshResponse = page.waitForResponse(
       (res) => res.url().includes('/favourites') && res.request().method() === 'GET',
@@ -186,12 +140,18 @@ test.describe('Favourites', () => {
   });
 
   // uncommenting this test only in local runs, because it fails in CI due to the shared test account's favourites list being unpredictable (other tests/users can add/remove cities at any time).
-  //   test('navigates to the weather page when selecting a favourite city', async ({ page }) => {
-  //     const cityName = await addFirstSearchResultToFavourites(page, 'Copenhagen');
 
-  //     await page.goto('/favourites');
-  //     await page.locator('.favourite-item', { hasText: cityName }).locator('.select-btn').click();
+  test('navigates to the weather page when selecting a favourite city', async ({ page }) => {
+    test.skip(
+      !!process.env.CI,
+      'Skipped in CI — city-picker search depends on Open-Meteo geocoding API which is unreliable in GitHub Actions',
+    );
 
-  //     await expect(page).toHaveURL(/\/weather/);
-  //   });
+    const cityName = await addFirstSearchResultToFavourites(page, 'Copenhagen');
+
+    await page.goto('/favourites');
+    await page.locator('.favourite-item', { hasText: cityName }).locator('.select-btn').click();
+
+    await expect(page).toHaveURL(/\/weather/);
+  });
 });
