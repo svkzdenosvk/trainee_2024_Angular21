@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-const SEARCH_RESULTS_TIMEOUT = 30 * 1000; // Zvýšené z 15s na 30s pre CI
+const SEARCH_RESULTS_TIMEOUT = 15 * 1000;
 
 // Weather data comes from the public Open-Meteo forecast API (third party),
 // so give the request realistic room to complete.
@@ -14,54 +14,16 @@ async function selectFirstSearchResult(page: Page, query: string): Promise<strin
   await page.goto('/');
 
   const searchInput = page.locator('input.search-input');
-
-  // Počkajte na geocoding API odpoveď (Open-Meteo)
-  const searchResponsePromise = page
-    .waitForResponse(
-      (res) => {
-        const url = res.url();
-        return url.includes('geocoding-api.open-meteo.com') || url.includes('geocoding');
-      },
-      { timeout: SEARCH_RESULTS_TIMEOUT },
-    )
-    .catch(() => {
-      // Ak API neodpovedí, pokračujte ďalej (môže byť cached)
-      console.log('Search API response timeout, continuing...');
-      return null;
-    });
-
   await searchInput.fill(query);
 
-  // Počkajte na dokončenie API volania
-  await searchResponsePromise;
-
   // Component debounces search input by 300ms before firing the request.
-  // Dávame viac času pre CI prostredie.
-  await page.waitForTimeout(2000);
-
-  // 🔥 ZMENA: Použite waitForSelector namiesto expect().toBeVisible()
-  // Toto čaká kým sa element objaví v DOM, nie len kým bude viditeľný
-  try {
-    await page.waitForSelector('.result-item', {
-      state: 'visible',
-      timeout: SEARCH_RESULTS_TIMEOUT,
-    });
-  } catch (error) {
-    // Debugging pre CI - uloží screenshot a vypíše HTML
-    await page.screenshot({ path: 'test-results/weather-no-results.png' });
-    console.log('Page URL:', page.url());
-    console.log('Search query:', query);
-    const html = await page.content();
-    console.log('HTML snippet (first 500 chars):', html.substring(0, 500));
-    throw new Error(`Search results not found for "${query}" after ${SEARCH_RESULTS_TIMEOUT}ms`);
-  }
+  // await page.waitForTimeout(500);
+  await page.waitForTimeout(1500);
 
   const firstResult = page.locator('.result-item').first();
-
-  // Teraz už element existuje, môžeme použiť expect na overenie obsahu
+  await expect(firstResult).toBeVisible({ timeout: SEARCH_RESULTS_TIMEOUT });
   await expect(firstResult.locator('.city-name')).toContainText(query.slice(0, 3), {
     ignoreCase: true,
-    timeout: 5000,
   });
 
   const cityName = await firstResult.locator('.city-name').innerText();
@@ -70,7 +32,6 @@ async function selectFirstSearchResult(page: Page, query: string): Promise<strin
     (res) => res.url().includes('api.open-meteo.com/v1/forecast'),
     { timeout: WEATHER_API_TIMEOUT },
   );
-
   await firstResult.locator('.select-btn').click();
   await expect(page).toHaveURL(/\/weather/);
   await weatherResponse;
@@ -115,32 +76,11 @@ test.describe('Weather table', () => {
 
   test('navigates to /weather with the selected city encoded in the URL', async ({ page }) => {
     await page.goto('/');
-
-    const searchInput = page.locator('input.search-input');
-
-    // Počkajte na API odpoveď
-    const searchResponsePromise = page
-      .waitForResponse(
-        (res) => {
-          const url = res.url();
-          return url.includes('geocoding-api.open-meteo.com') || url.includes('geocoding');
-        },
-        { timeout: SEARCH_RESULTS_TIMEOUT },
-      )
-      .catch(() => null);
-
-    await searchInput.fill('Lisbon');
-    await searchResponsePromise;
-
-    await page.waitForTimeout(2000);
-
-    // 🔥 ZMENA: Použite waitForSelector
-    await page.waitForSelector('.result-item', {
-      state: 'visible',
-      timeout: SEARCH_RESULTS_TIMEOUT,
-    });
+    await page.locator('input.search-input').fill('Lisbon');
+    await page.waitForTimeout(500);
 
     const firstResult = page.locator('.result-item').first();
+    await expect(firstResult).toBeVisible({ timeout: SEARCH_RESULTS_TIMEOUT });
     const cityName = await firstResult.locator('.city-name').innerText();
 
     await firstResult.locator('.select-btn').click();
