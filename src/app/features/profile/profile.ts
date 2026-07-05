@@ -116,7 +116,7 @@ export class ProfileComponent implements OnInit {
     const currentUser = this.authService.currentUser();
 
     if (newPassword && !currentPassword) {
-      this.error.set('edit.errors.currentPasswordRequired');
+      this.error.set('auth.edit.profile.errors.currentPasswordRequired');
       return;
     }
 
